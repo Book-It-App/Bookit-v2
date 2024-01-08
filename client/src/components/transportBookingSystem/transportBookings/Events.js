@@ -91,14 +91,14 @@ const Events = () => {
                         Event Venue
                       </p>
                       <p className="text-base font-medium text-navy-700   ">
-                        {event.bookedHallName}
+                        {event.bookedTransportName}
                       </p>
                     </div>
 
                     <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
                       <p className="text-m font-bold text-gray-600">Location</p>
                       <p className="text-base font-medium text-navy-700 ">
-                        {event.bookedHall.location}
+                        {event.bookedTransport.location}
                       </p>
                     </div>
 

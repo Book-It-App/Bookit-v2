@@ -5,15 +5,15 @@ import LoadingSpinner from "../../LoadingSpinner";
 
 // import BookingForm from "./BookingForm";
 
-const Halls = () => {
+const Transports = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
 
-  const getHallsData = async () => {
+  const getTransportsData = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/halls`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`, {
         withCredentials: true, // include credentials in the request
         headers: {
           Accept: "application/json",
@@ -23,7 +23,7 @@ const Halls = () => {
 
       const data = response.data;
       // console.log(data);
-      setUserData(data.halls);
+      setUserData(data.transports);
       setIsLoading(false);
 
       if (response.status !== 200) {
@@ -39,20 +39,20 @@ const Halls = () => {
 
   useEffect(() => {
 
-    getHallsData();
+    getTransportsData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleBookingClick = (hallId, hallName) => {
-    navigate(`/transport-booking-system/bookingForm/${hallId}/${hallName}`)
+  const handleBookingClick = (transportId, transportName) => {
+    navigate(`/transport-booking-system/bookingForm/${transportId}/${transportName}`)
   };
 
 
-  // const hallId =userData.hallId
-  // const hallName = userData.hallName
+  // const transportId =userData.transportId
+  // const transportName = userData.transportName
 
-  // const handleBookingClick = (hallId,hallName) => {
-  //   navigate('/bookingForm', { state: { hallId, hallName } });
+  // const handleBookingClick = (transportId,transportName) => {
+  //   navigate('/bookingForm', { state: { transportId, transportName } });
 
   // };
 
@@ -69,11 +69,11 @@ const Halls = () => {
     <div className="mt-6 min-h-screen"> 
     
     <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-center text-gray-800 font-black leading-7 ml-3 md:leading-10">
-   Available <span className="text-indigo-700"> Halls</span>  </h1>
+   Available <span className="text-indigo-700"> Transports</span>  </h1>
 
       {Array.isArray(userData) && userData.length > 0 ? (
-        userData.map((hall) => (
-          <div key={hall._id} className="my-2 ">
+        userData.map((transport) => (
+          <div key={transport._id} className="my-2 ">
             <div className="flex w-full items-center justify-center">
               <div className="w-full rounded-xl p-12 shadow-2xl shadow-blue-200 md:w-8/12 lg:w-8/12 bg-white">
 
@@ -112,18 +112,18 @@ const Halls = () => {
 
                   <div className="col-span-1 lg:col-span-9">
                     <div className="text-center lg:text-left">
-                      <h2 className="text-2xl font-bold text-zinc-700">{hall.name}</h2>
-                      {/* <p className="mt-2 text-l font-semibold text-zinc-700">{hall.location}</p> */}
+                      <h2 className="text-2xl font-bold text-zinc-700">{transport.name}</h2>
+                      {/* <p className="mt-2 text-l font-semibold text-zinc-700">{transport.number}</p> */}
                       {/* <p className="mt-4 text-zinc-500">I am a Front End Developer and UI/UX Designer</p> */}
                     </div>
 
                     {/* <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
                       <div>
-                        <p className="font-bold text-zinc-700">Hall Id</p>
+                        <p className="font-bold text-zinc-700">Transport Id</p>
                       </div>
 
                       <div>
-                        <p className="text-m font-semibold text-zinc-700">{hall._id}</p>
+                        <p className="text-m font-semibold text-zinc-700">{transport._id}</p>
                       </div>
                     </div> */}
 
@@ -141,11 +141,11 @@ const Halls = () => {
 
                     <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
                       <div>
-                        <p className="font-bold text-zinc-700">Location</p>
+                        <p className="font-bold text-zinc-700">Number</p>
                       </div>
 
                       <div>
-                        <p className="text-m font-semibold text-zinc-700">{hall.location}</p>
+                        <p className="text-m font-semibold text-zinc-700">{transport.number}</p>
                       </div>
                     </div>
 
@@ -157,29 +157,31 @@ const Halls = () => {
                       </div>
 
                       <div>
-                        <p className="text-m font-semibold text-zinc-700">{hall.capacity}</p>
+                        <p className="text-m font-semibold text-zinc-700">{transport.capacity}</p>
                       </div>
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
                       <div>
-                        <p className="font-bold text-zinc-700">Amenities</p>
+                        <p className="font-bold text-zinc-700">Photo</p>
                       </div>
 
                       <div>
-                        <p className="text-m font-semibold text-zinc-700">{hall.amenities}</p>
+                      <img src={`${process.env.REACT_APP_SERVER_URL}/${transport.photo}`} alt="photos"  />
+
+                        {/* <p className="text-m font-semibold text-zinc-700">{transport.photo}</p> */}
                       </div>
                     </div>
 
-                    <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
+                    {/* <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
                       <div>
                         <p className="font-bold text-zinc-700">Description</p>
                       </div>
 
                       <div>
-                        <p className="text-m font-semibold text-zinc-700">{hall.description}</p>
+                        <p className="text-m font-semibold text-zinc-700">{transport.description}</p>
                       </div>
-                    </div>
+                    </div> */}
 
 
 
@@ -193,7 +195,7 @@ const Halls = () => {
                     <div className="mt-6 grid grid-cols-2 gap-4">
                       {/* <Link to={`/bookingForm`}> */}
                       <button className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
-                        onClick={() => handleBookingClick(hall._id, hall.name)}
+                        onClick={() => handleBookingClick(transport._id, transport.name)}
                       >
                         Book Now
                       </button>
@@ -211,7 +213,7 @@ const Halls = () => {
           </div>
         ))
       ) : (
-        <h2 className="text-2xl font-bold text-zinc-700  text-center mt-10">No halls found.</h2>
+        <h2 className="text-2xl font-bold text-zinc-700  text-center mt-10">No transports found.</h2>
 
       )}
 
@@ -221,4 +223,4 @@ const Halls = () => {
   );
 };
 
-export default Halls;
+export default Transports;

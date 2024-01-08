@@ -70,16 +70,16 @@ const BookingFaculty = () => {
     }
   });
 
-  // const handleBookingClick = (hallId, hallName) => {
-  //   navigate(`/transport-booking-system/bookingForm/${hallId}/${hallName}`)
+  // const handleBookingClick = (transportId, transportName) => {
+  //   navigate(`/transport-booking-system/bookingForm/${transportId}/${transportName}`)
   // };
 
 
-  // const hallId =userData.hallId
-  // const hallName = userData.hallName
+  // const transportId =userData.transportId
+  // const transportName = userData.transportName
 
-  // const handleBookingClick = (hallId,hallName) => {
-  //   navigate('/bookingForm', { state: { hallId, hallName } });
+  // const handleBookingClick = (transportId,transportName) => {
+  //   navigate('/bookingForm', { state: { transportId, transportName } });
 
   // };
 
@@ -163,7 +163,7 @@ const BookingFaculty = () => {
                       Event Name
                     </th>
                     <th scope="col" className="px-4 py-3 text-l   text-gray-800 uppercase  border-gray-200">
-                      Hall Name
+                      Transport Name
                     </th>
                     <th scope="col" className="px-4 py-3 text-l   text-gray-800 uppercase   border-gray-200">
                       Organizing Club
@@ -198,7 +198,7 @@ const BookingFaculty = () => {
                         </td>
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
                           <p className="text-gray-900 whitespace-no-wrap">
-                            {booking.bookedHallName}
+                            {booking.bookedTransportName}
 
                           </p>
                         </td>

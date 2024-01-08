@@ -6,7 +6,7 @@ const transportSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  location: {
+  number: {
     type: String,
     required: true,
   },
@@ -14,15 +14,15 @@ const transportSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },  
-  amenities: {
+  photo: {
     type: String,
     required: true,
   },  
-  description: {
-    type: String,
-    required: true,
-  },
-  hallCreater: {
+  // description: {
+  //   type: String,
+  //   required: true,
+  // },
+  transportCreater: {
     type: String,
     required: true,
   },

@@ -12,7 +12,7 @@ const BookingForm = () => {
   const { bookingId } = useParams();
   //consolelog(bookingId);
   const [isLoading, setIsLoading] = useState(true);
-  // const { hallId, hallName } = props.location.state;
+  // const { transportId, transportName } = props.location.state;
   const [bookingData, setBookingData] = useState(
     { userId:"",
       eventManager: "",
@@ -26,8 +26,8 @@ const BookingForm = () => {
       endTime: "",
       email: "",
       userType:"",
-      bookedHallId: "",
-      bookedHallName: "",
+      bookedTransportId: "",
+      bookedTransportName: "",
       organizingClub: "",
       phoneNumber: "",
       altNumber: "",  
@@ -68,8 +68,8 @@ const BookingForm = () => {
         endTime: data.endTime ? data.endTime.split("T")[1].slice(0, 5) : null,
         email: data.userId.email,
         userType:data.userId.userType,
-        bookedHallId: data.bookedHallId,
-        bookedHallName: data.bookedHallName,
+        bookedTransportId: data.bookedTransportId,
+        bookedTransportName: data.bookedTransportName,
         organizingClub: data.organizingClub,
         phoneNumber: data.phoneNumber,
         altNumber: data.altNumber,  
@@ -121,9 +121,9 @@ const BookingForm = () => {
       endTime,
       email,
       userType,
-      bookedHallId,
+      bookedTransportId,
       
-      bookedHallName,
+      bookedTransportName,
       organizingClub,
       phoneNumber,
       altNumber,
@@ -145,8 +145,8 @@ const BookingForm = () => {
           email,
           userType,
          
-          bookedHallId,
-          bookedHallName,
+          bookedTransportId,
+          bookedTransportName,
           organizingClub,
           phoneNumber,
           altNumber,
@@ -398,18 +398,18 @@ const BookingForm = () => {
             <div className="w-full md:w-1/2 px-3">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                htmlFor="grid-hall-name"
+                htmlFor="grid-transport-name"
               >
-                Hall Name
+                Transport Name
               </label>
               <input
                 className="appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-hall-name"
+                id="grid-transport-name"
                 type="text"
-                value={bookingData.bookedHallName}
-                name="bookedHallName"
+                value={bookingData.bookedTransportName}
+                name="bookedTransportName"
                 onChange={handleInputs}
-                placeholder="Hall Name"
+                placeholder="Transport Name"
                 disabled
               />
             </div>

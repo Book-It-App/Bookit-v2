@@ -1,20 +1,25 @@
 const Transport = require('../model/transportSchema');
 const User = require("../../authService/model/userSchema");
+const fs = require('fs'); // Import the Node.js file system module
 
 const createTransport = async (req, res, next) => {
   try {
-    const { name, location, capacity,amenities,description,hallCreater } = req.body;
-
-    if (!name || !location || !capacity || !amenities || !description || !hallCreater) {
+    console.log(req.body);
+    const file = req.file;
+    console.log(file);
+    const { name, number, capacity,transportCreater } = req.body;
+    const photo = file ? file.path : ''; // Change 'file.path' to the correct path attribute
+    console.log(photo);
+    if (!name || !number || !capacity  || !transportCreater) {
       return res.status(422).json({ error: "Please fill all details" });
     }
 
     if (capacity <= 0) {
       return res.status(422).json({ error: "Please enter a valid capacity greater than zero" });
     }
-    const hall = new Transport({ name, location, capacity,amenities,description,hallCreater });
-    await hall.save();
-    res.status(201).json({ message: 'Hall created successfully' });
+    const transport = new Transport({ name, number, capacity,photo,transportCreater });
+    await transport.save();
+    res.status(201).json({ message: 'Transport created successfully' });
   } catch (error) {
     next(error);
   }
@@ -22,8 +27,8 @@ const createTransport = async (req, res, next) => {
 
 const getTransports = async (req, res, next) => {
   try {
-    const halls = await Transport.find();
-    res.json({ halls });
+    const transports = await Transport.find();
+    res.json({ transports });
   } catch (error) {
     next(error);
   }
@@ -31,12 +36,12 @@ const getTransports = async (req, res, next) => {
 
 const getTransportById = async (req, res, next) => {
   try {
-    const { hallId } = req.params;
-    const hall = await Transport.findById(hallId);
-    if (!hall) {
-      return res.status(404).json({ message: 'Hall not found' });
+    const { transportId } = req.params;
+    const transport = await Transport.findById(transportId);
+    if (!transport) {
+      return res.status(404).json({ message: 'Transport not found' });
     }
-    res.json({ hall });
+    res.json({ transport });
   } catch (error) {
     next(error);
   }
@@ -44,32 +49,47 @@ const getTransportById = async (req, res, next) => {
 
 const updateTransport = async (req, res, next) => {
   try {
-    const { hallId } = req.params;
-    const { name, location, capacity ,amenities,description} = req.body;
+    console.log(req.body);
+    const { transportId } = req.params;
+    const file = req.file;
+    console.log(file);
+    const { name, number, capacity } = req.body;
+    const photo = file ? file.path : ''; 
     const currentUserMail = req.rootUser.email; // Renamed to avoid conflict
     const masterAdminmail = process.env.REACT_APP_MASTER_ADMIN;
-    const hall = await Transport.findById(hallId);
+    const transport = await Transport.findById(transportId);
 
-    if (!hall) {
-      return res.status(404).json({ message: 'Hall not found' });
+    if (!transport) {
+      return res.status(404).json({ message: 'Transport not found' });
     }
 
-    if (hall.hallCreater !== currentUserMail && currentUserMail !== masterAdminmail) {
-    // if (hall.hallCreater !== hallCreatorEmail) {
+    if (transport.transportCreater !== currentUserMail && currentUserMail !== masterAdminmail) {
+    // if (transport.transportCreater !== transportCreatorEmail) {
       return res.status(403).json({ message: 'Unauthorized' }); // 403 means "Forbidden"
     }
 
-    const updatedHall = await Transport.findByIdAndUpdate(
-      hallId,
-      { name, location, capacity, amenities, description },
+
+    if (transport.photo && photo && transport.photo !== photo) {
+      // If there's an existing photo and a new photo is provided, delete the old photo
+      fs.unlink(transport.photo, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+
+
+    const updatedTransport = await Transport.findByIdAndUpdate(
+      transportId,
+      { name, number, capacity, photo },
       { new: true }
     );
 
-    if (!updatedHall) {
-      return res.status(404).json({ message: 'Hall not found' });
+    if (!updatedTransport) {
+      return res.status(404).json({ message: 'Transport not found' });
     }
 
-    res.json({ hall: updatedHall });
+    res.json({ transport: updatedTransport });
   } catch (error) {
     next(error);
   }
@@ -77,12 +97,23 @@ const updateTransport = async (req, res, next) => {
 
 const deleteTransport = async (req, res, next) => {
   try {
-    const { hallId } = req.params;
-    const hall = await Transport.findByIdAndDelete(hallId);
-    if (!hall) {
-      return res.status(404).json({ message: 'Hall not found' });
+    const { transportId } = req.params;
+
+    const transport = await Transport.findByIdAndDelete(transportId);
+    if (transport.photo) {
+      fs.unlink(transport.photo, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
     }
-    res.json({ message: 'Hall deleted successfully' });
+
+    if (!transport) {
+      return res.status(404).json({ message: 'Transport not found' });
+    }
+
+
+    res.json({ message: 'Transport deleted successfully' });
   } catch (error) {
     next(error);
   }

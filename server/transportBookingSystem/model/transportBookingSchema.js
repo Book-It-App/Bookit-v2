@@ -48,19 +48,19 @@ const transportBookingSchema = new mongoose.Schema(
       required: true
     },
     
-    bookedHallId: {
+    bookedTransportId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Hall',
+      ref: 'Transport',
       required: true
     },
-    bookedHall: {
+    bookedTransport: {
       // type: mongoose.Schema.Types.Subdocument,
 
       type: Object,
       required: true,
     },
 
-    bookedHallName: {
+    bookedTransportName: {
       type: String,
       required: true
     },

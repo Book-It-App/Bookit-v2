@@ -159,7 +159,7 @@ const BookingsAdmin = () => {
   }, [])
 
 
-  // navigate(`/transport-booking-system/bookingForm/${hallId}/${hallName}`)
+  // navigate(`/transport-booking-system/bookingForm/${transportId}/${transportName}`)
 
 
   const updateBooking = async (bookingId, isApproved) => {
@@ -266,11 +266,11 @@ const BookingsAdmin = () => {
     }
   });
   
-  // const hallId =userData.hallId
-  // const hallName = userData.hallName
+  // const transportId =userData.transportId
+  // const transportName = userData.transportName
 
-  // const handleBookingClick = (hallId,hallName) => {
-  //   navigate('/bookingForm', { state: { hallId, hallName } });
+  // const handleBookingClick = (transportId,transportName) => {
+  //   navigate('/bookingForm', { state: { transportId, transportName } });
 
   // };
 
@@ -404,7 +404,7 @@ const BookingsAdmin = () => {
                           Event Name
                         </th>
                         <th scope="col" className="px-4 py-3 text-l   text-gray-800 uppercase  border-gray-200">
-                          Hall Name
+                          Transport Name
                         </th>
                         <th scope="col" className="px-4 py-3 text-l   text-gray-800 uppercase   border-gray-200">
                           Organizing Club
@@ -439,7 +439,7 @@ const BookingsAdmin = () => {
                             </td>
                             <td className="px-5 py-5 text-m bg-white  border-gray-200">
                               <p className="text-gray-900 whitespace-no-wrap">
-                                {booking.bookedHallName}
+                                {booking.bookedTransportName}
 
                               </p>
                             </td>

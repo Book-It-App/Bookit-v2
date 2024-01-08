@@ -1,6 +1,6 @@
 import React from 'react'
-import Halls from '../halls/Halls'
-import Events from '../hallBookings/Events'
+import Transports from '../transports/Transports'
+import Events from '../transportBookings/Events'
 
 const FacultyDashboard = () => {
   return (
@@ -19,7 +19,7 @@ const FacultyDashboard = () => {
 
       <div className='mt-6 grid grid-flow-col col-auto	'>
         <div >
-          <Halls />
+          <Transports />
         </div>
         <div >
           <Events />

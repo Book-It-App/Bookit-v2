@@ -32,7 +32,7 @@ const CanteenBookingRoutes = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   return (<>
   
-    <UserContext.Provider value={{ state, dispatch }}>
+    {/* <UserContext.Provider value={{ state, dispatch }}> */}
 <Navbar/>
     <Routes>
           {/* Hall booking routes starts here */}
@@ -55,7 +55,7 @@ const CanteenBookingRoutes = () => {
           <Route path="/profile" element={<About />} />
           <Route path="/contact" element={<Contact />} />
     </Routes>
-    </UserContext.Provider>
+    {/* </UserContext.Provider> */}
 
     </>
   );

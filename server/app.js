@@ -37,6 +37,7 @@ const transportBookingRoutes = require('./transportBookingSystem/router/transpor
 const transportRoutes = require('./transportBookingSystem/router/transportRoutes');
 
 // const canteenBookingRoutes = require('./canteenBookingSystem/router/canteenBookingRoutes');
+app.use('/uploads', express.static('./uploads'));
 
 app.use('/hall-booking-system', hallBookingRoutes);
 app.use('/hall-booking-system', hallRoutes);

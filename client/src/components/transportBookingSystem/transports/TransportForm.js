@@ -6,17 +6,17 @@ import LoadingSpinner from "../../LoadingSpinner";
 // import { useParams } from "react-router-dom";
 // import BookingForm from "./BookingForm";
 import notVerified from '../../../assets/notVerified.jpg'
-const HallForm = () => {
+const TransportFrom = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
-  // const { hallId, hallName } = useParams();
+  // const { transportId, transportName } = useParams();
 
-  const [hallData, setHallData] = useState({
-    name:"",location:"",capacity:"",amenities:"",description:""
+  const [transportData, setTransportData] = useState({
+    name:"",number:"",capacity:"",photo:null
   });
   const [emailVerified, setEmailVerified] = useState(false);
-    const[hallCreater,setHallCreater] = useState("")
+    const[transportCreater,setTransportCreater] = useState("")
 
 
 
@@ -30,7 +30,7 @@ const HallForm = () => {
       });
 
       const data = response.data;
-      setHallCreater(data.email)
+      setTransportCreater(data.email)
 
       // console.log(data.email);
 
@@ -60,11 +60,11 @@ const HallForm = () => {
           toast.error("Unauthorized request!");
         } else {
           console.error(error);
-          toast.error("An error occurred while updating the hall.");
+          toast.error("An error occurred while updating the transport.");
         }
       } else {
         console.error(error);
-        toast.error("An error occurred while updating the hall.");
+        toast.error("An error occurred while updating the transport.");
       }
     }
   };
@@ -76,21 +76,29 @@ const HallForm = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // const formData = new FormData();
+  // formData.append('name', transportData.name);
+  // formData.append('number', transportData.number);
+  // formData.append('capacity', transportData.capacity);
+  // formData.append('photo', transportData.photo); // Assuming transportData.photo is the file object
 
-  const CreateHall = async (e) => {
+
+
+  const CreateTransport = async (e) => {
     e.preventDefault();
-    const { name,location,capacity,amenities,description } = hallData;
-    // const {hallCreater} = hallCreater;
+    const { name,number,capacity,photo } = transportData;
+    // const {transportCreater} = transportCreater;
     // setIsLoading(true)
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/halls`,
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`,
         {
-          name,location,capacity,amenities,description ,hallCreater
+          name,number,capacity,photo ,transportCreater
+          // formData
         },
         {
           withCredentials: true, // To include credentials in the request
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -102,9 +110,9 @@ const HallForm = () => {
         toast.error("Request not send!")
         // console.log("Message not send");
       } else {
-        toast.success("Hall Created Successfull!")
+        toast.success("Vehicle Created Successfull!")
         // alert("Message send");
-        navigate("/transport-booking-system/halls")
+        navigate("/transport-booking-system/transports")
         // setBookingData({ ...bookingData });
       }
     } catch (error) {
@@ -120,13 +128,20 @@ const HallForm = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setTransportData({ ...transportData, photo: file });
+    console.log(transportData)
+  };
 
 
 
   const handleInputs = (e) => {
+
     const name = e.target.name;
     const value = e.target.value;
-    setHallData({ ...hallData, [name]: value });
+    setTransportData({ ...transportData, [name]: value });
+  console.log(transportData)
   };
 
 
@@ -165,14 +180,14 @@ const HallForm = () => {
         <div className="max-w-screen-md mx-auto p-5 my-10 bg-white shadow-2xl shadow-blue-200">
           <div className="text-center mb-16">
             <p className="mt-4 text-sm leading-7 text-gray-500 font-regular uppercase">
-            Create Hall
+            Create Vehicle
             </p>
             <h3 className="text-3xl sm:text-4xl leading-normal font-extrabold tracking-tight text-gray-900">
-              Create Your <span className="text-indigo-600">Hall </span>
+              Create Your <span className="text-indigo-600">Vehicle </span>
             </h3>
           </div>
   
-          <form method="POST" className="w-full">
+          <form method="POST" className="w-full" >
   
   
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -181,18 +196,18 @@ const HallForm = () => {
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                  htmlFor="grid-event-manager"
+                  htmlFor="grid-vehicle-number"
                 >
-                  Hall Name
+                  Vehicle Number
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-hall-name"
+                  id="grid-vehicle-number"
                   type="text"
-                  value={hallData.name}
-                  name="name"
+                  value={transportData.number}
+                  name="number"
                   onChange={handleInputs}
-                  placeholder="Hall Name"
+                  placeholder="Vehicle Number"
                 />
               </div>
   
@@ -200,18 +215,18 @@ const HallForm = () => {
               <div className="w-full md:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="grid-capacity"
+                  htmlFor="grid-vehicle-name"
                 >
-                 Capacity
+                 Vehicle Name
                 </label>
                 <input
-                  value={hallData.capacity}
-                  name="capacity"
+                  value={transportData.name}
+                  name="name"
                   onChange={handleInputs}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-capacity"
-                  type="number"
-                  placeholder="Capacity"
+                  id="grid-vehicle-name"
+                  type="text"
+                  placeholder="Vehicle Name"
                 />
               </div>
             </div>
@@ -225,18 +240,18 @@ const HallForm = () => {
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="grid-amenities"
+                  htmlFor="grid-capacity"
                 >
-                  Amenities
+                  Seating Capacity
                 </label>
                 <input
-                  value={hallData.amenities}
-                  name="amenities"
+                  value={transportData.capacity}
+                  name="capacity"
                   onChange={handleInputs}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-amenities"
-                  type="text"
-                  placeholder="Amenities"
+                  id="grid-capacity"
+                  type="number"
+                  placeholder="Capacity"
                 />
               </div>
   
@@ -244,18 +259,19 @@ const HallForm = () => {
               <div className="w-full md:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="grid-location"
+                  htmlFor="grid-photo"
                 >
-                  Location
+                  Photo of Vehicle
                 </label>
                 <input
-                  value={hallData.location}
-                  name="location"
-                  onChange={handleInputs}
+                  // value={transportData.photo}
+                  name="photo"
+                  accept="image/*"
+                  onChange={handleFileChange}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-location"
-                  type="text"
-                  placeholder="Location"
+                  id="grid-photo"
+                  type="file"
+                  placeholder="photo"
   
                 />
               </div>
@@ -265,7 +281,7 @@ const HallForm = () => {
   
   
   
-            <div className="flex flex-wrap -mx-3 mb-6">
+            {/* <div className="flex flex-wrap -mx-3 mb-6">
   
   
               <div className="w-full md:w-2/2 px-3 mb-6 md:mb-0">
@@ -279,14 +295,14 @@ const HallForm = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-description"
                   type="text"
-                  value={hallData.description}
+                  value={transportData.description}
                   name="description"
                   onChange={handleInputs}
                   placeholder="Description"
                 />
               </div>
             
-            </div>
+            </div> */}
   
   
   
@@ -325,7 +341,7 @@ const HallForm = () => {
               <div className="flex justify-between w-full px-3">
                 <button
                 // onClick={() => setShowModal(true)}
-                  onClick={CreateHall}
+                  onClick={CreateTransport}
                   className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
                   type="submit"
                 >
@@ -384,7 +400,7 @@ const HallForm = () => {
         {/* ) */}
       {/* )  */}
       {/* : (
-        <h2 className="text-2xl font-bold text-zinc-700  text-center mt-4">No halls found.</h2>
+        <h2 className="text-2xl font-bold text-zinc-700  text-center mt-4">No transports found.</h2>
 
       )} */}
 
@@ -396,4 +412,4 @@ const HallForm = () => {
 
 };
 
-export default HallForm;
+export default TransportFrom;

@@ -26,7 +26,7 @@ const RenderUser = () => {
   if (state.userType === "admin") {
     return (
       <div>
-        <Link to="/transport-booking-system/halls">Halls</Link>
+        <Link to="/transport-booking-system/transports">Transports</Link>
       </div>
     );
   } else if (state.userType === "faculty") {
@@ -38,7 +38,7 @@ const RenderUser = () => {
   } else {
     return (
       <div>
-        <Link to="/transport-booking-system/halls">Halls</Link>
+        <Link to="/transport-booking-system/transports">Transports</Link>
       </div>
     );
   }
