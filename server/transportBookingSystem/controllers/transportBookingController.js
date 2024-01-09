@@ -229,7 +229,7 @@ const createTransportBooking = async (req, res, next) => {
       endTime,
       email,
       bookedTransportId: transport._id,
-      bookedTransport:transport,
+      
       bookedTransportName,
       selfOrGuest,
       noOfPerson,
@@ -375,7 +375,7 @@ const getTransportBookingAdmin = async (req, res, next) => {
   $or: [
     { email: adminEmail},
     // Add other conditions as needed
-    {'bookedTransport.transportCreater': adminEmail },
+    {'bookedTransportId.transportCreater': adminEmail },
   ],
 }
     ).populate('bookedTransportId')
@@ -487,18 +487,20 @@ const updateTransportBooking = async (req, res, next) => {
 
     const sendApprovalEmail = async (booking, bookingId) => {
       try {
-       
+
+        console.log("this is send approveal email asdasdasdasddddddddddddd")
+       console.log(booking)
     
         const mailOptions = {
           from: process.env.SENDER_EMAIL,
           to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
           subject: 'Booking Request Approved',
-          html: sendApprovalEmailTemplate(booking.eventName, booking.bookedTransportName, booking.organizingClub, booking.institution, booking.department, bookingId),
+          html: sendApprovalEmailTemplate( booking.nameOfDriver,booking.mobNoOfDriver,booking.bookedTransportName,booking.bookedTransportId.number,booking.bookedTransportId.capacity,booking.bookedTransportId.photo, bookingId),
         };
     
         await transporter.sendMail(mailOptions);
       } catch (error) {
-        next(error);
+        console.log(error);
       }
     };
 
@@ -619,10 +621,11 @@ const updateTransportBooking = async (req, res, next) => {
       `;
     };
 
-    const sendApprovalEmailTemplate = (eventName, bookedTransportName, organizingClub, institution, department, bookingId) => {
+    const sendApprovalEmailTemplate = ( nameOfDriver,mobNoOfDriver,bookedTransportName,bookedTransportNumber,bookedTransportCapacity,bookedTransportPhoto,  bookingId) => {
       return `
     
 
+     
       <head>
       <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
       <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -678,29 +681,55 @@ const updateTransportBooking = async (req, res, next) => {
                   
                   <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
                   <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
-                   <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
+                   <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Driver Details</h1>
                   
                   <div style="text-align: justify; margin:20px; display: flex;">
                     
                     <div style="flex: 1; margin-right: 20px;">
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">TRANSPORT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
-                           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Driver Name	 :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Mobile No.	 :</h1>
+                     
+                    
+<!--                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1> -->
+<!--                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
+                           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1> -->
                      
                     </div>
                     <div style="flex: 1;">
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
-                         <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
+                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${nameOfDriver}</h1>
+                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${mobNoOfDriver}</h1>
+<!-
                 
                   </div>
                   </div>
-                  
-                  <a href="${process.env.CLIENT_URL}/bookingsView/${bookingId}"  style="background-color: #4f46e5; color: #fff; padding: 8px 24px; border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
+                  <hr>
+                    <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details </h1>
+                  <div style="margin-top: 2rem;">
+ 
+  <div style="display: flex; width: 100%; justify-content: center; margin: 2rem auto;">
+    <!-- Container for transport information -->
+    <div style="max-width: 20rem; overflow: hidden; border-radius: 0.75rem; box-shadow: 0 0 2rem rgba(0, 0, 255, 0.3);">
+      <!-- Image section -->
+      <img style="width: 100%;" src="${process.env.REACT_APP_SERVER_URL}/uploads/vehicle/${bookedTransportPhoto}" alt="Vehicle Photo" />
+      <!-- Content section -->
+      <div style="padding: 1.5rem;">
+        <!-- Transport name -->
+        <div style="font-weight: bold; font-size: 1.5rem; margin-bottom: 1rem;">${bookedTransportName}</div>
+        <!-- Number and Capacity information -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
+          <div style="font-weight: bold;">Number</div>
+          <div style="font-size: 1rem; font-weight: bold;">${bookedTransportNumber}</div>
+        </div>
+        <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
+          <div style="font-weight: bold;">Capacity</div>
+          <div style="font-size: 1rem; font-weight: bold;">${bookedTransportCapacity} + 1</div>
+        </div>
+      </div>
+      <!-- Button section -->
+    
+  </div>
+    </div>
+                  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
                 </td>
               </tr>
             </table>
@@ -710,6 +739,7 @@ const updateTransportBooking = async (req, res, next) => {
   
       </table>
       </body>
+  
   
   
       `;
@@ -729,3 +759,11 @@ const deleteTransportBooking = async (req, res, next) => {
 };
 
 module.exports = { createTransportBooking, getTransportBookings, getTransportBookingById, updateTransportBooking, deleteTransportBooking, getTransportBookingByUserId, getTransportEvents,getTransportBookingAdmin ,getTransportBookingHod};
+
+
+
+
+
+
+
+
