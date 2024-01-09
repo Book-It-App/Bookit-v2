@@ -43,6 +43,35 @@ const transportBookingSchema = new mongoose.Schema(
     endTime: {
       type: Date,
     },
+
+
+    selfOrGuest:{
+      type: String,
+      required: true
+    },
+    noOfPerson:{
+      type: Number,
+      required: true
+    },
+naneOfGuest:{
+  type: String,
+  required: true
+},
+mobNoOfGuest:{
+  type: Number,
+  required: true
+},
+pickupLocation:{
+  type: String,
+  required: true
+},
+dropLocation:{
+  type: String,
+  required: true
+},
+
+
+
     email: {
       type: String,
       required: true

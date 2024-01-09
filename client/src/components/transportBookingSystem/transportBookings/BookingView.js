@@ -20,10 +20,10 @@ const BookingsView = () => {
   const { bookingId } = useParams();
   //consolelog(bookingId);
   const [isLoading, setIsLoading] = useState(true);
-  // const [showModal, setShowModal] = useState(false);
+  // const [showRejectionModal, setShowRejectionModal] = useState(false);
   // const [selectedBookingId, setSelectedBookingId] = useState("");
   const [bookingData, setBookingData] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
   const { state } = useContext(UserContext);
 
@@ -31,10 +31,10 @@ const BookingsView = () => {
 
   const openModal = (bookingId) => {
 
-    setShowModal(true);
+    setShowRejectionModal(true);
   };
   const closeModal = () => {
-    setShowModal(false);
+    setShowRejectionModal(false);
     setRejectionReason("");
   };
 
@@ -154,7 +154,7 @@ const BookingsView = () => {
   //       toast.success("Booking Deleted Successfull!")
   //     } else {
   //       toast.error("Request not send!")
-  //       // setShowModal(false);
+  //       // setShowRejectionModal(false);
   //       // setSelectedBookingId("");
   //     }
   //   } catch (error) {
@@ -174,7 +174,7 @@ const BookingsView = () => {
 
   // const handleDeleteModal = (bookingId) => {
   //   setSelectedBookingId(bookingId);
-  //   setShowModal(true);
+  //   setShowRejectionModal(true);
   // };
   // const handleDeleteBooking = () => {
   //   deleteBooking(selectedBookingId);
@@ -588,7 +588,7 @@ const BookingsView = () => {
           </div>
         </div>
       )}
-      {showModal && (
+      {showRejectionModal && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded-md shadow-md w-1/3">
             <h2 className="text-lg font-bold mb-4">Reason for Rejection</h2>
@@ -615,7 +615,7 @@ const BookingsView = () => {
           </div>
         </div>
       )}
-      {/* {showModal && (
+      {/* {showRejectionModal && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg px-8 py-6">
             <h2 className="text-lg font-bold mb-4">
@@ -633,7 +633,7 @@ const BookingsView = () => {
               </button>
               <button
                 className="px-4 py-2 text-white bg-gray-500 hover:bg-gray-600 rounded-lg focus:outline-none"
-                onClick={() => setShowModal(false)}
+                onClick={() => setShowRejectionModal(false)}
               >
                 Cancel
               </button>
