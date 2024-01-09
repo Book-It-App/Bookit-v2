@@ -157,7 +157,7 @@ const Transports = () => {
                       </div>
 
                       <div>
-                        <p className="text-m font-semibold text-zinc-700">{transport.capacity}</p>
+                        <p className="text-m font-semibold text-zinc-700">{transport.capacity}+1</p>
                       </div>
                     </div>
 

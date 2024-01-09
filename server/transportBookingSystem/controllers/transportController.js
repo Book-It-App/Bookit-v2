@@ -49,12 +49,13 @@ const getTransportById = async (req, res, next) => {
 
 const updateTransport = async (req, res, next) => {
   try {
+    console.log("thisis update");
     console.log(req.body);
     const { transportId } = req.params;
     const file = req.file;
     console.log(file);
-    const { name, number, capacity } = req.body;
-    const photo = file ? file.path : ''; 
+    const { name, number, capacity ,photo} = req.body;
+    const newPhoto = file ? file.path : ''; 
     const currentUserMail = req.rootUser.email; // Renamed to avoid conflict
     const masterAdminmail = process.env.REACT_APP_MASTER_ADMIN;
     const transport = await Transport.findById(transportId);
@@ -68,9 +69,8 @@ const updateTransport = async (req, res, next) => {
       return res.status(403).json({ message: 'Unauthorized' }); // 403 means "Forbidden"
     }
 
-
-    if (transport.photo && photo && transport.photo !== photo) {
-      // If there's an existing photo and a new photo is provided, delete the old photo
+    if (file && transport.photo !== newPhoto) {
+      // Remove existing photo
       fs.unlink(transport.photo, (err) => {
         if (err) {
           console.error(err);
@@ -81,7 +81,7 @@ const updateTransport = async (req, res, next) => {
 
     const updatedTransport = await Transport.findByIdAndUpdate(
       transportId,
-      { name, number, capacity, photo },
+      { name, number, capacity, photo: file ? newPhoto : photo },
       { new: true }
     );
 

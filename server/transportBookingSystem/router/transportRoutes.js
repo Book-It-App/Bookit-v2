@@ -8,10 +8,10 @@ const authenticate = require("../../authService/middleware/authenticate");
 // Set up multer storage for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, "uploads/"); // Directory to save uploaded files
+      cb(null, "uploads/vehicle"); // Directory to save uploaded files
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname); // Use the original file name
+      cb(null, `${Date.now()}-${file.originalname}`); // Use the original file name
     },
   });
   const upload = multer({ storage: storage });
