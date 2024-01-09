@@ -28,6 +28,12 @@ const BookingForm = () => {
       userType:"",
       bookedTransportId: "",
       bookedTransportName: "",
+      selfOrGuest:"",
+      noOfPerson:"",
+  naneOfGuest:"",
+  mobNoOfGuest:"",
+  pickupLocation:"",
+  dropLocation:"",
       organizingClub: "",
       phoneNumber: "",
       altNumber: "",  
@@ -70,6 +76,15 @@ const BookingForm = () => {
         userType:data.userId.userType,
         bookedTransportId: data.bookedTransportId,
         bookedTransportName: data.bookedTransportName,
+
+
+        selfOrGuest:data.selfOrGuest,
+        noOfPerson:data.noOfPerson,
+    naneOfGuest:data.naneOfGuest,
+    mobNoOfGuest:data.mobNoOfGuest,
+    pickupLocation:data.pickupLocation,
+    dropLocation:data.dropLocation,
+
         organizingClub: data.organizingClub,
         phoneNumber: data.phoneNumber,
         altNumber: data.altNumber,  
@@ -122,7 +137,12 @@ const BookingForm = () => {
       email,
       userType,
       bookedTransportId,
-      
+            selfOrGuest,
+      noOfPerson,
+  naneOfGuest,
+  mobNoOfGuest,
+  pickupLocation,
+  dropLocation,
       bookedTransportName,
       organizingClub,
       phoneNumber,
@@ -144,7 +164,12 @@ const BookingForm = () => {
           endTime:parseISO(`2000-01-01T${endTime}:00.000Z`),
           email,
           userType,
-         
+          selfOrGuest,
+          noOfPerson,
+      naneOfGuest,
+      mobNoOfGuest,
+      pickupLocation,
+      dropLocation,
           bookedTransportId,
           bookedTransportName,
           organizingClub,
@@ -419,7 +444,7 @@ const BookingForm = () => {
 
 
 
-          {bookingData.eventDateType === "half" && (
+          {/* {bookingData.eventDateType === "half" && ( */}
 
           <div className="flex flex-wrap -mx-3 mb-6">
 
@@ -462,9 +487,134 @@ const BookingForm = () => {
           </div>
 
 
-          )}
+          {/* )} */}
         
+          <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                      htmlFor="grid-no-of-person">
+                      No. Of Person
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-no-of-person"
+                      type="number"
+                      value={bookingData.noOfPerson}
+                      name="noOfPerson"
+                      onChange={handleInputs}
+                      placeholder="No. Of Person"
+                    />
+                  </div>
+                  <div className="w-full md:w-1/2 px-3">
+                    <label
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      htmlFor="grid-selfOrGuest">
+                      Self Or Guest
+                    </label>
+                    <select
+                      className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-self-or-guest"
+                      name="selfOrGuest"
+                      value={bookingData.selfOrGuest}
+                      onChange={handleInputs}>
+                      <option value="">Select</option>
+                      <option value="self">Self</option>
+                      <option value="guest">Guest</option>
+                     
+                    </select>
+                    
+                  </div>
+                </div>
 
+
+
+
+
+
+
+
+
+
+ {bookingData.selfOrGuest === "guest" && (
+ <div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                      htmlFor="grid-name-of-guest">
+                      Name Of Guest
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-name-of-guest"
+                      type="text"
+                      value={bookingData.naneOfGuest}
+                      name="naneOfGuest"
+                      onChange={handleInputs}
+                      placeholder="Name Of Guest"
+                    />
+                  </div>
+                  <div className="w-full md:w-1/2 px-3">
+                    <label
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      htmlFor="grid-mobNoOfGuest">
+                      Mob. No. Of Guest
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-mob-no-of-guest"
+                      type="number"
+                      value={bookingData.mobNoOfGuest}
+                      name="mobNoOfGuest"
+                      onChange={handleInputs}
+                      placeholder="Mob. No. Of Guest"
+                     
+                    />
+                    
+                  </div>
+                </div>
+
+
+ )}
+
+
+
+<div className="flex flex-wrap -mx-3 mb-6">
+                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                      htmlFor="grid-pickup-location">
+                      Pickup Location
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-pickup-location"
+                      type="text"
+                      value={bookingData.pickupLocation}
+                      name="pickupLocation"
+                      onChange={handleInputs}
+                      placeholder="Pickup Location"
+                    />
+                  </div>
+                  <div className="w-full md:w-1/2 px-3">
+                    <label
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      htmlFor="grid-drop-location">
+                       Drop Location
+                    </label>
+                    <input
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-drop-location"
+                      type="text"
+                      value={bookingData.dropLocation}
+                      name="dropLocation"
+                      onChange={handleInputs}
+                      placeholder="Drop Location"
+                     
+                    />
+                    
+                  </div>
+                </div>
 
           <div className="flex flex-wrap -mx-3 mb-6">
 
