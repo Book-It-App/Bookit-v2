@@ -30,7 +30,6 @@ const BookingsView = () => {
   //consolelog(state.userType);
 
   const openModal = (bookingId) => {
-
     setShowModal(true);
   };
   const closeModal = () => {
@@ -73,9 +72,9 @@ const BookingsView = () => {
   // };
 
   const getbookingById = async () => {
-
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsView/${bookingId}`,
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsView/${bookingId}`,
         {
           withCredentials: true,
           headers: {
@@ -109,7 +108,8 @@ const BookingsView = () => {
     setIsLoading(true);
     //consolelog(isApproved);
     try {
-      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${bookingId}`,
+      const response = await axios.put(
+        `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${bookingId}`,
         {
           isApproved: isApproved,
           rejectionReason:
@@ -211,12 +211,14 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-event-manager">
+                    htmlFor="grid-event-manager"
+                  >
                     Event Coordinator Name
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-event-manager">
+                    id="grid-event-manager"
+                  >
                     {bookingData.eventManager}
                   </p>
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
@@ -224,12 +226,14 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-event-name">
+                    htmlFor="grid-event-name"
+                  >
                     Event Name
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-event-name">
+                    id="grid-event-name"
+                  >
                     {bookingData.eventName}
                   </p>
                 </div>
@@ -238,12 +242,14 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-organizing-club">
+                    htmlFor="grid-organizing-club"
+                  >
                     Organizing Club
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-organizing-club">
+                    id="grid-organizing-club"
+                  >
                     {bookingData.organizingClub}
                   </p>
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
@@ -265,12 +271,14 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-event-date">
+                    htmlFor="grid-event-date"
+                  >
                     Event Date Type
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-event-date">
+                    id="grid-event-date"
+                  >
                     {bookingData.eventDateType === "multiple"
                       ? "Multiple Days"
                       : bookingData.eventDateType === "half"
@@ -280,53 +288,19 @@ const BookingsView = () => {
                 </div>
               </div>
 
-              {bookingData.eventDateType === "half" && (
-                <div className="flex flex-wrap -mx-3 mb-6">
-                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <h1
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-start-time">
-                      Start Time
-                    </h1>
-                    <p
-                      className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-start-time">
-                      {format(
-                        parseISO(bookingData.startTime.slice(0, -1)),
-                        "hh:mm aa"
-                      )}
-                    </p>
-                    {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
-                  </div>
-                  <div className="w-full md:w-1/2 px-3">
-                    <h1
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-end-time">
-                      End Time
-                    </h1>
-                    <p
-                      className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-end-time">
-                      {format(
-                        parseISO(bookingData.endTime.slice(0, -1)),
-                        "hh:mm aa"
-                      )}
-                    </p>
-                  </div>
-                </div>
-              )}
-
               {bookingData.eventDateType === "multiple" && (
                 <div className="flex flex-wrap -mx-3 mb-6">
                   <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <h1
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-start-time">
+                      htmlFor="grid-start-time"
+                    >
                       Event Start Date
                     </h1>
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-start-time">
+                      id="grid-start-time"
+                    >
                       {format(
                         new Date(bookingData.eventStartDate),
                         "EEEE dd-MM-yyyy"
@@ -337,12 +311,14 @@ const BookingsView = () => {
                   <div className="w-full md:w-1/2 px-3">
                     <h1
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-end-time">
+                      htmlFor="grid-end-time"
+                    >
                       Event End Date
                     </h1>
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-end-time">
+                      id="grid-end-time"
+                    >
                       {format(
                         new Date(bookingData.eventEndDate),
                         "EEEE dd-MM-yyyy"
@@ -358,12 +334,14 @@ const BookingsView = () => {
                   <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <h1
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-department">
+                      htmlFor="grid-department"
+                    >
                       Event Date
                     </h1>
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-department">
+                      id="grid-department"
+                    >
                       {format(
                         new Date(bookingData.eventDate),
                         "EEEE dd-MM-yyyy"
@@ -376,26 +354,187 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-transport-name">
+                    htmlFor="grid-transport-name"
+                  >
                     Transport Name
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-transport-name">
+                    id="grid-transport-name"
+                  >
                     {bookingData.bookedTransportName}
                   </p>
                 </div>
               </div>
+
+              
+
+
+
+
+
+
+
+
+
+
+
+
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-phone-number">
+                    htmlFor="grid-start-time"
+                  >
+                    Start Time
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-start-time"
+                  >
+                    {format(
+                      parseISO(bookingData.startTime.slice(0, -1)),
+                      "hh:mm aa"
+                    )}
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-end-time"
+                  >
+                    End Time
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-end-time"
+                  >
+                    {format(
+                      parseISO(bookingData.endTime.slice(0, -1)),
+                      "hh:mm aa"
+                    )}
+                  </p>
+                </div>
+              </div>
+
+
+
+
+    
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-no-of-person">
+                      No. Of Person
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-no-of-person"
+                  >
+                    {bookingData.noOfPerson}
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-selfOrGuest"
+                  >
+                    Self or Guest
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-self-or-guest"
+                  >
+                   {bookingData.selfOrGuest}
+                  </p>
+                </div>
+              </div>
+
+
+
+{ bookingData.selfOrGuest === "guest" &&
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-name-of-guest">
+                      Name Of Guest
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-name-of-guest"
+                    >
+                    {bookingData.naneOfGuest}
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-mobNoOfGuest"
+                    >
+                    Mob. No. Of Guest
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-mob-no-of-guest"
+                  >
+                   {bookingData.mobNoOfGuest}
+                  </p>
+                </div>
+              </div>
+}
+
+
+
+<div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-pickup-location">
+                      Pickup Location
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-pickup-location"
+                    >
+                    {bookingData.pickupLocation}
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-drop-location"
+                    >
+                    Drop Location
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-drop-location"
+                  >
+                   {bookingData.dropLocation}
+                  </p>
+                </div>
+              </div>
+
+
+
+
+
+
+
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-phone-number"
+                  >
                     Phone Number
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-phone-number">
+                    id="grid-phone-number"
+                  >
                     {bookingData.phoneNumber}
                   </p>
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
@@ -404,12 +543,14 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-alt-number">
+                    htmlFor="grid-alt-number"
+                  >
                     Alternate Number
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-alt-number">
+                    id="grid-alt-number"
+                  >
                     {bookingData.altNumber}
                   </p>
                 </div>
@@ -419,12 +560,14 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-phone-number">
+                    htmlFor="grid-phone-number"
+                  >
                     Institution
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-phone-number">
+                    id="grid-phone-number"
+                  >
                     {bookingData.institution} - {institutionName}
                   </p>
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
@@ -432,27 +575,32 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-alt-number">
+                    htmlFor="grid-alt-number"
+                  >
                     Department
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-alt-number">
+                    id="grid-alt-number"
+                  >
                     {bookingData.department} - {departmentName}
                   </p>
                 </div>
               </div>
 
+
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-phone-number">
+                    htmlFor="grid-phone-number"
+                  >
                     Requested By
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-phone-number">
+                    id="grid-phone-number"
+                  >
                     {bookingData.userId.name}
                   </p>
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
@@ -460,12 +608,14 @@ const BookingsView = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-alt-number">
+                    htmlFor="grid-alt-number"
+                  >
                     Request Created At
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-alt-number">
+                    id="grid-alt-number"
+                  >
                     {format(
                       parseISO(bookingData.createdAt),
                       "EEEE dd-MM-yyyy hh:mm aa"
@@ -479,7 +629,8 @@ const BookingsView = () => {
                   <div className="w-full px-3 mb-6 md:mb-0">
                     <h1
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-phone-number">
+                      htmlFor="grid-phone-number"
+                    >
                       Reason For Rejection
                     </h1>
                     <p className="text-s text-red-600	 font-bold">
@@ -518,7 +669,8 @@ const BookingsView = () => {
                   <>
                     <button
                       onClick={() => handleEditClick(bookingData._id)}
-                      className="   leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300 focus:outline-none">
+                      className="   leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300 focus:outline-none"
+                    >
                       Edit
                     </button>
 
@@ -526,12 +678,14 @@ const BookingsView = () => {
                       onClick={() =>
                         updateBooking(bookingData._id, "Approved By Admin")
                       }
-                      className="   leading-none text-gray-600 py-3 px-5 bg-green-200 rounded hover:bg-green-300 focus:outline-none">
+                      className="   leading-none text-gray-600 py-3 px-5 bg-green-200 rounded hover:bg-green-300 focus:outline-none"
+                    >
                       Approve
                     </button>
                     <button
                       onClick={() => openModal(bookingData._id)}
-                      className="   leading-none text-gray-600 py-3 px-5 bg-red-200 rounded hover:bg-red-300 focus:outline-none">
+                      className="   leading-none text-gray-600 py-3 px-5 bg-red-200 rounded hover:bg-red-300 focus:outline-none"
+                    >
                       Reject
                     </button>
 
@@ -546,7 +700,8 @@ const BookingsView = () => {
                   <>
                     <button
                       onClick={() => handleEditClick(bookingData._id)}
-                      className="   leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300 focus:outline-none">
+                      className="   leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300 focus:outline-none"
+                    >
                       Edit
                     </button>
 
@@ -554,14 +709,16 @@ const BookingsView = () => {
                       onClick={() =>
                         updateBooking(bookingData._id, "Approved By HOD")
                       }
-                      className="   leading-none text-gray-600 py-3 px-5 bg-green-200 rounded hover:bg-green-300 focus:outline-none">
+                      className="   leading-none text-gray-600 py-3 px-5 bg-green-200 rounded hover:bg-green-300 focus:outline-none"
+                    >
                       Approve
                     </button>
                     <button
                       onClick={() =>
                         updateBooking(bookingData._id, "Rejected By HOD")
                       }
-                      className="   leading-none text-gray-600 py-3 px-5 bg-red-200 rounded hover:bg-red-300 focus:outline-none">
+                      className="   leading-none text-gray-600 py-3 px-5 bg-red-200 rounded hover:bg-red-300 focus:outline-none"
+                    >
                       Reject
                     </button>
 
@@ -596,11 +753,13 @@ const BookingsView = () => {
               className="w-full p-2 border border-gray-300 rounded mb-4 resize-none"
               placeholder="Enter reason for rejection"
               value={rejectionReason}
-              onChange={(e) => setRejectionReason(e.target.value)}></textarea>
+              onChange={(e) => setRejectionReason(e.target.value)}
+            ></textarea>
             <div className="flex justify-between">
               <button
                 className="px-4 py-2 bg-gray-300 rounded"
-                onClick={closeModal}>
+                onClick={closeModal}
+              >
                 Cancel
               </button>
               <button
@@ -608,7 +767,8 @@ const BookingsView = () => {
                 // onClick={handleReject}
                 onClick={() =>
                   updateBooking(bookingData._id, "Rejected By Admin")
-                }>
+                }
+              >
                 Reject
               </button>
             </div>
