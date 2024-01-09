@@ -69,7 +69,14 @@ dropLocation:{
   type: String,
   required: true
 },
-
+nameOfDriver:{
+  type: String,
+  
+},
+mobNoOfDriver:{
+  type: Number,
+  
+},
 
 
     email: {

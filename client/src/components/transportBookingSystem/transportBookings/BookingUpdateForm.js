@@ -30,10 +30,10 @@ const BookingForm = () => {
       bookedTransportName: "",
       selfOrGuest:"",
       noOfPerson:"",
-  naneOfGuest:"",
-  mobNoOfGuest:"",
-  pickupLocation:"",
-  dropLocation:"",
+      naneOfGuest:"",
+      mobNoOfGuest:"",
+      pickupLocation:"",
+      dropLocation:"",
       organizingClub: "",
       phoneNumber: "",
       altNumber: "",  
@@ -84,7 +84,8 @@ const BookingForm = () => {
     mobNoOfGuest:data.mobNoOfGuest,
     pickupLocation:data.pickupLocation,
     dropLocation:data.dropLocation,
-
+    nameOfDriver:data.nameOfDriver,
+    mobNoOfDriver:data.mobNoOfDriver,
         organizingClub: data.organizingClub,
         phoneNumber: data.phoneNumber,
         altNumber: data.altNumber,  
@@ -143,6 +144,8 @@ const BookingForm = () => {
   mobNoOfGuest,
   pickupLocation,
   dropLocation,
+  nameOfDriver,
+  mobNoOfDriver,
       bookedTransportName,
       organizingClub,
       phoneNumber,
@@ -170,6 +173,8 @@ const BookingForm = () => {
       mobNoOfGuest,
       pickupLocation,
       dropLocation,
+      nameOfDriver,
+  mobNoOfDriver,
           bookedTransportId,
           bookedTransportName,
           organizingClub,
@@ -663,7 +668,40 @@ const BookingForm = () => {
 
 
 
-
+          <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  htmlFor="grid-name-of-driver">
+                  Name Of Driver
+                </label>
+                <input
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-name-of-driver"
+                  type="text"
+                  value={bookingData.nameOfDriver}
+                  name="nameOfDriver"
+                  onChange={handleInputs}
+                  placeholder="Name Of Driver"
+                />
+              </div>
+              <div className="w-full md:w-1/2 px-3">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="grid-mobNoOfDriver">
+                  Mob. No. Of Driver
+                </label>
+                <input
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-mob-no-of-driver"
+                  type="number"
+                  value={bookingData.mobNoOfDriver}
+                  name="mobNoOfDriver"
+                  onChange={handleInputs}
+                  placeholder="Mob. No. Of Driver"
+                />
+              </div>
+            </div>
 
 
 

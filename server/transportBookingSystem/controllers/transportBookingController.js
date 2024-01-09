@@ -132,6 +132,7 @@ const createTransportBooking = async (req, res, next) => {
       noOfPerson,
   naneOfGuest,
   mobNoOfGuest,
+  
   pickupLocation,
   dropLocation,
       organizingClub,
@@ -415,6 +416,14 @@ const updateTransportBooking = async (req, res, next) => {
       eventDate,
       startTime,
       endTime,
+      selfOrGuest,
+      noOfPerson,
+  naneOfGuest,
+  mobNoOfGuest,
+  nameOfDriver,
+  mobNoOfDriver,
+  pickupLocation,
+  dropLocation,
       // email,
 
       // bookedTransportId,
@@ -436,7 +445,14 @@ const updateTransportBooking = async (req, res, next) => {
         eventName, eventDate, startTime, endTime,eventDateType,
         eventStartDate,
         eventEndDate,
-
+        selfOrGuest,
+        noOfPerson,
+    naneOfGuest,
+    mobNoOfGuest,
+    nameOfDriver,
+    mobNoOfDriver,
+    pickupLocation,
+    dropLocation,
         //  transportId: transport._id,email,
         isApproved,
         rejectionReason,
@@ -447,6 +463,8 @@ const updateTransportBooking = async (req, res, next) => {
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
     }
+
+    console.log(booking)
 
 
         // Send email based on the updated approval status
