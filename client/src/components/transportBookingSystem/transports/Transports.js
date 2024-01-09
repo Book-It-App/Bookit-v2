@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate} from "react-router-dom"
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import LoadingSpinner from "../../LoadingSpinner";
 
 // import BookingForm from "./BookingForm";
@@ -10,16 +10,18 @@ const Transports = () => {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-
   const getTransportsData = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`, {
-        withCredentials: true, // include credentials in the request
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`,
+        {
+          withCredentials: true, // include credentials in the request
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
       const data = response.data;
       // console.log(data);
@@ -35,18 +37,16 @@ const Transports = () => {
     }
   };
 
-
-
   useEffect(() => {
-
     getTransportsData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleBookingClick = (transportId, transportName) => {
-    navigate(`/transport-booking-system/bookingForm/${transportId}/${transportName}`)
+    navigate(
+      `/transport-booking-system/bookingForm/${transportId}/${transportName}`
+    );
   };
-
 
   // const transportId =userData.transportId
   // const transportName = userData.transportName
@@ -56,87 +56,110 @@ const Transports = () => {
 
   // };
 
-
   // const handleBookingClick = () => {
   //   sendData(data);
   // };
 
-
   return (
-<>{isLoading ? (
-          <LoadingSpinner />
-        ) : 
-    <div className="mt-6 min-h-screen"> 
-    
-    <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-center text-gray-800 font-black leading-7 ml-3 md:leading-10">
-   Available <span className="text-indigo-700"> Transports</span>  </h1>
+    <>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="mt-6 min-h-screen">
+          <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-center text-gray-800 font-black leading-7 ml-3 md:leading-10">
+            Available <span className="text-indigo-700"> Transports</span>{" "}
+          </h1>
 
-      {Array.isArray(userData) && userData.length > 0 ? (
-        userData.map((transport) => (
-          <div key={transport._id} className="my-2 ">
-            <div className="flex w-full items-center justify-center">
+          {Array.isArray(userData) && userData.length > 0 ? (
+            userData.map((transport) => (
+              <div key={transport._id} className="my-2 ">
+
+                
+                <div className="flex w-full items-center justify-center ">
+                  <div class="max-w-sm  overflow-hidden  rounded-xl  shadow-2xl shadow-blue-300">
+                    <img
+                      class="w-full"
+                      src={`${process.env.REACT_APP_SERVER_URL}/${transport.photo}`}
+                      alt="Sunset in the mountains"
+                    />
+                    <div class="px-6 py-4">
+                      <div class="font-bold text-xl mb-2">{transport.name}</div>
+                      <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
+                        <div>
+                          <p className="font-bold text-zinc-700">Number</p>
+                        </div>
+
+                        <div>
+                          <p className="text-m font-semibold text-zinc-700">
+                            {transport.number}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
+                        <div>
+                          <p className="font-bold text-zinc-700">Capacity</p>
+                        </div>
+
+                        <div>
+                          <p className="text-m font-semibold text-zinc-700">
+                            {transport.capacity}+1
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="my-6 w-1/2  grid grid-cols-1 mx-auto">
+                      <button
+                        className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
+                        onClick={() =>
+                          handleBookingClick(transport._id, transport.name)
+                        }>
+                        Book Now
+                      </button>
+                 
+                    </div>
+                  </div>
+                </div>
+
+                {/* <div className="flex w-full items-center justify-center">
+
               <div className="w-full rounded-xl p-12 shadow-2xl shadow-blue-200 md:w-8/12 lg:w-8/12 bg-white">
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-                  {/* <div className="grid-cols-1 lg:col-span-3">
-                    <div className="mx-auto flex h-[90px] w-[90px] items-center justify-center rounded-full bg-blue-100 p-4">
-                      <svg
-                        id="logo-39"
-                        width="50"
-                        height="40"
-                        viewBox="0 0 50 40"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M25.0001 0L50 15.0098V24.9863L25.0001 40L0 24.9863V15.0099L25.0001 0Z"
-                          fill="#A5B4FC"
-                          className="ccompli2"
-                        ></path>
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M0 15.0098L25 0L50 15.0098V24.9863L25 40L0 24.9863V15.0098ZM25 33.631L44.6967 21.8022V18.1951L44.6957 18.1945L25 30.0197L5.30426 18.1945L5.3033 18.1951V21.8022L25 33.631ZM25 24.5046L40.1018 15.4376L36.4229 13.2298L25 20.0881L13.5771 13.2298L9.89822 15.4376L25 24.5046ZM25 14.573L31.829 10.4729L25 6.37467L18.171 10.4729L25 14.573Z"
-                          fill="#4F46E5"
-                          className="ccustom"
-                        ></path>
-                        <path
-                          d="M25.0001 0L0 15.0099V24.9863L25 40L25.0001 0Z"
-                          fill="#A5B4FC"
-                          className="ccompli2"
-                          fill-opacity="0.3"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div> */}
+                 
 
                   <div className="col-span-1 lg:col-span-9">
                     <div className="text-center lg:text-left">
                       <h2 className="text-2xl font-bold text-zinc-700">{transport.name}</h2>
-                      {/* <p className="mt-2 text-l font-semibold text-zinc-700">{transport.number}</p> */}
-                      {/* <p className="mt-4 text-zinc-500">I am a Front End Developer and UI/UX Designer</p> */}
+                      
                     </div>
 
-                    {/* <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
-                      <div>
-                        <p className="font-bold text-zinc-700">Transport Id</p>
-                      </div>
-
-                      <div>
-                        <p className="text-m font-semibold text-zinc-700">{transport._id}</p>
-                      </div>
-                    </div> */}
-
-
-                    {/* <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
-                <div>
-                  <p className="font-bold text-zinc-700">Name</p>
-                </div>
-
-                <div>
-                  <p className="text-m font-semibold text-zinc-700">Name</p>
-                </div>
-              </div> */}
+                   
 
 
                     <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
@@ -169,19 +192,10 @@ const Transports = () => {
                       <div>
                       <img src={`${process.env.REACT_APP_SERVER_URL}/${transport.photo}`} alt="photos"  />
 
-                        {/* <p className="text-m font-semibold text-zinc-700">{transport.photo}</p> */}
                       </div>
                     </div>
 
-                    {/* <div className="mt-6 grid grid-cols-2 gap-6 text-center lg:text-left">
-                      <div>
-                        <p className="font-bold text-zinc-700">Description</p>
-                      </div>
-
-                      <div>
-                        <p className="text-m font-semibold text-zinc-700">{transport.description}</p>
-                      </div>
-                    </div> */}
+                  
 
 
 
@@ -193,32 +207,30 @@ const Transports = () => {
 
 
                     <div className="mt-6 grid grid-cols-2 gap-4">
-                      {/* <Link to={`/bookingForm`}> */}
                       <button className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
                         onClick={() => handleBookingClick(transport._id, transport.name)}
                       >
                         Book Now
                       </button>
-                      {/* </Link> */}
-                      {/* <button className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white">
-                  View Profile
-                </button> */}
+                     
                     </div>
 
 
                   </div>
+
                 </div>
+
               </div>
-            </div>
-          </div>
-        ))
-      ) : (
-        <h2 className="text-2xl font-bold text-zinc-700  text-center mt-10">No transports found.</h2>
-
+            </div> */}
+              </div>
+            ))
+          ) : (
+            <h2 className="text-2xl font-bold text-zinc-700  text-center mt-10">
+              No transports found.
+            </h2>
+          )}
+        </div>
       )}
-
-      </div>
-}
     </>
   );
 };

@@ -253,61 +253,12 @@ const TransportsEdit = () => {
   <p>Photo : {existingPhotoName || existingPhoto.split('\\').pop()}</p>
 )}
 
-{/* {transportData.photo && (
-  <p>Updated Photo Size: {(transportData.photo.size / 1024).toFixed(2)} KB</p>
-)} */}
-
-
-
-
-{/* { existingPhoto && ( 
-    <p>Existing Photo: {existingPhoto.name}</p>
-  )} */}
 
 </div>
 
               </div>
 
-              {/*   
-            <div className="flex flex-wrap -mx-3 mb-6">
-  
-  
-              <div className="w-full md:w-2/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                  htmlFor="grid-description"
-                >
-                  Description
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-description"
-                  type="text"
-                  value={transportData.description}
-                  name="description"
-                  onChange={handleInputs}
-                  placeholder="Description"
-                /> */}
-              {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
-              {/* </div> */}
-              {/* <div className="w-full md:w-1/2 px-3">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="grid-end-time"
-                >
-                  End Time
-                </label>
-                <input
-                  value={transportData.capacity}
-                  name="endTime"
-                  onChange={handleInputs}
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-end-time"
-                  type="time"
-                  placeholder="End Time"
-                />
-              </div> */}
-              {/* </div> */}
+           
 
               <div className="my-4">
                 <p className="text-s text-red-600	 font-bold">{authStatus}</p>

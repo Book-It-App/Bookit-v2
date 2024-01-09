@@ -11,7 +11,7 @@ const TransportFrom = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
   // const { transportId, transportName } = useParams();
-
+  const [existingPhoto, setExistingPhoto] = useState('');
   const [transportData, setTransportData] = useState({
     name:"",number:"",capacity:"",photo:null
   });
@@ -131,6 +131,7 @@ const TransportFrom = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setTransportData({ ...transportData, photo: file });
+    setExistingPhoto(URL.createObjectURL(file));
     console.log(transportData)
   };
 
@@ -255,7 +256,7 @@ const TransportFrom = () => {
                 />
               </div>
   
-  
+{/*   
               <div className="w-full md:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -274,7 +275,46 @@ const TransportFrom = () => {
                   placeholder="photo"
   
                 />
-              </div>
+              </div> */}
+
+
+
+
+              <div className="w-full md:w-1/2 px-3">
+  <label
+    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+    htmlFor="grid-photo"
+  >
+    Photo of Vehicle
+  </label>
+  {/* Display the existing image if available */}
+  {existingPhoto && (
+    <img src={existingPhoto} alt="Existing" />
+  )}
+  <div className="relative">
+    <label
+      htmlFor="grid-photo"
+      className="cursor-pointer bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 block w-full font-bold  text-center"
+    >
+      Choose image of vehicle
+    </label>
+    <input
+      name="photo"
+      accept="image/*"
+      onChange={handleFileChange}
+      className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+      id="grid-photo"
+      type="file"
+    />
+  </div>
+  {existingPhoto && (
+  <p>Selected Photo : {transportData.photo.name || existingPhoto.split('\\').pop()}</p>
+)}
+
+
+</div>
+
+
             </div>
   
   
