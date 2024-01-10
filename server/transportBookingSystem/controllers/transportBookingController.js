@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const generateBookingEmailTemplate = (eventName, bookedTransportName, organizingClub, institution, department, bookingId) => {
+const generateBookingEmailTemplate = (eventName,eventDate,selfOrGuest,noOfPerson,eventDateType,eventStartDate,eventEndDate, bookedTransportName,bookedTransportNumber, organizingClub, institution, department, bookingId) => {
   return `
 
 
@@ -76,12 +76,15 @@ const generateBookingEmailTemplate = (eventName, bookedTransportName, organizing
                 
                 <div style="flex: 1; margin-right: 20px;">
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">TRANSPORT NAME	 :</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">TRANSPORT NO.	 :</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NAME	 :</h1>
+                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NO.	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
-                 <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DATE :</h1>
+                       ${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`}
+
+                
+
                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">SELF / GUEST :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">NO. OF PERSON :</h1>
                 </div>
@@ -93,7 +96,9 @@ const generateBookingEmailTemplate = (eventName, bookedTransportName, organizing
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
-               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>
+${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`}
+             
+
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${selfOrGuest}</h1>
                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${noOfPerson}</h1>
                   
@@ -259,7 +264,7 @@ const createTransportBooking = async (req, res, next) => {
       endTime,
       email,
       bookedTransportId: transport._id,
-
+      bookedTransport:transport,
       bookedTransportName,
       selfOrGuest,
       noOfPerson,
@@ -278,13 +283,13 @@ const createTransportBooking = async (req, res, next) => {
     // booking.bookedTransportId = transport;
     // await booking.populate(bookedTransportId);
     await booking.save();
-    // console.log(booking);
+    console.log(booking);
 
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: transport.transportCreater, // Use the transport creator's email here
       subject: 'New Booking Request',
-      html:   generateBookingEmailTemplate(eventName, bookedTransportName, organizingClub, institution, department, booking._id),
+      html:   generateBookingEmailTemplate(eventName,eventDate,selfOrGuest,noOfPerson,eventDateType,eventStartDate,eventEndDate, bookedTransportName,transport.number, organizingClub, institution, department, booking._id),
       
     };
 

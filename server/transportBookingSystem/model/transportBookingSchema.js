@@ -89,12 +89,12 @@ mobNoOfDriver:{
       ref: 'Transport',
       required: true
     },
-    // bookedTransport: {
-    //   // type: mongoose.Schema.Types.Subdocument,
+    bookedTransport: {
+      // type: mongoose.Schema.Types.Subdocument,
 
-    //   type: Object,
-    //   required: true,
-    // },
+      type: Object,
+      required: true,
+    },
 
     bookedTransportName: {
       type: String,

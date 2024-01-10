@@ -22,7 +22,7 @@ const FacultyDashboard = () => {
           <Transports />
         </div>
         <div >
-          <Events />
+          {/* <Events /> */}
         </div>
       </div>
     </div>
