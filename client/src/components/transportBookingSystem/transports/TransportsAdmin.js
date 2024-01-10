@@ -103,7 +103,7 @@ const TransportsAdmin = () => {
         // console.log("Message not send");
       } else {
         getTransportsData();
-        toast.success("Transport Deleted Successfull!")
+        toast.success("Vehicle Deleted Successfull!")
         // alert("Message send");
         setShowModal(false);
         setSelectedTransportId("");
@@ -161,15 +161,15 @@ const TransportsAdmin = () => {
    <div className="py-5 md:py-0 flex container mx-auto px-6 justify-between  items-center">
    <div className="mx-auto ">
     <h1 className="text-xl  sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-center text-gray-800 font-black leading-7 ml-3 md:leading-10">
-   Available <span className="text-indigo-700"> Transports</span>  </h1>
+   Available <span className="text-indigo-700"> Vehicles</span>  </h1>
 
    </div>
    <Link to="/transport-booking-system/transportForm">
-            <button className="flex self-end focus:outline-none lg:text-lg lg:font-bold focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700  md:block bg-transparent transition duration-150 ease-in-out hover:bg-gray-200 rounded border border-indigo-700 text-indigo-700  sm:px-8 py-1 sm:py-3 text-sm">
-              Create Transport</button>
+            <button className="flex self-end bg-indigo-700 lg:text-lg lg:font-bold   md:block  hover:bg-indigo-500 rounded border border-indigo-700 text-white  sm:px-8 py-1 sm:py-3 text-sm">
+              Create Vehicle</button>
           </Link>
    </div>
-
+   <div className="grid  grid-cols-1   md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
       {Array.isArray(transportData) && transportData.length > 0 ? (
         transportData.map((transport) => (
           <div key={transport._id} className="my-2 ">
@@ -177,7 +177,7 @@ const TransportsAdmin = () => {
 <div className="flex w-full items-center justify-center ">
                   <div class="max-w-sm  overflow-hidden  rounded-xl  shadow-2xl shadow-blue-300">
                     <img
-                      class="w-full"
+                       class="w-full h-80"
                       src={`${process.env.REACT_APP_SERVER_URL}/${transport.photo}`}
                       alt="Sunset in the mountains"
                     />
@@ -208,26 +208,26 @@ const TransportsAdmin = () => {
                       </div>
                     </div>
                     <div className="my-6  grid grid-cols-3 mx-auto">
-                    <button className="w-4/5 mx-auto rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
+                    <button className="rounded-xl w-4/5 px-3 py-2 mx-auto  bg-indigo-700 hover:bg-indigo-600 focus:shadow-outline focus:outline-none text-white font-bold"
                         onClick={() => handleBookingClick(transport._id, transport.name)}
                       >
-                        Book Now
+                        Book Vehicle
                       </button>
                     {userData.email === process.env.REACT_APP_MASTER_ADMIN_EMAIL || userData.email === transport.transportCreater  ? 
                    <>
-                      <button className="w-4/5 mx-auto rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
+                      <button className="rounded-xl w-4/5 px-3 py-2 mx-auto  bg-blue-700 hover:bg-blue-600 focus:shadow-outline focus:outline-none text-white font-bold"
                         onClick={() => handleEditClick(transport._id, transport.name)}
                       >
-                        Edit Transport
+                        Edit Vehicle
                       </button>
 
-                      <button className="w-4/5 mx-auto rounded-xl border-2 border-red-500 bg-white px-3 py-2 font-semibold text-red-500 hover:bg-red-500 hover:text-white"
+                      <button className="rounded-xl w-4/5 px-3 py-2 mx-auto  bg-red-700 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold"
                        
                         onClick={() =>
                           handleDeleteModal(transport._id, transport.name)
                         }
                         >
-                        Delete Transport
+                        Delete Vehicle
                       </button>
                         </>
 
@@ -307,7 +307,7 @@ const TransportsAdmin = () => {
                       <button className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
                         onClick={() => handleEditClick(transport._id, transport.name)}
                       >
-                        Edit Transport
+                        Edit Vehicle
                       </button>
 
                       <button className="w-full rounded-xl border-2 border-red-500 bg-white px-3 py-2 font-semibold text-red-500 hover:bg-red-500 hover:text-white"
@@ -316,7 +316,7 @@ const TransportsAdmin = () => {
                           handleDeleteModal(transport._id, transport.name)
                         }
                         >
-                        Delete Transport
+                        Delete Vehicle
                       </button>
                         </>
 
@@ -341,6 +341,7 @@ const TransportsAdmin = () => {
 
       )}
 
+      </div>
       </div>
 }
 

@@ -92,7 +92,7 @@ const TransportsEdit = () => {
         toast.error("Request not send!");
         // console.log("Message not send");
       } else {
-        toast.success("Transport Updated Successfull!");
+        toast.success("Vehicle Updated Successfull!");
         // alert("Message send");
         navigate("/transport-booking-system/transports");
         // setBookingData({ ...bookingData });

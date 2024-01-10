@@ -17,14 +17,14 @@ const FacultyDashboard = () => {
 
 
 
-      <div className='mt-6 grid grid-flow-col col-auto	'>
+      {/* <div className='mt-6 grid grid-flow-col col-auto	'> */}
         <div >
           <Transports />
         </div>
-        <div >
-          {/* <Events /> */}
-        </div>
-      </div>
+        {/* <div >
+          <Events /> 
+        </div> */}
+      {/* </div> */}
     </div>
     </>
   )

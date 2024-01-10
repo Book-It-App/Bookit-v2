@@ -253,10 +253,10 @@ dropLocation,
           <div className="max-w-screen-md mx-auto p-5 my-10 bg-white shadow-2xl shadow-blue-200">
             <div className="text-center mb-16">
               <p className="mt-4 text-sm leading-7 text-gray-500 font-regular uppercase">
-                Book Transport
+                Book Vehicle
               </p>
               <h3 className="text-3xl sm:text-4xl leading-normal font-extrabold tracking-tight text-gray-900">
-                Book Your <span className="text-indigo-600">Transport </span>Now
+                Book Your <span className="text-indigo-600">Vehicle </span>Now
               </h3>
             </div>
 
@@ -470,7 +470,7 @@ dropLocation,
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                     htmlFor="grid-transport-name">
-                    Transport Name
+                    Vehicle Name
                   </label>
                   <input
                     className="appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -479,7 +479,7 @@ dropLocation,
                     value={bookingData.bookedTransportName}
                     name="bookedTransportName"
                     onChange={handleInputs}
-                    placeholder="Transport Name"
+                    placeholder="Vehicle Name"
                     disabled
                   />
                 </div>
@@ -851,7 +851,7 @@ dropLocation,
                   <button
                     // onClick={handleConfirmModal}
                     onClick={bookingForm}
-                    className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+                    className="shadow bg-indigo-700 hover:bg-indigo-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
                     type="submit">
                     Send Request
                   </button>

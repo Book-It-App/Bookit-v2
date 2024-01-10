@@ -166,7 +166,7 @@ const HallsAdmin = () => {
 
    </div>
    <Link to="/hall-booking-system/hallForm">
-            <button className="flex self-end focus:outline-none lg:text-lg lg:font-bold focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700  md:block bg-transparent transition duration-150 ease-in-out hover:bg-gray-200 rounded border border-indigo-700 text-indigo-700  sm:px-8 py-1 sm:py-3 text-sm">
+            <button className="flex self-end bg-indigo-700 lg:text-lg lg:font-bold   md:block  hover:bg-indigo-500 rounded border border-indigo-700 text-white  sm:px-8 py-1 sm:py-3 text-sm">
               Create Hall</button>
           </Link>
    </div>
@@ -292,20 +292,20 @@ const HallsAdmin = () => {
 
                     <div className="mt-6 grid grid-cols-3 gap-4">
                       {/* <Link to={`/bookingForm`}> */}
-                      <button className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
+                      <button className="w-full rounded-xl px-3 py-2  bg-indigo-700 hover:bg-indigo-600 focus:shadow-outline focus:outline-none text-white font-bold"
                         onClick={() => handleBookingClick(hall._id, hall.name)}
                       >
                         Book Now
                       </button>
                 {userData.email === process.env.REACT_APP_MASTER_ADMIN_EMAIL || userData.email === hall.hallCreater  ? 
                 <>
-                      <button className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
+                      <button className="w-full rounded-xl px-3 py-2  bg-blue-700 hover:bg-blue-600 focus:shadow-outline focus:outline-none text-white font-bold"
                         onClick={() => handleEditClick(hall._id, hall.name)}
                       >
                         Edit Hall
                       </button>
 
-                      <button className="w-full rounded-xl border-2 border-red-500 bg-white px-3 py-2 font-semibold text-red-500 hover:bg-red-500 hover:text-white"
+                      <button className="w-full rounded-xl px-3 py-2  bg-red-700 hover:bg-red-600 focus:shadow-outline focus:outline-none text-white font-bold"
                         // onClick={() => handleDeleteClick(hall._id, hall.name)}
                         // onClick={() => setShowModal(true)} 
                         onClick={() =>

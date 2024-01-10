@@ -91,7 +91,12 @@ console.log(state)
               <Route path="*" element={<TransportBookingRoutes userState={state} />} />
         </Route>
         {/* <Route path="/transport-booking-system/*" element={<TransportBookingRoutes userState={state}/>} /> */}
-        <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} />
+        {/* <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} /> */}
+        <Route path="/canteen-booking-system" element={<CanteenBookingRoutes userState={state} />}>
+              <Route path="*" element={<CanteenBookingRoutes userState={state} />} />
+        </Route>
+
+
           <Route path="/profile" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<Signup />} />

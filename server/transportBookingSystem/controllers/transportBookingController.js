@@ -13,7 +13,21 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const generateBookingEmailTemplate = (eventName,eventDate,selfOrGuest,noOfPerson,eventDateType,eventStartDate,eventEndDate, bookedTransportName,bookedTransportNumber, organizingClub, institution, department, bookingId) => {
+const generateBookingEmailTemplate = (
+  eventName,
+  eventDate,
+  selfOrGuest,
+  noOfPerson,
+  eventDateType,
+  eventStartDate,
+  eventEndDate,
+  bookedTransportName,
+  bookedTransportNumber,
+  organizingClub,
+  institution,
+  department,
+  bookingId
+) => {
   return `
 
 
@@ -81,7 +95,11 @@ const generateBookingEmailTemplate = (eventName,eventDate,selfOrGuest,noOfPerson
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
-                       ${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`}
+                       ${
+                         eventDateType === "full" || eventDateType === "half"
+                           ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>`
+                           : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`
+                       }
 
                 
 
@@ -96,7 +114,11 @@ const generateBookingEmailTemplate = (eventName,eventDate,selfOrGuest,noOfPerson
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
-${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`}
+${
+  eventDateType === "full" || eventDateType === "half"
+    ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>`
+    : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`
+}
              
 
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${selfOrGuest}</h1>
@@ -105,7 +127,9 @@ ${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 
                 </div>
               </div>
               
-              <a href="${process.env.CLIENT_URL}/bookingsView/${bookingId}" style="background-color: #4f46e5; color: #fff; padding: 8px 24px; border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
+              <a href="${
+                process.env.CLIENT_URL
+              }/bookingsView/${bookingId}" style="background-color: #4f46e5; color: #fff; padding: 8px 24px; border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
             </td>
           </tr>
         </table>
@@ -179,25 +203,20 @@ const createTransportBooking = async (req, res, next) => {
         .json({ error: "Event end date should be after event start date" });
     }
 
-
-     // Validate start and end time
+    // Validate start and end time
     //  const startDateTime = new Date(`2000-01-01T${startTime}:00Z`);
     //  const endDateTime = new Date(`2000-01-01T${endTime}:00Z`);
 
-     const startDateTime = new Date(startTime);
-     const endDateTime = new Date(endTime);
+    //  const startDateTime = new Date(startTime);
+    //  const endDateTime = new Date(endTime);
 
+    //  // Check if end time is after start time
+    //  if (endDateTime <= startDateTime) {
+    //    return res
+    //      .status(422)
+    //      .json({ error: "End time should be after start time" });
+    //  }
 
-     // Check if end time is after start time
-     if (endDateTime <= startDateTime) {
-       return res
-         .status(422)
-         .json({ error: "End time should be after start time" });
-     }
-     
-     
-
-    
     if (
       !eventManager ||
       !phoneNumber ||
@@ -220,11 +239,9 @@ const createTransportBooking = async (req, res, next) => {
       if (!naneOfGuest || !mobNoOfGuest) {
         return res.status(422).json({ error: "Please fill all details" });
       } else if (mobNoOfGuest.length !== 10) {
-        return res
-          .status(422)
-          .json({
-            error: "Please enter a valid 10-digit phone number of Guest",
-          });
+        return res.status(422).json({
+          error: "Please enter a valid 10-digit phone number of Guest",
+        });
       }
     }
     // Regular expression to validate full name with at least two words separated by a space
@@ -249,7 +266,6 @@ const createTransportBooking = async (req, res, next) => {
     //   return res.status(422).json({ error: "Please enter a valid 10-digit alternate number" });
     // }
 
-   
     const booking = new TransportBooking({
       userId: user._id,
       institution,
@@ -264,7 +280,7 @@ const createTransportBooking = async (req, res, next) => {
       endTime,
       email,
       bookedTransportId: transport._id,
-      bookedTransport:transport,
+      bookedTransport: transport,
       bookedTransportName,
       selfOrGuest,
       noOfPerson,
@@ -288,9 +304,22 @@ const createTransportBooking = async (req, res, next) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: transport.transportCreater, // Use the transport creator's email here
-      subject: 'New Booking Request',
-      html:   generateBookingEmailTemplate(eventName,eventDate,selfOrGuest,noOfPerson,eventDateType,eventStartDate,eventEndDate, bookedTransportName,transport.number, organizingClub, institution, department, booking._id),
-      
+      subject: "New Booking Request",
+      html: generateBookingEmailTemplate(
+        eventName,
+        eventDate,
+        selfOrGuest,
+        noOfPerson,
+        eventDateType,
+        eventStartDate,
+        eventEndDate,
+        bookedTransportName,
+        transport.number,
+        organizingClub,
+        institution,
+        department,
+        booking._id
+      ),
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -389,7 +418,7 @@ const getTransportBookingAdmin = async (req, res, next) => {
       $or: [
         { email: adminEmail },
         // Add other conditions as needed
-        { "bookedTransportId.transportCreater": adminEmail },
+        { "bookedTransport.transportCreater": adminEmail },
       ],
     })
       .populate("bookedTransportId")
@@ -421,11 +450,6 @@ const updateTransportBooking = async (req, res, next) => {
 
     const {
       eventManager,
-      
-      
-      
-
-
 
       eventName,
       eventDateType,
@@ -455,7 +479,6 @@ const updateTransportBooking = async (req, res, next) => {
     //   return res.status(404).json({ message: 'Transport not found' });
     // }
 
-
     // if(isApproved === "Approved By Admin"){
     //   if(!nameOfDriver || !mobNoOfDriver){
     //     return res.status(422).json({ error: "Please fill all details" });
@@ -463,11 +486,7 @@ const updateTransportBooking = async (req, res, next) => {
     //     return res.status(422).json({ error: "Please enter a valid 10-digit phone number of Driver" });
     //   }
     // }
-    
 
-
-
-    
     const booking = await TransportBooking.findByIdAndUpdate(
       bookingId,
       {
@@ -528,10 +547,25 @@ const sendApprovalEmail = async (booking, bookingId) => {
         booking.nameOfDriver,
         booking.mobNoOfDriver,
         booking.bookedTransportName,
-        booking.bookedTransportId.number,
-        booking.bookedTransportId.capacity,
-        booking.bookedTransportId.photo,
-        bookingId
+        booking.bookedTransport.number,
+        booking.bookedTransport.capacity,
+        booking.bookedTransport.photo,
+        booking.eventName,
+        booking.eventDate,
+        booking.selfOrGuest,
+        booking.noOfPerson,
+        booking.eventDateType,
+        booking.eventStartDate,
+        booking.eventEndDate,
+        booking.organizingClub,
+        booking.institution,
+        booking.department,
+        bookingId,
+
+
+
+
+       
       ),
     };
 
@@ -678,126 +712,198 @@ const sendApprovalEmailTemplate = (
   bookedTransportNumber,
   bookedTransportCapacity,
   bookedTransportPhoto,
-  bookingId
-) => {
+  eventName,
+  eventDate,
+  selfOrGuest,
+  noOfPerson,
+  eventDateType,
+  eventStartDate,
+  eventEndDate,
+  organizingClub,
+  institution,
+  department,
+  bookingId,
+ 
+  ) => {
   return `
     
 
-     
-      <head>
-      <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
-      <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-      <style>
-        a,
-        a:link,
-        a:visited {
-          text-decoration: none;
-          color: #00788a;
-        }
-      
-        a:hover {
-          text-decoration: underline;
-        }
-      
-        h2,
-        h2 a,
-        h2 a:visited,
-        h3,
-        h3 a,
-        h3 a:visited,
-        h4,
-        h5,
-        h6,
-        .t_cht {
-          color: #000 !important;
-        }
-      
-        .ExternalClass p,
-        .ExternalClass span,
-        .ExternalClass font,
-        .ExternalClass td {
-          line-height: 100%;
-        }
-      
-        .ExternalClass {
-          width: 100%;
-        }
-      </style>
-      </head>
-      
-      <body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
-      <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    a,
+    a:link,
+    a:visited {
+      text-decoration: none;
+      color: #00788a;
+    }
   
-        <tbody>
-        <tr>
-          <td style="padding: 50px; background-color: #fff; max-width: 660px">
-            <table width="100%" style="">
-              <tr>
-                <td style="text-align:center">
-                 
-                  <h1 style="font-size: 30px; color: #16a34a; margin-top: 0;">Booking Request Approved</h1>
-                  
-                  <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
-                  <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
-                   <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Driver Details</h1>
-                  
-                  <div style="text-align: justify; margin:20px; display: flex;">
-                    
-                    <div style="flex: 1; margin-right: 20px;">
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Driver Name	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Mobile No.	 :</h1>
-                     
-                    
-<!--                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1> -->
-<!--                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
-                           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1> -->
-                     
-                    </div>
-                    <div style="flex: 1;">
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${nameOfDriver}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${mobNoOfDriver}</h1>
-<!-
+    a:hover {
+      text-decoration: underline;
+    }
+  
+    h2,
+    h2 a,
+    h2 a:visited,
+    h3,
+    h3 a,
+    h3 a:visited,
+    h4,
+    h5,
+    h6,
+    .t_cht {
+      color: #000 !important;
+    }
+  
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td {
+      line-height: 100%;
+    }
+  
+    .ExternalClass {
+      width: 100%;
+    }
+  </style>
+  </head>
+  
+  <body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
+  <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
+
+    <tbody>
+    <tr>
+      <td style="padding: 50px; background-color: #fff; max-width: 660px">
+        <table width="100%" style="">
+          <tr>
+            <td style="text-align:center">
+             
+              <h1 style="font-size: 30px; color: #16a34a; margin-top: 0;">Booking Request Approved</h1>
+              
+              <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
+              <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
+               <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Driver Details</h1>
+              
+              <div style="text-align: justify; margin:20px; display: flex;">
                 
-                  </div>
-                  </div>
-                  <hr>
-                    <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details </h1>
-                  <div style="margin-top: 2rem;">
+                <div style="flex: 1; margin-right: 20px;">
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Driver Name	 :</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Mobile No.	 :</h1>
+                 
+
+                 
+                </div>
+                <div style="flex: 1;">
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${nameOfDriver}</h1>
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${mobNoOfDriver}</h1>
+
+            
+              </div>
+              </div>
+              
+              
+              
+              
+              <hr>
+              
+              
+              
+              
+                <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details </h1>
+              <div style="margin-top: 2rem;">
+
+<div style="display: flex; width: 100%; justify-content: center; margin: 2rem auto;">
+
+<div style="max-width: 20rem; overflow: hidden; border-radius: 0.75rem; box-shadow: 0 0 2rem rgba(0, 0, 255, 0.3);">
+  
+  <img style="width: 100%;" src="${
+    process.env.REACT_APP_SERVER_URL
+  }/${bookedTransportPhoto}" alt="Vehicle Photo" />
  
-  <div style="display: flex; width: 100%; justify-content: center; margin: 2rem auto;">
-    <!-- Container for transport information -->
-    <div style="max-width: 20rem; overflow: hidden; border-radius: 0.75rem; box-shadow: 0 0 2rem rgba(0, 0, 255, 0.3);">
-      <!-- Image section -->
-      <img style="width: 100%;" src="${process.env.REACT_APP_SERVER_URL}/uploads/vehicle/${bookedTransportPhoto}" alt="Vehicle Photo" />
-      <!-- Content section -->
-      <div style="padding: 1.5rem;">
-        <!-- Transport name -->
-        <div style="font-weight: bold; font-size: 1.5rem; margin-bottom: 1rem;">${bookedTransportName}</div>
-        <!-- Number and Capacity information -->
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
-          <div style="font-weight: bold;">Number</div>
-          <div style="font-size: 1rem; font-weight: bold;">${bookedTransportNumber}</div>
-        </div>
-        <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
-          <div style="font-weight: bold;">Capacity</div>
-          <div style="font-size: 1rem; font-weight: bold;">${bookedTransportCapacity} + 1</div>
-        </div>
-      </div>
-      <!-- Button section -->
+  <div style="padding: 1.5rem;">
     
-  </div>
+    <div style="font-weight: bold; font-size: 1.5rem; margin-bottom: 1rem;">${bookedTransportName}</div>
+    
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
+      <div style="font-weight: bold;">Number</div>
+      <div style="font-size: 1rem; font-weight: bold;">${bookedTransportNumber}</div>
     </div>
-                  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-  
-      </table>
-      </body>
-  
+    <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
+      <div style="font-weight: bold;">Capacity</div>
+      <div style="font-size: 1rem; font-weight: bold;">${bookedTransportCapacity} + 1</div>
+    </div>
+  </div>
+ 
+
+</div>
+
+
+</div>
+                
+                
+                 <hr>
+                 <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
+              
+              <div style="text-align: justify; margin:20px; display: flex;">
+                
+               
+                 <div style="flex: 1; margin-right: 20px;">
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NAME	 :</h1>
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NO.	 :</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	:</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
+                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
+                   ${
+                     eventDateType === "full" || eventDateType === "half"
+                       ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>`
+                       : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`
+                   }
+
+            
+
+               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">SELF / GUEST :</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">NO. OF PERSON :</h1>
+                 
+                </div>
+                <div style="flex: 1;">
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
+           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportNumber}</h1>
+                 
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
+                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
+${
+  eventDateType === "full" || eventDateType === "half"
+    ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>`
+    : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> 
+    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`
+}
+         
+
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${selfOrGuest}</h1>
+               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${noOfPerson}</h1>
+              </div>
+              </div>
+              
+              
+              
+              
+             
+              <a href="${
+                process.env.CLIENT_URL
+              }/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+
+  </table>
+  </body>
   
   
       `;

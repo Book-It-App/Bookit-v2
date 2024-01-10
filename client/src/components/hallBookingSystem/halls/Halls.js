@@ -192,7 +192,7 @@ const Halls = () => {
 
                     <div className="mt-6 grid grid-cols-2 gap-4">
                       {/* <Link to={`/bookingForm`}> */}
-                      <button className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white"
+                      <button className="w-full rounded-xl border-2  px-3 py-2  bg-indigo-700 hover:bg-indigo-600 focus:shadow-outline focus:outline-none text-white font-bold"
                         onClick={() => handleBookingClick(hall._id, hall.name)}
                       >
                         Book Now
