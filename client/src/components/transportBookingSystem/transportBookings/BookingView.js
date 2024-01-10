@@ -26,7 +26,8 @@ const BookingsView = () => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
-  const [driverDetails, setDriverDetails] = useState({});
+  const [driverDetails, setDriverDetails] = useState({  nameOfDriver:"",
+  mobNoOfDriver:""});
   const { state } = useContext(UserContext);
 
   //consolelog(state.userType);
@@ -122,9 +123,19 @@ const BookingsView = () => {
         setRejectionReason(null);
       }
     }
-    setIsLoading(true);
     const { nameOfDriver, mobNoOfDriver } = driverDetails;
+
+    if (isApproved === "Approved By Admin") {
+      if ((nameOfDriver.trim() === "") && (mobNoOfDriver.trim() === "")) {
+        toast.error("Please fill all details.");
+        return;
+      } else if (mobNoOfDriver.length !== 10) {  
+        toast.error("Please enter a valid mobile number.");
+        return;
+      }
+    }
     //consolelog(isApproved);
+    setIsLoading(true);
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${bookingId}`,
@@ -153,6 +164,16 @@ const BookingsView = () => {
         throw new Error(response.error);
       }
     } catch (error) {
+      if(error.response.status === 422){
+        const data = error.response.data;
+           // Handle validation errors
+           // You can set specific error messages for different fields if needed
+           if (data && data.error) {
+             const errorMessage = data.error;
+             setIsLoading(false);
+             toast.error(errorMessage);
+           }
+           }
       //consolelog(error);
     }
   };
@@ -741,6 +762,7 @@ const BookingsView = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-name-of-driver"
                   type="text"
+                  
                   value={driverDetails.nameOfDriver}
                   name="nameOfDriver"
                   onChange={handleDriverDetails}
@@ -757,6 +779,7 @@ const BookingsView = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-mob-no-of-driver"
                   type="number"
+                  
                   value={driverDetails.mobNoOfDriver}
                   name="mobNoOfDriver"
                   onChange={handleDriverDetails}

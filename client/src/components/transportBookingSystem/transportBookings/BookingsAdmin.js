@@ -19,7 +19,8 @@ const BookingsAdmin = () => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
   const [selectedBookingId, setSelectedBookingId] = useState("");
-  const [driverDetails, setDriverDetails] = useState({});
+  const [driverDetails, setDriverDetails] = useState({nameOfDriver:"",
+  mobNoOfDriver:""});
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const openRejectionModal = (bookingId) => {
     setShowRejectionModal(true);
@@ -181,8 +182,23 @@ const BookingsAdmin = () => {
         setRejectionReason(null);
       }
     }
-    setIsLoading(true);
     const { nameOfDriver, mobNoOfDriver } = driverDetails;
+
+    if (isApproved === "Approved By Admin") {
+      if ((nameOfDriver.trim() === "") && (mobNoOfDriver.trim() === "")) {
+        toast.error("Please fill all details.");
+        return;
+      } else if (mobNoOfDriver.length !== 10) {  
+        toast.error("Please enter a valid mobile number.");
+        return;
+      }
+    }
+    //consolelog(isApproved);
+    setIsLoading(true);
+
+
+
+    
     //consolelog(isApproved);
     try {
       const response = await axios.put(
@@ -212,6 +228,16 @@ const BookingsAdmin = () => {
         throw new Error(response.error);
       }
     } catch (error) {
+      if(error.response.status === 422){
+       const data = error.response.data;
+          // Handle validation errors
+          // You can set specific error messages for different fields if needed
+          if (data && data.error) {
+            const errorMessage = data.error;
+            setIsLoading(false);
+            toast.error(errorMessage);
+          }
+          }
       //consolelog(error);
     }
   };

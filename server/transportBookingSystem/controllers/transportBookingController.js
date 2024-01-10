@@ -1,22 +1,19 @@
-const TransportBooking = require('../model/transportBookingSchema');
-const Transport = require('../model/transportSchema');
-const User = require('../../authService/model/userSchema');
+const TransportBooking = require("../model/transportBookingSchema");
+const Transport = require("../model/transportSchema");
+const User = require("../../authService/model/userSchema");
 const nodemailer = require("nodemailer");
+const e = require("express");
 
+// transporter for sending email
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.SENDER_EMAIL,
+    pass: process.env.SENDER_PASSWORD,
+  },
+});
 
-
-
-
- // transporter for sending email
- const transporter = nodemailer.createTransport({
-  service:"gmail",
-  auth:{
-    user:process.env.SENDER_EMAIL,
-    pass:process.env.SENDER_PASSWORD
-  }
-})
-
-const generateBookingEmailTemplate = (eventName, bookedTransportName,bookedTransportNumber, organizingClub, institution, department, eventDate,selfOrGuest,noOfPerson,bookingId) => {
+const generateBookingEmailTemplate = (eventName, bookedTransportName, organizingClub, institution, department, bookingId) => {
   return `
 
 
@@ -118,8 +115,6 @@ const generateBookingEmailTemplate = (eventName, bookedTransportName,bookedTrans
   `;
 };
 
-
-
 const createTransportBooking = async (req, res, next) => {
   try {
     const {
@@ -139,93 +134,119 @@ const createTransportBooking = async (req, res, next) => {
       bookedTransportName,
       selfOrGuest,
       noOfPerson,
-  naneOfGuest,
-  mobNoOfGuest,
-  
-  pickupLocation,
-  dropLocation,
+      naneOfGuest,
+      mobNoOfGuest,
+
+      pickupLocation,
+      dropLocation,
       organizingClub,
       phoneNumber,
       altNumber,
-      isApproved
+      isApproved,
     } = req.body;
 
     const transport = await Transport.findById(bookedTransportId);
     if (!transport) {
-      return res.status(422).json({ error: 'Transport not found' });
+      return res.status(422).json({ error: "Transport not found" });
     }
 
-    
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(422).json({ error: 'user not found' });
+      return res.status(422).json({ error: "user not found" });
     }
 
-
-    if (eventDateType === "full") {
-      if (!eventDate ) {
+    if (eventDateType === "full" && eventDateType === "half") {
+      if (!eventDate) {
         return res.status(422).json({ error: "Please fill all details" });
       }
-    }else if(eventDateType === "half") {
-      if (!startTime || !endTime || !eventDate ) {
+    } else if (eventDateType === "multiple") {
+      if (!eventStartDate || !eventStartDate) {
         return res.status(422).json({ error: "Please fill all details" });
-      }
-    }else if(eventDateType === "multiple") {
-      if (!eventStartDate || !eventStartDate ) {
-        return res.status(422).json({ error: "Please fill all details" });
-      }else{
-
-        // Check if eventStartDate is before eventEndDate
-        const eventStartDateTime = new Date(eventStartDate);
-        const eventEndDateTime = new Date(eventEndDate);
-        
-        if (eventEndDateTime <= eventStartDateTime) {
-          return res.status(422).json({ error: 'Event end date should be after event start date' });
-        }
       }
     }
 
-    if (!eventManager || !phoneNumber  || !department || !institution
-      // || !altNumber 
-      || !eventName || !organizingClub ) {
+    const eventStartDateTime = new Date(eventStartDate);
+    const eventEndDateTime = new Date(eventEndDate);
+
+    if (eventEndDateTime <= eventStartDateTime) {
+      return res
+        .status(422)
+        .json({ error: "Event end date should be after event start date" });
+    }
+
+
+     // Validate start and end time
+    //  const startDateTime = new Date(`2000-01-01T${startTime}:00Z`);
+    //  const endDateTime = new Date(`2000-01-01T${endTime}:00Z`);
+
+     const startDateTime = new Date(startTime);
+     const endDateTime = new Date(endTime);
+
+
+     // Check if end time is after start time
+     if (endDateTime <= startDateTime) {
+       return res
+         .status(422)
+         .json({ error: "End time should be after start time" });
+     }
+     
+     
+
+    
+    if (
+      !eventManager ||
+      !phoneNumber ||
+      !department ||
+      !institution ||
+      !startTime ||
+      !endTime ||
+      !selfOrGuest ||
+      // || !altNumber
+      !eventName ||
+      !organizingClub ||
+      !pickupLocation ||
+      !dropLocation ||
+      !noOfPerson
+    ) {
       return res.status(422).json({ error: "Please fill all details" });
+    }
 
+    if (selfOrGuest === "guest") {
+      if (!naneOfGuest || !mobNoOfGuest) {
+        return res.status(422).json({ error: "Please fill all details" });
+      } else if (mobNoOfGuest.length !== 10) {
+        return res
+          .status(422)
+          .json({
+            error: "Please enter a valid 10-digit phone number of Guest",
+          });
+      }
     }
     // Regular expression to validate full name with at least two words separated by a space
 
-        const nameRegex = /^[\w'.]+\s[\w'.]+\s*[\w'.]*\s*[\w'.]*\s*[\w'.]*\s*[\w'.]*$/;
+    const nameRegex =
+      /^[\w'.]+\s[\w'.]+\s*[\w'.]*\s*[\w'.]*\s*[\w'.]*\s*[\w'.]*$/;
 
     if (!nameRegex.test(eventManager)) {
-      return res.status(422).json({ error: "Please enter your full Event Coordinator name" });
+      return res
+        .status(422)
+        .json({ error: "Please enter your full Event Coordinator name" });
     }
-
-   
-      
 
     // Phone validation
     if (phoneNumber.length !== 10) {
-      return res.status(422).json({ error: "Please enter a valid 10-digit phone number" });
+      return res
+        .status(422)
+        .json({ error: "Please enter a valid 10-digit phone number" });
     }
 
     // if (altNumber.length !== 10) {
     //   return res.status(422).json({ error: "Please enter a valid 10-digit alternate number" });
     // }
 
-   // Validate start and end time
-   const startDateTime = new Date(`2000-01-01T${startTime}:00Z`);
-   const endDateTime = new Date(`2000-01-01T${endTime}:00Z`);
    
-   // Check if end time is after start time
-   if (endDateTime <= startDateTime) {
-     return res.status(422).json({ error: 'End time should be after start time' });
-    }
-
- 
-    
-
     const booking = new TransportBooking({
-
-      userId:user._id,
+      userId: user._id,
       institution,
       department,
       eventManager,
@@ -238,112 +259,86 @@ const createTransportBooking = async (req, res, next) => {
       endTime,
       email,
       bookedTransportId: transport._id,
-      
+
       bookedTransportName,
       selfOrGuest,
       noOfPerson,
-  naneOfGuest,
-  mobNoOfGuest,
-  pickupLocation,
-  dropLocation,
+      naneOfGuest,
+      mobNoOfGuest,
+      pickupLocation,
+      dropLocation,
       organizingClub,
       // eventDetailFile,
       // eventDetailText,
       phoneNumber,
       altNumber,
-      isApproved
+      isApproved,
     });
     // await booking.validate();
     // booking.bookedTransportId = transport;
     // await booking.populate(bookedTransportId);
     await booking.save();
-
-
-
+    // console.log(booking);
 
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: transport.transportCreater, // Use the transport creator's email here
       subject: 'New Booking Request',
-      html:   generateBookingEmailTemplate(eventName, booking.bookedTransportName, booking.bookedTransportId.number, booking.organizingClub, booking.institution, booking.department,eventDate, selfOrGuest, noOfPerson, booking._id),
+      html:   generateBookingEmailTemplate(eventName, bookedTransportName, organizingClub, institution, department, booking._id),
       
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error('Error sending email:', error);
+        console.error("Error sending email:", error);
       } else {
-        console.log('Email sent:', info.response);
+        console.log("Email sent:", info.response);
       }
     });
 
-
-  
-
-
-
-    res.status(201).json({ message: 'Booking created successfully' });
+    res.status(201).json({ message: "Booking created successfully" });
   } catch (error) {
     next(error);
   }
 };
-
-
-
-
- 
-
 
 const getTransportEvents = async (req, res, next) => {
   try {
-    const bookings = await TransportBooking.find({ isApproved: "Approved By Admin" }).populate('bookedTransportId');
+    const bookings = await TransportBooking.find({
+      isApproved: "Approved By Admin",
+    }).populate("bookedTransportId");
 
-    
     res.json({ bookings });
   } catch (error) {
     next(error);
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const getTransportBookings = async (req, res, next) => {
   try {
-    const bookings = await TransportBooking.find().populate('bookedTransportId').populate('userId');
+    const bookings = await TransportBooking.find()
+      .populate("bookedTransportId")
+      .populate("userId");
 
-    
     res.json({ bookings });
   } catch (error) {
     next(error);
   }
 };
-
 
 const getTransportBookingById = async (req, res, next) => {
   // console.log("function called");
 
   try {
     const { bookingId } = req.params;
-    const booking = await TransportBooking.findById(bookingId).populate('bookedTransportId').populate('userId');
+    const booking = await TransportBooking.findById(bookingId)
+      .populate("bookedTransportId")
+      .populate("userId");
     // console.log(booking);
     if (!booking) {
-      return res.status(404).json({ error: 'Booking not found' });
+      return res.status(404).json({ error: "Booking not found" });
     }
-    
+
     res.json({ booking });
   } catch (error) {
     next(error);
@@ -353,13 +348,15 @@ const getTransportBookingById = async (req, res, next) => {
 const getTransportBookingByUserId = async (req, res, next) => {
   try {
     // const { userId } = req.params;
-    const userId = req.rootUser._id
-    const booking = await TransportBooking.find({  userId }).populate('bookedTransportId').populate('userId');
+    const userId = req.rootUser._id;
+    const booking = await TransportBooking.find({ userId })
+      .populate("bookedTransportId")
+      .populate("userId");
     // if (!mongoose.Types.ObjectId.isValid(userId)) {
     //   return res.status(400).json({ message: 'Invalid userId' });
     // }
     if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
+      return res.status(404).json({ message: "Booking not found" });
     }
     res.json({ booking });
   } catch (error) {
@@ -367,10 +364,13 @@ const getTransportBookingByUserId = async (req, res, next) => {
   }
 };
 
-
 const getTransportBookingAdmin = async (req, res, next) => {
   try {
-    let statusArray = ["Approved By HOD", "Approved By Admin", "Rejected By Admin"];
+    let statusArray = [
+      "Approved By HOD",
+      "Approved By Admin",
+      "Rejected By Admin",
+    ];
     const adminEmail = req.rootUser.email;
     const userId = req.rootUser._id;
     // console.log("admin bookng");
@@ -380,44 +380,48 @@ const getTransportBookingAdmin = async (req, res, next) => {
     }
 
     const bookings = await TransportBooking.find({
-       isApproved: { $in: statusArray },
-  $or: [
-    { email: adminEmail},
-    // Add other conditions as needed
-    {'bookedTransportId.transportCreater': adminEmail },
-  ],
-}
-    ).populate('bookedTransportId')
-      .populate('userId');
-      // console.log(bookings);
+      isApproved: { $in: statusArray },
+      $or: [
+        { email: adminEmail },
+        // Add other conditions as needed
+        { "bookedTransportId.transportCreater": adminEmail },
+      ],
+    })
+      .populate("bookedTransportId")
+      .populate("userId");
+    // console.log(bookings);
     res.json({ bookings });
   } catch (error) {
     next(error);
   }
 };
-
 
 const getTransportBookingHod = async (req, res, next) => {
-  const hodDepartment = req.rootUser.department
+  const hodDepartment = req.rootUser.department;
   // console.log(hodDepartment);
   try {
-    const bookings = await TransportBooking.find({ department: hodDepartment }).populate('bookedTransportId');
+    const bookings = await TransportBooking.find({
+      department: hodDepartment,
+    }).populate("bookedTransportId");
 
-    
     res.json({ bookings });
   } catch (error) {
     next(error);
   }
 };
-
-
-
 
 const updateTransportBooking = async (req, res, next) => {
   try {
     const { bookingId } = req.params;
 
     const {
+      eventManager,
+      
+      
+      
+
+
+
       eventName,
       eventDateType,
       eventStartDate,
@@ -427,112 +431,144 @@ const updateTransportBooking = async (req, res, next) => {
       endTime,
       selfOrGuest,
       noOfPerson,
-  naneOfGuest,
-  mobNoOfGuest,
-  nameOfDriver,
-  mobNoOfDriver,
-  pickupLocation,
-  dropLocation,
+      naneOfGuest,
+      mobNoOfGuest,
+      nameOfDriver,
+      mobNoOfDriver,
+      pickupLocation,
+      dropLocation,
       // email,
 
       // bookedTransportId,
       // transportId,
       rejectionReason,
-      isApproved
+      isApproved,
     } = req.body;
 
     // const transport = await Transport.findById(transportId);
     // if (!transport) {
     //   return res.status(404).json({ message: 'Transport not found' });
     // }
-   
 
 
+    // if(isApproved === "Approved By Admin"){
+    //   if(!nameOfDriver || !mobNoOfDriver){
+    //     return res.status(422).json({ error: "Please fill all details" });
+    //   } else if (mobNoOfDriver.length !== 10) {
+    //     return res.status(422).json({ error: "Please enter a valid 10-digit phone number of Driver" });
+    //   }
+    // }
+    
+
+
+
+    
     const booking = await TransportBooking.findByIdAndUpdate(
       bookingId,
       {
-        eventName, eventDate, startTime, endTime,eventDateType,
+        eventName,
+        eventDate,
+        startTime,
+        endTime,
+        eventDateType,
         eventStartDate,
         eventEndDate,
         selfOrGuest,
         noOfPerson,
-    naneOfGuest,
-    mobNoOfGuest,
-    nameOfDriver,
-    mobNoOfDriver,
-    pickupLocation,
-    dropLocation,
+        naneOfGuest,
+        mobNoOfGuest,
+        nameOfDriver,
+        mobNoOfDriver,
+        pickupLocation,
+        dropLocation,
         //  transportId: transport._id,email,
         isApproved,
         rejectionReason,
       },
-      { new: true },
-    ).populate('bookedTransportId');
+      { new: true }
+    ).populate("bookedTransportId");
 
     if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
+      return res.status(404).json({ message: "Booking not found" });
     }
 
-    console.log(booking)
+    console.log(booking);
 
+    // Send email based on the updated approval status
 
-        // Send email based on the updated approval status
-
-    if (isApproved === 'Approved By Admin') {
+    if (isApproved === "Approved By Admin") {
       // Send email for approval
       sendApprovalEmail(booking, bookingId);
-    } else if (isApproved === 'Rejected By Admin') {
+    } else if (isApproved === "Rejected By Admin") {
       // Send email for rejection
-      sendRejectionEmail(booking, bookingId , rejectionReason);
+      sendRejectionEmail(booking, bookingId, rejectionReason);
     }
 
-    res.json({ message: 'Booking updated successfully', booking });
+    res.json({ message: "Booking updated successfully", booking });
   } catch (error) {
     next(error);
   }
 };
 
+const sendApprovalEmail = async (booking, bookingId) => {
+  try {
+    console.log("this is send approveal email asdasdasdasddddddddddddd");
+    console.log(booking);
 
-
-    const sendApprovalEmail = async (booking, bookingId) => {
-      try {
-
-        console.log("this is send approveal email asdasdasdasddddddddddddd")
-       console.log(booking)
-    
-        const mailOptions = {
-          from: process.env.SENDER_EMAIL,
-          to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
-          subject: 'Booking Request Approved',
-          html: sendApprovalEmailTemplate( booking.nameOfDriver,booking.mobNoOfDriver,booking.bookedTransportName,booking.bookedTransportId.number,booking.bookedTransportId.capacity,booking.bookedTransportId.photo, bookingId),
-        };
-    
-        await transporter.sendMail(mailOptions);
-      } catch (error) {
-        console.log(error);
-      }
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
+      subject: "Booking Request Approved",
+      html: sendApprovalEmailTemplate(
+        booking.nameOfDriver,
+        booking.mobNoOfDriver,
+        booking.bookedTransportName,
+        booking.bookedTransportId.number,
+        booking.bookedTransportId.capacity,
+        booking.bookedTransportId.photo,
+        bookingId
+      ),
     };
 
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-    const sendRejectionEmail = async (booking,  bookingId ,rejectionReason) => {
-      try {
-       
-    
-        const mailOptions = {
-          from: process.env.SENDER_EMAIL,
-          to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
-          subject: "Booking Request Rejected",
-          html: sendRejectionEmailTemplate(booking.eventName, booking.bookedTransportName, booking.organizingClub, booking.institution, booking.department, bookingId ,rejectionReason),
-        };
-    
-        await transporter.sendMail(mailOptions);
-      } catch (error) {
-        console.error('Error sending email:', error);
-      }
+const sendRejectionEmail = async (booking, bookingId, rejectionReason) => {
+  try {
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
+      subject: "Booking Request Rejected",
+      html: sendRejectionEmailTemplate(
+        booking.eventName,
+        booking.bookedTransportName,
+        booking.organizingClub,
+        booking.institution,
+        booking.department,
+        bookingId,
+        rejectionReason
+      ),
     };
 
-    const sendRejectionEmailTemplate = (eventName, bookedTransportName, organizingClub, institution, department, bookingId ,rejectionReason) => {
-      return `
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+};
+
+const sendRejectionEmailTemplate = (
+  eventName,
+  bookedTransportName,
+  organizingClub,
+  institution,
+  department,
+  bookingId,
+  rejectionReason
+) => {
+  return `
     
 
       <head>
@@ -628,10 +664,18 @@ const updateTransportBooking = async (req, res, next) => {
   
   
       `;
-    };
+};
 
-    const sendApprovalEmailTemplate = ( nameOfDriver,mobNoOfDriver,bookedTransportName,bookedTransportNumber,bookedTransportCapacity,bookedTransportPhoto,  bookingId) => {
-      return `
+const sendApprovalEmailTemplate = (
+  nameOfDriver,
+  mobNoOfDriver,
+  bookedTransportName,
+  bookedTransportNumber,
+  bookedTransportCapacity,
+  bookedTransportPhoto,
+  bookingId
+) => {
+  return `
     
 
      
@@ -752,27 +796,29 @@ const updateTransportBooking = async (req, res, next) => {
   
   
       `;
-    };
+};
 
 const deleteTransportBooking = async (req, res, next) => {
   try {
     const { bookingId } = req.params;
     const booking = await TransportBooking.findByIdAndDelete(bookingId);
     if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
+      return res.status(404).json({ message: "Booking not found" });
     }
-    res.json({ message: 'Booking deleted successfully' });
+    res.json({ message: "Booking deleted successfully" });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { createTransportBooking, getTransportBookings, getTransportBookingById, updateTransportBooking, deleteTransportBooking, getTransportBookingByUserId, getTransportEvents,getTransportBookingAdmin ,getTransportBookingHod};
-
-
-
-
-
-
-
-
+module.exports = {
+  createTransportBooking,
+  getTransportBookings,
+  getTransportBookingById,
+  updateTransportBooking,
+  deleteTransportBooking,
+  getTransportBookingByUserId,
+  getTransportEvents,
+  getTransportBookingAdmin,
+  getTransportBookingHod,
+};
