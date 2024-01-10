@@ -86,7 +86,7 @@ console.log(state)
         <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes />} />
           <Route path="/profile" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="signup" element={<Signup />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/passwordReset" element={<PasswordReset />} />

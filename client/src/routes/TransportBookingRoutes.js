@@ -36,8 +36,8 @@ const TransportBookingRoutes = () => {
     <Routes>
           {/* Transport booking routes starts here */}
           <Route path="/" element={state.userType === "admin" ? <AdminDashboard /> : state.userType === "faculty" ? <FacultyDashboard /> : process.env.REACT_APP_HOD_FEATURE &&  state.userType === "hod" && <HodDashboard />  } />
-          <Route path="/events" element={<Events />} />
-          <Route path="/calendar" element={<CalendarView />} />
+          {/* <Route path="/events" element={<Events />} />
+          <Route path="/calendar" element={<CalendarView />} /> */}
           <Route path="/transports" element={state.userType === "admin" ? <TransportsAdmin/> : <Transports />}/>
           <Route exact path="/transports/:transportId/:transportName" element={state.userType === "admin" ?<TransportsEdit /> : <Unauthorized />} />
           <Route exact path="/bookingsEdit/:bookingId" element={state.userType === "admin" ? <BookingUpdateFrom/>  : process.env.REACT_APP_HOD_FEATURE &&  state.userType === "hod" ? <BookingUpdateFrom/>  : <Unauthorized />} />
