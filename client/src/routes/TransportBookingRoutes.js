@@ -26,23 +26,23 @@ import Unauthorized from '../components/Unauthorized';
 import Navbar from '../components/transportBookingSystem/Navbar';
 export const UserContext = createContext();
 
-const TransportBookingRoutes = () => {
+const TransportBookingRoutes = (props) => {
 
-  const [state, dispatch] = useReducer(reducer, initialState)
+  // const [props.userState, dispatch] = useReducer(reducer, initialState)
   return (<>
   
-    {/* <UserContext.Provider value={{ state, dispatch }}> */}
+    {/* <UserContext.Provider value={{ props.userState, dispatch }}> */}
 <Navbar/>
     <Routes>
           {/* Transport booking routes starts here */}
-          <Route path="/" element={state.userType === "admin" ? <AdminDashboard /> : state.userType === "faculty" ? <FacultyDashboard /> : process.env.REACT_APP_HOD_FEATURE &&  state.userType === "hod" && <HodDashboard />  } />
+          <Route path="/" element={props.userState.userType === "admin" ? <AdminDashboard /> : props.userState.userType === "faculty" ? <FacultyDashboard /> : props.process.env.REACT_APP_HOD_FEATURE &&  props.userState.userType === "hod" && <HodDashboard />  } />
           {/* <Route path="/events" element={<Events />} />
           <Route path="/calendar" element={<CalendarView />} /> */}
-          <Route path="/transports" element={state.userType === "admin" ? <TransportsAdmin/> : <Transports />}/>
-          <Route exact path="/transports/:transportId/:transportName" element={state.userType === "admin" ?<TransportsEdit /> : <Unauthorized />} />
-          <Route exact path="/bookingsEdit/:bookingId" element={state.userType === "admin" ? <BookingUpdateFrom/>  : process.env.REACT_APP_HOD_FEATURE &&  state.userType === "hod" ? <BookingUpdateFrom/>  : <Unauthorized />} />
-          <Route path="/transportForm" element={state.userType === "admin" ?<TransportForm /> : <Unauthorized />} />
-          <Route path="/bookings" element={state.userType === "admin" ? <BookingsAdmin/> : state.userType === "faculty" ? <BookingFaculty/> :  process.env.REACT_APP_HOD_FEATURE && state.userType === "hod" ? <BookingsHod/>  : <Unauthorized />} />
+          <Route path="/transports" element={props.userState.userType === "admin" ? <TransportsAdmin/> : <Transports />}/>
+          <Route exact path="/transports/:transportId/:transportName" element={props.userState.userType === "admin" ?<TransportsEdit /> : <Unauthorized />} />
+          <Route exact path="/bookingsEdit/:bookingId" element={props.userState.userType === "admin" ? <BookingUpdateFrom/>  : process.env.REACT_APP_HOD_FEATURE &&  props.userState.userType === "hod" ? <BookingUpdateFrom/>  : <Unauthorized />} />
+          <Route path="/transportForm" element={props.userState.userType === "admin" ?<TransportForm /> : <Unauthorized />} />
+          <Route path="/bookings" element={props.userState.userType === "admin" ? <BookingsAdmin/> : props.userState.userType === "faculty" ? <BookingFaculty/> :  process.env.REACT_APP_HOD_FEATURE && props.userState.userType === "hod" ? <BookingsHod/>  : <Unauthorized />} />
           <Route exact path="/bookingForm/:transportId/:transportName" element={<BookingForm />} />
           <Route exact path="/bookingsView/:bookingId" element={<BookingsView/>} />
           {/* Transport booking routes ends here */}

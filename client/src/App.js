@@ -81,9 +81,9 @@ console.log(state)
 
         {/* <Route path="/" element={ <MasterPage /> } /> */}
 
-        <Route path="/hall-booking-system/*" element={<HallBookingRoutes />} />
-        <Route path="/transport-booking-system/*" element={<TransportBookingRoutes />} />
-        <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes />} />
+        <Route path="/hall-booking-system/*" element={<HallBookingRoutes  userState={state}/>} />
+        <Route path="/transport-booking-system/*" element={<TransportBookingRoutes userState={state}/>} />
+        <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} />
           <Route path="/profile" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<Signup />} />
