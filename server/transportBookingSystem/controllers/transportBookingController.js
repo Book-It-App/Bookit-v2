@@ -13,17 +13,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const generateBookingEmailTemplate = (
-  eventName,
-  bookedTransportName,
-  organizingClub,
-  institution,
-  department,
-  bookingId
-) => {
+const generateBookingEmailTemplate = (eventName, bookedTransportName, organizingClub, institution, department, bookingId) => {
   return `
 
 
+  
   <head>
   <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -74,7 +68,7 @@ const generateBookingEmailTemplate = (
         <table width="100%" style="">
           <tr>
             <td style="text-align:center">
-            <h1 style="font-size: 30px; color: #4f46e5; margin-top: 0;">New Booking Request</h1> 
+            <h1 style="font-size: 30px; color: #4f46e5; margin-top: 0;">New Transport Booking Request</h1> 
             <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello Admin</h1>
               <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">A new booking has been requested on our platform. Please review the booking details provided below and click the button to view the booking.</p>
                <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
@@ -83,18 +77,26 @@ const generateBookingEmailTemplate = (
                 <div style="flex: 1; margin-right: 20px;">
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">TRANSPORT NAME	 :</h1>
+                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">TRANSPORT NO.	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
-                 
+                 <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DATE :</h1>
+                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">SELF / GUEST :</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">NO. OF PERSON :</h1>
                 </div>
                 <div style="flex: 1;">
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
+               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportNumber}</h1>
+                     
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
-              
+               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${selfOrGuest}</h1>
+                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${noOfPerson}</h1>
+                  
                 </div>
               </div>
               
@@ -281,15 +283,9 @@ const createTransportBooking = async (req, res, next) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: transport.transportCreater, // Use the transport creator's email here
-      subject: "New Booking Request",
-      html: generateBookingEmailTemplate(
-        eventName,
-        bookedTransportName,
-        organizingClub,
-        institution,
-        department,
-        booking._id
-      ),
+      subject: 'New Booking Request',
+      html:   generateBookingEmailTemplate(eventName, bookedTransportName, organizingClub, institution, department, booking._id),
+      
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
