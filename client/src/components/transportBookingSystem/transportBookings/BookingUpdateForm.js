@@ -32,6 +32,8 @@ const BookingForm = () => {
       noOfPerson:"",
       naneOfGuest:"",
       mobNoOfGuest:"",
+      nameOfDriver:"",
+      mobNoOfDriver:"",
       pickupLocation:"",
       dropLocation:"",
       organizingClub: "",
@@ -152,7 +154,24 @@ const BookingForm = () => {
       altNumber,
       isApproved } = bookingData;
 
+
+      
+
+
+      if (isApproved === "Approved By Admin") {
+        if (!nameOfDriver || !mobNoOfDriver) {
+          toast.error("Please fill in all details.");
+          return;
+        } else if (mobNoOfDriver.toString().length !== 10) {  
+          toast.error("Please enter a valid mobile number.");
+          return;
+        }
+      }
+     
+    //consolelog(isApproved);
+    
     try {
+      console.log(bookingData);
       const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${bookingId}`,
         {
           userId,
@@ -693,7 +712,7 @@ const BookingForm = () => {
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-mob-no-of-driver"
+                  id="grid-mobNoOfDriver"
                   type="number"
                   value={bookingData.mobNoOfDriver}
                   name="mobNoOfDriver"
