@@ -88,8 +88,8 @@ const RenderUser = () => {
            {/* <img className="w-12 md:w-auto" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/centre_aligned_simple-Svg1.svg" alt="logo" /> */}
                       <img className=" w-24 md:w-64" src={logo} alt="logo" />
 
-             {/* <h1 className="text-xl sm:border-l-2  sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl text-center text-gray-800 font-black leading-7 ml-3 md:leading-10">
-               Book  <span className="text-indigo-700">It</span> </h1>
+             {/* <h1 className="text-xl  w-4/5 sm:text-xl md:text-xl lg:text-xl xl:text-l text-center text-gray-800 font-black leading-7  md:leading-10">
+               Transport <span className="text-indigo-700">Booking System</span> </h1>
           */}
         </div>
           </Link>
@@ -124,10 +124,10 @@ const RenderUser = () => {
               {/* <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/transport-booking-system/events">Events</Link>
               </li>
-
+*/}
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/transport-booking-system/calendar">Calendar</Link>
-              </li> */}
+              </li> 
 
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 {/* <Link to="/bookings">Bookings</Link> */}

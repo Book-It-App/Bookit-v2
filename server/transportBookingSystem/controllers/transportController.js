@@ -14,9 +14,28 @@ const createTransport = async (req, res, next) => {
       return res.status(422).json({ error: "Please fill all details" });
     }
 
+
+
+    const transportExist = await Transport.findOne({ number: number });
+
+    if (transportExist) {
+      return res.status(422).json({ error: `Vehicle with this ${number} already exists` });
+    }
+
+
+
+
     if (capacity <= 0) {
       return res.status(422).json({ error: "Please enter a valid capacity greater than zero" });
     }
+
+    if (number.length !== 10) {
+      return res.status(422).json({ error: "Please enter a valid vehicle number" });
+    }
+    
+
+
+
     const transport = new Transport({ name, number, capacity,photo,transportCreater });
     await transport.save();
     res.status(201).json({ message: 'Transport created successfully' });

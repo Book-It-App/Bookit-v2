@@ -169,7 +169,7 @@ const TransportsAdmin = () => {
               Create Vehicle</button>
           </Link>
    </div>
-   <div className="grid  grid-cols-1   md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+   <div className="grid  grid-cols-1 gap-4  md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
       {Array.isArray(transportData) && transportData.length > 0 ? (
         transportData.map((transport) => (
           <div key={transport._id} className="my-2 ">
@@ -177,7 +177,7 @@ const TransportsAdmin = () => {
 <div className="flex w-full items-center justify-center ">
                   <div class="max-w-sm  overflow-hidden  rounded-xl  shadow-2xl shadow-blue-300">
                     <img
-                       class="w-full h-80"
+                       class="w-full h-72"
                       src={`${process.env.REACT_APP_SERVER_URL}/${transport.photo}`}
                       alt="Sunset in the mountains"
                     />

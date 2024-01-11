@@ -727,7 +727,6 @@ const sendApprovalEmailTemplate = (
   ) => {
   return `
     
-
   <head>
   <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -810,36 +809,27 @@ const sendApprovalEmailTemplate = (
               
               
               
-                <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details </h1>
+                <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Vehicle Details </h1>
               <div style="margin-top: 2rem;">
 
-<div style="display: flex; width: 100%; justify-content: center; margin: 2rem auto;">
-
-<div style="max-width: 20rem; overflow: hidden; border-radius: 0.75rem; box-shadow: 0 0 2rem rgba(0, 0, 255, 0.3);">
-  
-  <img style="width: 100%;" src="${
-    process.env.REACT_APP_SERVER_URL
-  }/${bookedTransportPhoto}" alt="Vehicle Photo" />
- 
-  <div style="padding: 1.5rem;">
-    
-    <div style="font-weight: bold; font-size: 1.5rem; margin-bottom: 1rem;">${bookedTransportName}</div>
-    
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
-      <div style="font-weight: bold;">Number</div>
-      <div style="font-size: 1rem; font-weight: bold;">${bookedTransportNumber}</div>
-    </div>
-    <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
-      <div style="font-weight: bold;">Capacity</div>
-      <div style="font-size: 1rem; font-weight: bold;">${bookedTransportCapacity} + 1</div>
-    </div>
-  </div>
- 
-
-</div>
-
-
-</div>
+<div style="text-align: justify; margin:20px; display: flex;">
+                
+                <div style="flex: 1; margin-right: 20px;">
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Vehicle Name	 :</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Vehicle Number	 :</h1>
+                 
+<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Vehicle Capacity	 :</h1>
+                 
+                </div>
+                <div style="flex: 1;">
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportNumber}</h1>
+<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportCapacity}</h1>
+            
+              </div>
+              </div>
+              
+              
                 
                 
                  <hr>
@@ -850,16 +840,11 @@ const sendApprovalEmailTemplate = (
                
                  <div style="flex: 1; margin-right: 20px;">
               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NAME	 :</h1>
-                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NO.	 :</h1>
-              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	:</h1>
+             
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
-                   ${
-                     eventDateType === "full" || eventDateType === "half"
-                       ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>`
-                       : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`
-                   }
+                   ${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`}
 
             
 
@@ -869,18 +854,12 @@ const sendApprovalEmailTemplate = (
                 </div>
                 <div style="flex: 1;">
                 <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
-              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
-           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportNumber}</h1>
+             
                  
               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
-${
-  eventDateType === "full" || eventDateType === "half"
-    ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>`
-    : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> 
-    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`
-}
+${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`}
          
 
               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${selfOrGuest}</h1>
@@ -892,9 +871,7 @@ ${
               
               
              
-              <a href="${
-                process.env.CLIENT_URL
-              }/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
+              <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
             </td>
           </tr>
         </table>
