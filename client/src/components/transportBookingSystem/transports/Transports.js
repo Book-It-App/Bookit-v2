@@ -78,7 +78,7 @@ const Transports = () => {
                 
                   <div class="max-w-sm  overflow-hidden  rounded-xl  shadow-2xl shadow-blue-300">
                     <img
-                      class="w-full h-80"
+                      class="w-full h-72"
                       src={`${process.env.REACT_APP_SERVER_URL}/${transport.photo}`}
                       alt="Sunset in the mountains"
                     />

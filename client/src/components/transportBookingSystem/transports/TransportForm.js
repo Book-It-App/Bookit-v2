@@ -92,7 +92,7 @@ const TransportFrom = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`,
         {
-          name,number,capacity,photo ,transportCreater
+          name,number:number.toUpperCase(),capacity,photo ,transportCreater
           // formData
         },
         {
@@ -141,6 +141,7 @@ const TransportFrom = () => {
 
     const name = e.target.name;
     const value = e.target.value;
+   
     setTransportData({ ...transportData, [name]: value });
   console.log(transportData)
   };
@@ -193,27 +194,7 @@ const TransportFrom = () => {
   
             <div className="flex flex-wrap -mx-3 mb-6">
   
-  
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                  htmlFor="grid-vehicle-number"
-                >
-                  Vehicle Number
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-vehicle-number"
-                  type="text"
-                  value={transportData.number}
-                  name="number"
-                  onChange={handleInputs}
-                  placeholder="Vehicle Number"
-                />
-              </div>
-  
-  
-              <div className="w-full md:w-1/2 px-3">
+            <div className="w-full md:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-vehicle-name"
@@ -230,6 +211,26 @@ const TransportFrom = () => {
                   placeholder="Vehicle Name"
                 />
               </div>
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  className="block uppercase tracking-wide  text-gray-700 text-xs font-bold mb-2 "
+                  htmlFor="grid-vehicle-number"
+                >
+                  Vehicle Number
+                </label>
+                <input
+                  className="appearance-none block w-full uppercase bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-vehicle-number"
+                  type="text"
+                  value={transportData.number}
+                  name="number"
+                  onChange={handleInputs}
+                  placeholder="Vehicle Number"
+                />
+              </div>
+  
+  
+            
             </div>
   
   
@@ -248,6 +249,7 @@ const TransportFrom = () => {
                 <input
                   value={transportData.capacity}
                   name="capacity"
+                  max={6}
                   onChange={handleInputs}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-capacity"
@@ -294,8 +296,7 @@ const TransportFrom = () => {
   <div className="relative">
     <label
       htmlFor="grid-photo"
-      className="cursor-pointer bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 block w-full font-bold  text-center"
-    >
+      className="cursor-pointer bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 block w-full font-bold  text-center">
       Choose image of vehicle
     </label>
     <input

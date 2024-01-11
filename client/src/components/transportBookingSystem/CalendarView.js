@@ -39,9 +39,9 @@ export const CalendarView = () => {
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
 
-  const [hallNames, setHallNames] = useState([]); // State to store hall names
+  const [transportNumbers, setTransportNumbers] = useState([]); // State to store transport names
 
-  const [selectedHalls, setSelectedHalls] = useState([]); // State for selected hall
+  const [selectedTransports, setSelectedTransports] = useState([]); // State for selected transport
 
   // State for the events fetched from the API
   const [events, setEvents] = useState([]);
@@ -61,7 +61,7 @@ export const CalendarView = () => {
         );
 
         setEvents(response.data.bookings);
-        // console.log(response.data.bookings);
+        console.log(response.data.bookings);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -71,35 +71,37 @@ export const CalendarView = () => {
   }, []);
 
 
-  // Fetch hall names from the API
+  // Fetch transport names from the API
   useEffect(() => {
-    const fetchHallNames = async () => {
+    const fetchTransportNumbers = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/halls`
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`
         );
-        setHallNames(response.data.halls); // Assuming halls are retrieved as an array of objects with 'name' property
-      } catch (error) {
-        console.error("Error fetching hall names:", error);
+        setTransportNumbers(response.data.transports);
+         // Assuming transports are retrieved as an array of objects with 'name' property
+        console.log(response.data.transports);
+        } catch (error) {
+        console.error("Error fetching transport names:", error);
       }
     };
 
-    fetchHallNames();
+    fetchTransportNumbers();
   }, []);
-    // Function to handle hall selection
-    const handleHallSelection = (hallName) => {
-      if (selectedHalls.includes(hallName)) {
-        // Deselect hall if already selected
-        setSelectedHalls(selectedHalls.filter((hall) => hall !== hallName));
+    // Function to handle transport selection
+    const handleTransportSelection = (transportNumber) => {
+      if (selectedTransports.includes(transportNumber)) {
+        // Deselect transport if already selected
+        setSelectedTransports(selectedTransports.filter((transport) => transport !== transportNumber));
       } else {
-        // Select hall if not selected
-        setSelectedHalls([...selectedHalls, hallName]);
+        // Select transport if not selected
+        setSelectedTransports([...selectedTransports, transportNumber]);
       }
     };
-    const isHallSelected = (hallName) => {
-      return selectedHalls.includes(hallName);
+    const isTransportSelected = (transportNumber) => {
+      return selectedTransports.includes(transportNumber);
     };
-    const filteredEvents = selectedHalls.length > 0
-    ? events.filter((event) => selectedHalls.includes(event.bookedHallName))
+    const filteredEvents = selectedTransports.length > 0
+    ? events.filter((event) => selectedTransports.includes(event.bookedTransport.number))
     : events;
 
   let days = eachDayOfInterval({
@@ -172,24 +174,24 @@ export const CalendarView = () => {
           {/* <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-center text-indigo-700 font-black leading-7 ml-3 md:leading-10">
           Filters </h1> */}
           <h2 class="text-xl font-bold mb-4 text-indigo-700 -mt-1">
-                By Hall Name
+                By Vehicle Name
               </h2>
         
 
 <button
-            className={`py-2 px-8 rounded-full mb-4  mx-4  focus:outline-none ${selectedHalls.length === 0 ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
-            onClick={() => setSelectedHalls([])}
+            className={`py-2 px-8 rounded-full mb-4  mx-4  focus:outline-none ${selectedTransports.length === 0 ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
+            onClick={() => setSelectedTransports([])}
           >
             All
           </button>
 
 
-          {hallNames.map((hall) => (
-          <button key={hall.id}
-            className={` py-2 px-8 rounded-full mb-4 mx-4 focus:outline-none ${isHallSelected(hall.name) ? "bg-indigo-100 text-indigo-800 " : "bg-white text-gray-800 hover:bg-gray-100"}`}
-            onClick={() => handleHallSelection(hall.name)}
+          {transportNumbers.map((transport) => (
+          <button key={transport.id}
+            className={` py-2 px-8 rounded-full mb-4 mx-4 focus:outline-none ${isTransportSelected(transport.number) ? "bg-indigo-100 text-indigo-800 " : "bg-white text-gray-800 hover:bg-gray-100"}`}
+            onClick={() => handleTransportSelection(transport.number)}
           >
-            {hall.name}
+            {transport.name} {transport.number}
           </button>
 
 ))}
@@ -359,18 +361,31 @@ function Meeting({ events }) {
       <li className="flex bg-white shadow-xl  rounded-lg mx-4 md:mx-auto mb-5 max-w-md  md:max-w-2xl ">
         <div class="flex items-start px-4 py-6">
           <div class="">
-            <div class="flex items-center">
+            <div class="flex  items-center">
               <h2 class="text-2xl font-semibold text-gray-900 -mt-1">
-                {events.eventName}{" "}
+                {events.bookedTransport.number}
+              </h2>
+            </div>
+            <div class="flex  items-center">
+              <h2 class="text-2xl font-semibold text-gray-900 -mt-1">
+                {events.bookedTransportName} 
               </h2>
             </div>
             <div class="flex items-center  my-3">
               <MdLocationPin className=" text-gray-700 mr-2" />
+            <p className=" font-bold mr-2 text-gray-600">Pickup From :</p>
               <small class="text-sm  text-gray-700">
-                {events.bookedHallName} {events.bookedHall.location}
+                {events.pickupLocation}
               </small>
             </div>
+            <div class="flex items-center  my-3">
+              <MdLocationPin className=" text-gray-700 mr-2" />
 
+              <p className=" font-bold mr-2 text-gray-600">Drop To :</p>
+              <small class="text-sm  text-gray-700">
+                {events.dropLocation}
+              </small>
+            </div>
             <div class="flex items-center mb-3">
               <MdDateRange className=" text-gray-700 mr-2" />
               <small class="text-sm text-gray-700 capitalize">

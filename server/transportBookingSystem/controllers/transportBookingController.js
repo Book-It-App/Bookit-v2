@@ -727,7 +727,6 @@ const sendApprovalEmailTemplate = (
   ) => {
   return `
     
-
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -756,6 +755,7 @@ const sendApprovalEmailTemplate = (
             color: #000 !important;
         }
 
+<<<<<<< HEAD
         .ExternalClass p,
         .ExternalClass span,
         .ExternalClass font,
@@ -860,6 +860,92 @@ const sendApprovalEmailTemplate = (
                 process.env.CLIENT_URL
               }/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
 </body>
+=======
+            
+              </div>
+              </div>
+              
+              
+              
+              
+              <hr>
+              
+              
+              
+              
+                <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Vehicle Details </h1>
+              <div style="margin-top: 2rem;">
+
+<div style="text-align: justify; margin:20px; display: flex;">
+                
+                <div style="flex: 1; margin-right: 20px;">
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Vehicle Name	 :</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Vehicle Number	 :</h1>
+                 
+<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Vehicle Capacity	 :</h1>
+                 
+                </div>
+                <div style="flex: 1;">
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportNumber}</h1>
+<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportCapacity}</h1>
+            
+              </div>
+              </div>
+              
+              
+                
+                
+                 <hr>
+                 <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
+              
+              <div style="text-align: justify; margin:20px; display: flex;">
+                
+               
+                 <div style="flex: 1; margin-right: 20px;">
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
+             
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
+                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
+                   ${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`}
+
+            
+
+               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">SELF / GUEST :</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">NO. OF PERSON :</h1>
+                 
+                </div>
+                <div style="flex: 1;">
+                <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
+             
+                 
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
+                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
+${eventDateType === "full" || eventDateType === "half" ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>` : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`}
+         
+
+              <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${selfOrGuest}</h1>
+               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${noOfPerson}</h1>
+              </div>
+              </div>
+              
+              
+              
+              
+             
+              <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+
+  </table>
+  </body>
+>>>>>>> 9253807b304aae0bfa2572cccc47dbf69f100007
   
   
       `;
