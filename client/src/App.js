@@ -26,6 +26,7 @@ import TransportBookingRoutes from "./routes/TransportBookingRoutes";
 import CanteenBookingRoutes from "./routes/CanteenBookingRoutes";
 
 import MasterPage from "./components/MasterPage";
+import CommingSoon from "./components/CommingSoon";
 
 
 
@@ -66,6 +67,8 @@ const App = () => {
 console.log(state)
 
 
+
+
   return (
 
     <>
@@ -76,12 +79,25 @@ console.log(state)
         {/* <Navbar /> */}
         <Routes>
 
-        <Route path="/" element={state.user ? <MasterPage /> : <Login />} />
+        <Route path="/" element={<><Navbar />{ state.user ? <MasterPage /> : <Login />}</>} />
 
 
-        {/* <Route path="/" element={ <MasterPage /> } /> */}
+        <Route path="/howtouse" element={<><Navbar /><CommingSoon /></>} />
+          <Route path="/profile" element={<><Navbar /><About /></>} />
+          <Route path="/contact" element={<><Navbar /><Contact /></>} />
+          <Route path="/signup" element={<><Navbar /><Signup /></>} />
+          <Route path="/login" element={<><Navbar /><Login /></>} />
+          <Route path="/logout" element={<><Navbar /><Logout /></>} />
+          <Route path="/passwordReset" element={<><Navbar /><PasswordReset /></>} />
+          <Route path="/forgotPassword/:id/:token" element={<><Navbar /><ForgotPassword /></>} />
+          <Route path="/verifyEmail/:id/:token" element={<><Navbar /><VerifySuccess/></>} />       
+          <Route path="/*" element={<><Navbar /><ErrorPage /></>} />
+          
 
-        {/* <Route path="/hall-booking-system/*" element={<HallBookingRoutes  userState={state}/>} /> */}
+          <Route path="/hall-booking-system/*" element={<HallBookingRoutes  userState={state}/>} />
+        <Route path="/transport-booking-system/*" element={<TransportBookingRoutes userState={state}/>} />
+        <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} />
+{/*        
 
         <Route path="/hall-booking-system" element={<HallBookingRoutes userState={state} />}>
               <Route path="*" element={<HallBookingRoutes userState={state} />} />
@@ -90,24 +106,14 @@ console.log(state)
         <Route path="/transport-booking-system" element={<TransportBookingRoutes userState={state} />}>
               <Route path="*" element={<TransportBookingRoutes userState={state} />} />
         </Route>
-        {/* <Route path="/transport-booking-system/*" element={<TransportBookingRoutes userState={state}/>} /> */}
-        {/* <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} /> */}
+
         <Route path="/canteen-booking-system" element={<CanteenBookingRoutes userState={state} />}>
               <Route path="*" element={<CanteenBookingRoutes userState={state} />} />
         </Route>
+ */}
 
-
-          <Route path="/profile" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/passwordReset" element={<PasswordReset />} />
-          <Route path="/forgotPassword/:id/:token" element={<ForgotPassword />} />
-          <Route path="/verifyEmail/:id/:token" element={<VerifySuccess/>} />       
-          <Route path="/*" element={<ErrorPage />} />
           
-          
+   
           
           {/* Hall booking routes starts here 
 
