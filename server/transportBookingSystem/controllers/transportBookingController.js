@@ -3,7 +3,7 @@ const Transport = require("../model/transportSchema");
 const User = require("../../authService/model/userSchema");
 const nodemailer = require("nodemailer");
 // const e = require("express");
-const approvalEmailTemplate = require("./approvalEmailTemplate");
+const approvalEmailTemplate = require("./templates/approvalEmailTemplate");
 // import { approvalEmailTemplate } from './approvalEmailTemplate';
 const fs = require('fs');
 
