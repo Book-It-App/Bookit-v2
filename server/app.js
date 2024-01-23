@@ -36,19 +36,22 @@ const hallRoutes = require('./hallBookingSystem/router/hallRoutes');
 const transportBookingRoutes = require('./transportBookingSystem/router/transportBookingRoutes');
 const transportRoutes = require('./transportBookingSystem/router/transportRoutes');
 
-// const canteenBookingRoutes = require('./canteenBookingSystem/router/canteenBookingRoutes');
+const canteenBookingRoutes = require('./canteenBookingSystem/router/canteenBookingRoutes');
+const canteenRoutes = require('./canteenBookingSystem/router/canteenRoutes');
+
 app.use('/uploads', express.static('./uploads'));
 
 app.use('/hall-booking-system', hallBookingRoutes);
 app.use('/hall-booking-system', hallRoutes);
 app.use('/transport-booking-system', transportBookingRoutes);
 app.use('/transport-booking-system', transportRoutes);
-// app.use('/canteen-booking-system', canteenBookingRoutes);
+app.use('/canteen-booking-system', canteenBookingRoutes);
+app.use('/canteen-booking-system', canteenRoutes);
 
 
 require("./authService/model/userSchema");
-require("./hallBookingSystem/model/hallSchema");
-require("./hallBookingSystem/model/hallBookingSchema");
+// require("./hallBookingSystem/model/hallSchema");
+// require("./hallBookingSystem/model/hallBookingSchema");
 
 // require("./transportBookingSystem/model/transportSchema");
 // require("./transportBookingSystem/model/transportBookingSchema");

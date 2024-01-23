@@ -1,5 +1,5 @@
-const Booking = require('../model/hallBookingSchema');
-const Hall = require('../model/hallSchema');
+const Booking = require('../model/canteenBookingSchema');
+const Canteen = require('../model/canteenSchema');
 const User = require('../../authService/model/userSchema');
 const nodemailer = require("nodemailer");
 
@@ -16,7 +16,7 @@ const nodemailer = require("nodemailer");
   }
 })
 
-const generateBookingEmailTemplate = (eventName, bookedHallName, organizingClub, institution, department, bookingId) => {
+const generateBookingEmailTemplate = (eventName, bookedCanteenName, organizingClub, institution, department, bookingId) => {
   return `
 
 
@@ -78,7 +78,7 @@ const generateBookingEmailTemplate = (eventName, bookedHallName, organizingClub,
                 
                 <div style="flex: 1; margin-right: 20px;">
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">HALL NAME	 :</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">CANTEEN NAME	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
@@ -86,7 +86,7 @@ const generateBookingEmailTemplate = (eventName, bookedHallName, organizingClub,
                 </div>
                 <div style="flex: 1;">
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedHallName}</h1>
+                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedCanteenName}</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
                        <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
@@ -126,17 +126,17 @@ const createBooking = async (req, res, next) => {
       startTime,
       endTime,
       email,
-      bookedHallId,
-      bookedHallName,
+      bookedCanteenId,
+      bookedCanteenName,
       organizingClub,
       phoneNumber,
       altNumber,
       isApproved
     } = req.body;
 
-    const hall = await Hall.findById(bookedHallId);
-    if (!hall) {
-      return res.status(422).json({ error: 'Hall not found' });
+    const canteen = await Canteen.findById(bookedCanteenId);
+    if (!canteen) {
+      return res.status(422).json({ error: 'Canteen not found' });
     }
 
     
@@ -221,9 +221,9 @@ const createBooking = async (req, res, next) => {
       startTime,
       endTime,
       email,
-      bookedHallId: hall._id,
-      bookedHall:hall,
-      bookedHallName,
+      bookedCanteenId: canteen._id,
+      bookedCanteen:canteen,
+      bookedCanteenName,
       organizingClub,
       // eventDetailFile,
       // eventDetailText,
@@ -232,8 +232,8 @@ const createBooking = async (req, res, next) => {
       isApproved
     });
     // await booking.validate();
-    // booking.bookedHallId = hall;
-    // await booking.populate(bookedHallId);
+    // booking.bookedCanteenId = canteen;
+    // await booking.populate(bookedCanteenId);
     await booking.save();
 
 
@@ -241,9 +241,9 @@ const createBooking = async (req, res, next) => {
 
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
-      to: hall.hallCreater, // Use the hall creator's email here
+      to: canteen.canteenCreater, // Use the canteen creator's email here
       subject: 'New Booking Request',
-      html:   generateBookingEmailTemplate(eventName, bookedHallName, organizingClub, institution, department, booking._id),
+      html:   generateBookingEmailTemplate(eventName, bookedCanteenName, organizingClub, institution, department, booking._id),
       
     };
 
@@ -274,7 +274,7 @@ const createBooking = async (req, res, next) => {
 
 const getEvents = async (req, res, next) => {
   try {
-    const bookings = await Booking.find({ isApproved: "Approved By Admin" }).populate('bookedHallId');
+    const bookings = await Booking.find({ isApproved: "Approved By Admin" }).populate('bookedCanteenId');
 
     
     res.json({ bookings });
@@ -301,7 +301,7 @@ const getEvents = async (req, res, next) => {
 
 const getBookings = async (req, res, next) => {
   try {
-    const bookings = await Booking.find().populate('bookedHallId').populate('userId');
+    const bookings = await Booking.find().populate('bookedCanteenId').populate('userId');
 
     
     res.json({ bookings });
@@ -316,7 +316,7 @@ const getBookingById = async (req, res, next) => {
 
   try {
     const { bookingId } = req.params;
-    const booking = await Booking.findById(bookingId).populate('bookedHallId').populate('userId');
+    const booking = await Booking.findById(bookingId).populate('bookedCanteenId').populate('userId');
     // console.log(booking);
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
@@ -332,7 +332,7 @@ const getBookingByUserId = async (req, res, next) => {
   try {
     // const { userId } = req.params;
     const userId = req.rootUser._id
-    const booking = await Booking.find({  userId }).populate('bookedHallId').populate('userId');
+    const booking = await Booking.find({  userId }).populate('bookedCanteenId').populate('userId');
     // if (!mongoose.Types.ObjectId.isValid(userId)) {
     //   return res.status(400).json({ message: 'Invalid userId' });
     // }
@@ -362,10 +362,10 @@ const getBookingAdmin = async (req, res, next) => {
   $or: [
     { email: adminEmail},
     // Add other conditions as needed
-    {'bookedHall.hallCreater': adminEmail },
+    {'bookedCanteen.canteenCreater': adminEmail },
   ],
 }
-    ).populate('bookedHallId')
+    ).populate('bookedCanteenId')
       .populate('userId');
       // console.log(bookings);
     res.json({ bookings });
@@ -379,7 +379,7 @@ const getBookingHod = async (req, res, next) => {
   const hodDepartment = req.rootUser.department
   // console.log(hodDepartment);
   try {
-    const bookings = await Booking.find({ department: hodDepartment }).populate('bookedHallId');
+    const bookings = await Booking.find({ department: hodDepartment }).populate('bookedCanteenId');
 
     
     res.json({ bookings });
@@ -405,15 +405,15 @@ const updateBooking = async (req, res, next) => {
       endTime,
       // email,
 
-      // bookedHallId,
-      // hallId,
+      // bookedCanteenId,
+      // canteenId,
       rejectionReason,
       isApproved
     } = req.body;
 
-    // const hall = await Hall.findById(hallId);
-    // if (!hall) {
-    //   return res.status(404).json({ message: 'Hall not found' });
+    // const canteen = await Canteen.findById(canteenId);
+    // if (!canteen) {
+    //   return res.status(404).json({ message: 'Canteen not found' });
     // }
    
 
@@ -425,12 +425,12 @@ const updateBooking = async (req, res, next) => {
         eventStartDate,
         eventEndDate,
 
-        //  hallId: hall._id,email,
+        //  canteenId: canteen._id,email,
         isApproved,
         rejectionReason,
       },
       { new: true },
-    ).populate('bookedHallId');
+    ).populate('bookedCanteenId');
 
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
@@ -463,7 +463,7 @@ const updateBooking = async (req, res, next) => {
           from: process.env.SENDER_EMAIL,
           to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
           subject: 'Booking Request Approved',
-          html: sendApprovalEmailTemplate(booking.eventName, booking.bookedHallName, booking.organizingClub, booking.institution, booking.department, bookingId),
+          html: sendApprovalEmailTemplate(booking.eventName, booking.bookedCanteenName, booking.organizingClub, booking.institution, booking.department, bookingId),
         };
     
         await transporter.sendMail(mailOptions);
@@ -481,7 +481,7 @@ const updateBooking = async (req, res, next) => {
           from: process.env.SENDER_EMAIL,
           to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
           subject: "Booking Request Rejected",
-          html: sendRejectionEmailTemplate(booking.eventName, booking.bookedHallName, booking.organizingClub, booking.institution, booking.department, bookingId ,rejectionReason),
+          html: sendRejectionEmailTemplate(booking.eventName, booking.bookedCanteenName, booking.organizingClub, booking.institution, booking.department, bookingId ,rejectionReason),
         };
     
         await transporter.sendMail(mailOptions);
@@ -490,7 +490,7 @@ const updateBooking = async (req, res, next) => {
       }
     };
 
-    const sendRejectionEmailTemplate = (eventName, bookedHallName, organizingClub, institution, department, bookingId ,rejectionReason) => {
+    const sendRejectionEmailTemplate = (eventName, bookedCanteenName, organizingClub, institution, department, bookingId ,rejectionReason) => {
       return `
     
 
@@ -557,7 +557,7 @@ const updateBooking = async (req, res, next) => {
                     
                     <div style="flex: 1; margin-right: 20px;">
                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">HALL NAME	 :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">CANTEEN NAME	 :</h1>
                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
                            <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
@@ -565,7 +565,7 @@ const updateBooking = async (req, res, next) => {
                     </div>
                     <div style="flex: 1;">
                     <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedHallName}</h1>
+                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedCanteenName}</h1>
                     <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
                     <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
                          <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
@@ -589,7 +589,7 @@ const updateBooking = async (req, res, next) => {
       `;
     };
 
-    const sendApprovalEmailTemplate = (eventName, bookedHallName, organizingClub, institution, department, bookingId) => {
+    const sendApprovalEmailTemplate = (eventName, bookedCanteenName, organizingClub, institution, department, bookingId) => {
       return `
     
 
@@ -654,7 +654,7 @@ const updateBooking = async (req, res, next) => {
                     
                     <div style="flex: 1; margin-right: 20px;">
                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">HALL NAME	 :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">CANTEEN NAME	 :</h1>
                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
                            <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
@@ -662,7 +662,7 @@ const updateBooking = async (req, res, next) => {
                     </div>
                     <div style="flex: 1;">
                     <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedHallName}</h1>
+                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedCanteenName}</h1>
                     <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
                     <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
                          <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>

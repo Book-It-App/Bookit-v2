@@ -40,7 +40,7 @@ const BookingForm = () => {
 
   const getbookingById = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/bookingsView/${bookingId}`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsView/${bookingId}`, {
         withCredentials: true, // include credentials in the request
         headers: {
           Accept: "application/json",
@@ -131,7 +131,7 @@ const BookingForm = () => {
 
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/bookingsEdit/${bookingId}`,
+        `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsEdit/${bookingId}`,
         {
           userId,
           // department,
@@ -217,7 +217,7 @@ const BookingForm = () => {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                 htmlFor="grid-event-manager"
               >
-                Event Coordinator Name
+                Booking Faculty/Staff
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -226,7 +226,7 @@ const BookingForm = () => {
                 value={bookingData.eventManager}
                 name="eventManager"
                 onChange={handleInputs}
-                placeholder="Event Coordinator Name"
+                placeholder="Booking Faculty/Staff"
               />
               {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
             </div>

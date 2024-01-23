@@ -15,7 +15,7 @@ const Events = () => {
   const getEventData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/events`,
+        `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/events`,
         {
           // withCredentials: true, // include credentials in the request
           headers: {

@@ -16,7 +16,7 @@ const BookingFaculty = () => {
 
   const getBookingData = async (userId) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/bookingsFaculty`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsFaculty`, {
         withCredentials: true, // include credentials in the request
         headers: {
           Accept: "application/json",

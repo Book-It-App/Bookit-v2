@@ -3,9 +3,9 @@ const Transport = require("../model/transportSchema");
 const User = require("../../authService/model/userSchema");
 const nodemailer = require("nodemailer");
 // const e = require("express");
-const approvalEmailTemplate = require("./templates/approvalEmailTemplate");
+// const approvalEmailTemplate = require("./approvalEmailTemplate");
 // import { approvalEmailTemplate } from './approvalEmailTemplate';
-const fs = require('fs');
+// const fs = require('fs');
 
 // transporter for sending email
 
@@ -22,131 +22,144 @@ const transporter = nodemailer.createTransport({
 });
 
 const generateBookingEmailTemplate = (
-  eventName,
-  eventDate,
+  // eventName,
+  MainDate,
   selfOrGuest,
   noOfPerson,
+  
   eventDateType,
-  eventStartDate,
-  eventEndDate,
+  StartDate,
+  EndDate,
   bookedTransportName,
   bookedTransportNumber,
-  organizingClub,
+//   organizingClub,
   institution,
   department,
   bookingId
 ) => {
   return `
 
-
-  
   <head>
-  <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
-    a,
-    a:link,
-    a:visited {
-      text-decoration: none;
-      color: #00788a;
-    }
-  
-    a:hover {
-      text-decoration: underline;
-    }
-  
-    h2,
-    h2 a,
-    h2 a:visited,
-    h3,
-    h3 a,
-    h3 a:visited,
-    h4,
-    h5,
-    h6,
-    .t_cht {
-      color: #000 !important;
-    }
-  
-    .ExternalClass p,
-    .ExternalClass span,
-    .ExternalClass font,
-    .ExternalClass td {
-      line-height: 100%;
-    }
-  
-    .ExternalClass {
-      width: 100%;
-    }
+      a,
+      a:link,
+      a:visited {
+          text-decoration: none;
+          color: #00788a;
+      }
+
+      a:hover {
+          text-decoration: underline;
+      }
+
+      h2,
+      h2 a,
+      h2 a:visited,
+      h3,
+      h3 a,
+      h3 a:visited,
+      h4,
+      h5,
+      h6,
+      .t_cht {
+          color: #000 !important;
+      }
+
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td {
+          line-height: 100%;
+      }
+
+      .ExternalClass {
+          width: 100%;
+      }
   </style>
-  </head>
-  
-  <body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
+</head>
+
+<body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
   <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
-
-    <tbody>
-    <tr>
-      <td style="padding: 50px; background-color: #fff; max-width: 660px">
-        <table width="100%" style="">
+      <tbody>
           <tr>
-            <td style="text-align:center">
-            <h1 style="font-size: 30px; color: #4f46e5; margin-top: 0;">New Transport Booking Request</h1> 
-            <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello Admin</h1>
-              <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">A new booking has been requested on our platform. Please review the booking details provided below and click the button to view the booking.</p>
-               <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
-              <div style="text-align: justify; margin:20px; display: flex;">
-                
-                <div style="flex: 1; margin-right: 20px;">
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NAME	 :</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">VEHICLE NO.	 :</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
-                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
-                       ${
-                         eventDateType === "full" || eventDateType === "half"
-                           ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">Date:</h1>`
-                           : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">From: </h1><h1 style="font-size: 20px; color: #202225; margin-top: 0;">To: </h1>`
-                       }
-
-                
-
-                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">SELF / GUEST :</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">NO. OF PERSON :</h1>
-                </div>
-                <div style="flex: 1;">
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
-               <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportNumber}</h1>
-                     
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
-                       <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
-${
-  eventDateType === "full" || eventDateType === "half"
-    ? `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventDate}</h1>`
-    : `<h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventStartDate}</h1> <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventEndDate}</h1>`
-}
+              <td style="padding: 50px; background-color: #fff; max-width: 660px">
+                  <table style="width: 100%;">
+                      <tr>
+                          <td style="text-align:center">
+                             <h1 style="font-size: 30px; color: #4f46e5; margin-top: 0;">New Transport Booking Request</h1> 
+          <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello Admin</h1>
+            <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">A new booking has been requested on our platform. Please review the booking details provided below and click the button to view the booking.</p>     
+                            
              
+                        
+                          <table style="width: 100%;" >
+                      <tr>
+                          
+                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
+                              <table style="width: 100%;" >
+                                 
+          <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Transport Name:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${bookedTransportName}</td>
+                                  </tr>
+                                  <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Number:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportNumber}</td>
+                                  </tr>                       
+                                 
+                                        <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${institution}</td>
+                                  </tr>
+                                    <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Departmant :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${department}</td>
+                                  </tr>
+                                    ${eventDateType === "full" || eventDateType === "half" ? `
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Date:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainDate}</td>
+                                    </tr>`
+                                    :
+                                    `
+                                            <tr>
+                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">From:</td>
+                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${StartDate}</td>
+                                        </tr>
 
-                  <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${selfOrGuest}</h1>
-                   <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${noOfPerson}</h1>
-                  
-                </div>
-              </div>
-              
-              <a href="${
-                process.env.CLIENT_URL
-              }/bookingsView/${bookingId}" style="background-color: #4f46e5; color: #fff; padding: 8px 24px; border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
-            </td>
+                                        <tr>
+                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">To:</td>
+                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${EndDate}</td>
+                                    </tr>
+
+                                    `} 
+                                        <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Self / Guest :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${selfOrGuest}</td>
+                                  </tr>
+                                          <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">No. Of Person :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${noOfPerson}</td>
+                                  </tr>
+                                
+                              </table>
+
+                          </td>
+                      </tr>
+                                
+                  </table>
+              </td>
           </tr>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-
+          <br/>
+          <center>  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
+      </tbody>
+                 
   </table>
-  </body>
+</body>
+
+
 
 
   `;
@@ -159,7 +172,7 @@ const createTransportBooking = async (req, res, next) => {
       eventManager,
       department,
       institution,
-      eventName,
+      // eventName,
       eventDateType,
       eventDate,
       eventStartDate,
@@ -171,12 +184,14 @@ const createTransportBooking = async (req, res, next) => {
       bookedTransportName,
       selfOrGuest,
       noOfPerson,
+      roundOrOneway,
+    outstaionOrLocal,
       naneOfGuest,
       mobNoOfGuest,
 
       pickupLocation,
       dropLocation,
-      organizingClub,
+    //   organizingClub,
       phoneNumber,
       altNumber,
       isApproved,
@@ -234,11 +249,13 @@ const createTransportBooking = async (req, res, next) => {
       !endTime ||
       !selfOrGuest ||
       // || !altNumber
-      !eventName ||
-      !organizingClub ||
+      // / !eventName ||
+      // / !organizingClub ||
       !pickupLocation ||
       !dropLocation ||
-      !noOfPerson
+      !noOfPerson || 
+      // / !roundOrOneway   || 
+    !outstaionOrLocal
     ) {
       return res.status(422).json({ error: "Please fill all details" });
     }
@@ -279,7 +296,7 @@ const createTransportBooking = async (req, res, next) => {
       institution,
       department,
       eventManager,
-      eventName,
+      // eventName,
       eventDateType,
       eventDate,
       eventStartDate,
@@ -292,11 +309,13 @@ const createTransportBooking = async (req, res, next) => {
       bookedTransportName,
       selfOrGuest,
       noOfPerson,
+      roundOrOneway,
+    outstaionOrLocal,
       naneOfGuest,
       mobNoOfGuest,
       pickupLocation,
       dropLocation,
-      organizingClub,
+    //   organizingClub,
       // eventDetailFile,
       // eventDetailText,
       phoneNumber,
@@ -309,21 +328,28 @@ const createTransportBooking = async (req, res, next) => {
     await booking.save();
     console.log(booking);
 
+
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    const StartDate = new Date(booking.eventStartDate).toLocaleDateString('en-GB', options);
+    const EndDate = new Date(booking.eventEndDate).toLocaleDateString('en-GB', options);
+    const MainDate = new Date(booking.eventDate).toLocaleDateString('en-GB', options);
+
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: transport.transportCreater, // Use the transport creator's email here
       subject: "New Booking Request",
       html: generateBookingEmailTemplate(
-        eventName,
-        eventDate,
+        // eventName,
+        MainDate,
         selfOrGuest,
         noOfPerson,
         eventDateType,
-        eventStartDate,
-        eventEndDate,
+        StartDate,
+        EndDate,
         bookedTransportName,
         transport.number,
-        organizingClub,
+      //   organizingClub,
         institution,
         department,
         booking._id
@@ -459,7 +485,7 @@ const updateTransportBooking = async (req, res, next) => {
     const {
       eventManager,
 
-      eventName,
+      // eventName,
       eventDateType,
       eventStartDate,
       eventEndDate,
@@ -468,6 +494,8 @@ const updateTransportBooking = async (req, res, next) => {
       endTime,
       selfOrGuest,
       noOfPerson,
+      roundOrOneway,
+    outstaionOrLocal,
       naneOfGuest,
       mobNoOfGuest,
       nameOfDriver,
@@ -498,7 +526,7 @@ const updateTransportBooking = async (req, res, next) => {
     const booking = await TransportBooking.findByIdAndUpdate(
       bookingId,
       {
-        eventName,
+        // eventName,
         eventDate,
         startTime,
         endTime,
@@ -507,6 +535,8 @@ const updateTransportBooking = async (req, res, next) => {
         eventEndDate,
         selfOrGuest,
         noOfPerson,
+        roundOrOneway,
+    outstaionOrLocal,
         naneOfGuest,
         mobNoOfGuest,
         nameOfDriver,
@@ -528,10 +558,12 @@ const updateTransportBooking = async (req, res, next) => {
 
     // Send email based on the updated approval status
 
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-    const StartDate = new Date(booking.eventStartDate).toLocaleDateString();
-    const EndDate = new Date(booking.eventEndDate).toLocaleDateString();
-    const MainDate = new Date(booking.eventDate).toLocaleDateString();
+    const StartDate = new Date(booking.eventStartDate).toLocaleDateString('en-GB', options);
+    const EndDate = new Date(booking.eventEndDate).toLocaleDateString('en-GB', options);
+    const MainDate = new Date(booking.eventDate).toLocaleDateString('en-GB', options);
+    
     // const StartTime = new Date(booking.startTime).toLocaleTimeString();
     // const EndTime = new Date(booking.endTime).toLocaleTimeString();
     if (isApproved === "Approved By Admin") {
@@ -563,8 +595,8 @@ const approvalEmail = approvalEmailTemplate(booking.nameOfDriver,
   booking.bookedTransport.number,
   booking.bookedTransport.capacity,
   // booking.bookedTransport.photo,
-  booking.eventName,
-  booking.organizingClub,
+  // booking.eventName,
+ //           booking.organizingClub,
   booking.institution,
   booking.department,
   MainDate,
@@ -580,28 +612,28 @@ const approvalEmail = approvalEmailTemplate(booking.nameOfDriver,
       from: process.env.SENDER_EMAIL,
       to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
       subject: "Booking Request Approved",
-      html: approvalEmail
+      // html: approvalEmail
       
-      // sendApprovalEmailTemplate(
+      html: sendApprovalEmailTemplate(
         
-      //   booking.nameOfDriver,
-      //   booking.mobNoOfDriver,
-      //   booking.bookedTransportName,
-      //   booking.bookedTransport.number,
-      //   booking.bookedTransport.capacity,
-      //   // booking.bookedTransport.photo,
-      //   booking.eventName,
-      //   booking.organizingClub,
-      //   booking.institution,
-      //   booking.department,
-      //   MainDate,
-      //   booking.selfOrGuest,
-      //   booking.noOfPerson,
-      //   booking.eventDateType,
-      //   StartDate,
-      //   EndDate,
-      //   bookingId
-      // ),
+        booking.nameOfDriver,
+        booking.mobNoOfDriver,
+        booking.bookedTransportName,
+        booking.bookedTransport.number,
+        booking.bookedTransport.capacity,
+        // booking.bookedTransport.photo,
+        // booking.eventName,
+//           booking.organizingClub,
+        booking.institution,
+        booking.department,
+        MainDate,
+        booking.selfOrGuest,
+        booking.noOfPerson,
+        booking.eventDateType,
+        StartDate,
+        EndDate,
+        bookingId
+      ),
     };
 
     await transporter.sendMail(mailOptions);
@@ -617,9 +649,9 @@ const sendRejectionEmail = async (booking, bookingId, rejectionReason) => {
       to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
       subject: "Booking Request Rejected",
       html: sendRejectionEmailTemplate(
-        booking.eventName,
+        // booking.eventName,
         booking.bookedTransportName,
-        booking.organizingClub,
+//           booking.organizingClub,
         booking.institution,
         booking.department,
         bookingId,
@@ -634,9 +666,9 @@ const sendRejectionEmail = async (booking, bookingId, rejectionReason) => {
 };
 
 const sendRejectionEmailTemplate = (
-  eventName,
+  // eventName,
   bookedTransportName,
-  organizingClub,
+//   organizingClub,
   institution,
   department,
   bookingId,
@@ -645,97 +677,100 @@ const sendRejectionEmailTemplate = (
   return `
     
 
-      <head>
-      <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
-      <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-      <style>
-        a,
-        a:link,
-        a:visited {
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+      a,
+      a:link,
+      a:visited {
           text-decoration: none;
           color: #00788a;
-        }
-      
-        a:hover {
+      }
+
+      a:hover {
           text-decoration: underline;
-        }
-      
-        h2,
-        h2 a,
-        h2 a:visited,
-        h3,
-        h3 a,
-        h3 a:visited,
-        h4,
-        h5,
-        h6,
-        .t_cht {
+      }
+
+      h2,
+      h2 a,
+      h2 a:visited,
+      h3,
+      h3 a,
+      h3 a:visited,
+      h4,
+      h5,
+      h6,
+      .t_cht {
           color: #000 !important;
-        }
-      
-        .ExternalClass p,
-        .ExternalClass span,
-        .ExternalClass font,
-        .ExternalClass td {
+      }
+
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td {
           line-height: 100%;
-        }
-      
-        .ExternalClass {
+      }
+
+      .ExternalClass {
           width: 100%;
-        }
-      </style>
-      </head>
-      
-      <body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
-      <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
-  
-        <tbody>
-        <tr>
-          <td style="padding: 50px; background-color: #fff; max-width: 660px">
-            <table width="100%" style="">
-              <tr>
-                <td style="text-align:center">
-                 
-                  <h1 style="font-size: 30px; color: #ef4444; margin-top: 0;">Booking Request Rejected</h1>
-                  
-                  <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
-                  <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been rejected due to following reason. Please review the booking details provided below and click the button below to view the booking.</p>
-                    <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Reason for Rejection</h1>
-                  <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; text-align: left;">${rejectionReason}</p>
-                   <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
-                  
-                  <div style="text-align: justify; margin:20px; display: flex;">
-                    
-                    <div style="flex: 1; margin-right: 20px;">
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">TRANSPORT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
-                           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
-                     
-                    </div>
-                    <div style="flex: 1;">
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${eventName}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${bookedTransportName}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${organizingClub}</h1>
-                    <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${institution}</h1>
-                         <h1 style="font-size: 20px; color: #202225; margin-top: 0;">${department}</h1>
+      }
+  </style>
+</head>
+
+<body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
+  <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
+      <tbody>
+          <tr>
+              <td style="padding: 50px; background-color: #fff; max-width: 660px">
+                  <table style="width: 100%;">
+                      <tr>
+                          <td style="text-align:center">
+                                <h1 style="font-size: 30px; color: #ef4444; margin-top: 0;">Booking Request Rejected</h1>
                 
-                  </div>
-                  </div>
-                  
-                  <a href="${process.env.CLIENT_URL}/bookingsView/${bookingId}"  style="background-color: #4f46e5; color: #fff; padding: 8px 24px; border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+                <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
+                <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been rejected due to following reason. Please review the booking details provided below and click the button below to view the booking.</p>
+                  <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Reason for Rejection</h1>
+                <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; text-align: left;">${rejectionReason}</p>
+                        
+                          <table style="width: 100%;" >
+                      <tr>
+                          
+                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
+                              <table style="width: 100%;" >
+                                 
+                                         <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Name  :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${bookedTransportName}</td>
+                                  </tr>
+                                 
+                                        <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${institution}</td>
+                                  </tr>
+                                    <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Departmant :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${department}</td>
+                                  </tr>
+
+ 
+                             
+                              </table>
+
+                          </td>
+                      </tr>
+                                
+                  </table>
+              </td>
+          </tr>
+          <br/>
+          <center>  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
       </tbody>
-  
-      </table>
-      </body>
-  
-  
+                 
+  </table>
+</body>
+
+
   
       `;
 };
@@ -751,226 +786,225 @@ const sendRejectionEmailTemplate = (
 
 
 
-const sendApprovalEmailTemplate = ({
-  nameOfDriver,
-  mobNoOfDriver,
-  bookedTransportName,
-  bookedTransport,
-  eventName,
-  organizingClub,
-  institution,
-  department,
-  mainDate,
-  selfOrGuest,
-  noOfPerson,
-  eventDateType,
-  startDate,
-  endDate,
-  bookingId,
-}) => {
-  try {
-    // Read the content of the HTML file
-    const htmlContent = fs.readFileSync('/server/transportBookingSystem/controllers/approvalEmailTemplate.html', 'utf8');
-
-    // Replace placeholders with actual values
-    const replacedContent = htmlContent
-    .replace('${CLIENT_URL}', process.env.CLIENT_URL)
-    .replace('${BOOKING_ID}', bookingId)
-    .replace('${NAME_OF_DRIVER}', nameOfDriver)
-    .replace('${MOB_NO_OF_DRIVER}', mobNoOfDriver)
-    .replace('${BOOKED_TRANSPORT_NAME}', bookedTransportName)
-    .replace('${BOOKED_TRANSPORT_NUMBER}', bookedTransport.number)
-    .replace('${BOOKED_TRANSPORT_CAPACITY}', bookedTransport.capacity)
-    .replace('${EVENT_NAME}', eventName)
-    .replace('${ORGANIZING_CLUB}', organizingClub)
-    .replace('${INSTITUTION}', institution)
-    .replace('${DEPARTMENT}', department)
-    .replace('${MAIN_DATE}', mainDate)
-    .replace('${SELF_OR_GUEST}', selfOrGuest)
-    .replace('${NO_OF_PERSON}', noOfPerson)
-    .replace('${EVENT_DATE_TYPE}', eventDateType)
-    .replace('${START_DATE}', startDate)
-    .replace('${END_DATE}', endDate);
-
-    return replacedContent;
-  } catch (error) {
-    console.log(error);
-    return ''; // Return an empty string or handle the error as needed
-  }
-};
-
-
-
-
-// const sendApprovalEmailTemplate = (
+// const sendApprovalEmailTemplate = ({
 //   nameOfDriver,
 //   mobNoOfDriver,
 //   bookedTransportName,
-//   bookedTransportNumber,
-//   bookedTransportCapacity,
-//   // bookedTransportPhoto,
+//   bookedTransport,
 //   eventName,
 //   organizingClub,
 //   institution,
 //   department,
-//   eventDate,
+//   mainDate,
 //   selfOrGuest,
 //   noOfPerson,
 //   eventDateType,
-//   eventStartDate,
-//   eventEndDate,
-//   bookingId
-// ) => {
-//   return `
-    
-//   <head>
-//     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-//     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-//     <style>
-//         a,
-//         a:link,
-//         a:visited {
-//             text-decoration: none;
-//             color: #00788a;
-//         }
+//   startDate,
+//   endDate,
+//   bookingId,
+// }) => {
+//   try {
+//     // Read the content of the HTML file
+//     const htmlContent = fs.readFileSync('/server/transportBookingSystem/controllers/approvalEmailTemplate.html', 'utf8');
 
-//         a:hover {
-//             text-decoration: underline;
-//         }
+//     // Replace placeholders with actual values
+//     const replacedContent = htmlContent
+//     .replace('${CLIENT_URL}', process.env.CLIENT_URL)
+//     .replace('${BOOKING_ID}', bookingId)
+//     .replace('${NAME_OF_DRIVER}', nameOfDriver)
+//     .replace('${MOB_NO_OF_DRIVER}', mobNoOfDriver)
+//     .replace('${BOOKED_TRANSPORT_NAME}', bookedTransportName)
+//     .replace('${BOOKED_TRANSPORT_NUMBER}', bookedTransport.number)
+//     .replace('${BOOKED_TRANSPORT_CAPACITY}', bookedTransport.capacity)
+//     .replace('${EVENT_NAME}', eventName)
+//     .replace('${ORGANIZING_CLUB}', organizingClub)
+//     .replace('${Institution}', institution)
+//     .replace('${Departmant}', department)
+//     .replace('${MAIN_DATE}', mainDate)
+//     .replace('${SELF_OR_GUEST}', selfOrGuest)
+//     .replace('${NO_OF_PERSON}', noOfPerson)
+//     .replace('${EVENT_DATE_TYPE}', eventDateType)
+//     .replace('${START_DATE}', startDate)
+//     .replace('${END_DATE}', endDate);
 
-//         h2,
-//         h2 a,
-//         h2 a:visited,
-//         h3,
-//         h3 a,
-//         h3 a:visited,
-//         h4,
-//         h5,
-//         h6,
-//         .t_cht {
-//             color: #000 !important;
-//         }
-
-//         .ExternalClass p,
-//         .ExternalClass span,
-//         .ExternalClass font,
-//         .ExternalClass td {
-//             line-height: 100%;
-//         }
-
-//         .ExternalClass {
-//             width: 100%;
-//         }
-//     </style>
-// </head>
-
-// <body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
-//     <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
-//         <tbody>
-//             <tr>
-//                 <td style="padding: 50px; background-color: #fff; max-width: 660px">
-//                     <table style="width: 100%;">
-//                         <tr>
-//                             <td style="text-align:center">
-//                                 <h1 style="font-size: 30px; color: #16a34a; margin-top: 0;">Booking Request Approved</h1>
-//                                 <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
-//                                 <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
-//                                 <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Driver Details</h1>
-//                                 <table style="width: 100%;">
-//                                     <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">Driver Name:</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">${nameOfDriver}</td>
-//                                     </tr>
-//                                     <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">Mobile No.:</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">${mobNoOfDriver}</td>
-//                                     </tr>
-//                                 </table>
-//                                 <table style="width: 100%;">
-//                         <tr>
-//                             <br>
-//                                 <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details</h1>
-//                                 <table style="width: 100%;">
-//                                     <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">Transport Name:</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">${bookedTransportName}</td>
-//                                     </tr>
-//                                     <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">Number:</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${bookedTransportNumber}</td>
-//                                     </tr>
-//                                 <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">Capacity:</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${bookedTransportCapacity}</td>
-//                                     </tr>
-                                  
-//                                 </table>
-//                           <br>
-//                             <table style="width: 100%;">
-//                         <tr>
-                            
-//                                 <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
-//                                 <table style="width: 100%;">
-//                                     <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">EVENT NAME:</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">${eventName}</td>
-//                                     </tr>
-//                                     <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">ORGANIZING CLUB:</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${organizingClub}</td>
-//                                     </tr>
-//                                           <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">INSTITUTION :</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${institution}</td>
-//                                     </tr>
-//                                       <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">DEPARTMENT :</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${department}</td>
-//                                     </tr>
-//                                       ${eventDateType === "full" || eventDateType === "half" ? `
-//                                       <tr>
-//                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">Date:</td>
-//                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${eventDate}</td>
-//                                       </tr>`
-//                                       :
-//                                       `
-//                                               <tr>
-//                                               <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">From:</td>
-//                                               <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${eventStartDate}</td>
-//                                           </tr>
-
-//                                           <tr>
-//                                           <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">To:</td>
-//                                           <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${eventEndDate}</td>
-//                                       </tr>
-
-//                                       `}
-//                                           <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">SELF / GUEST :</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${selfOrGuest}</td>
-//                                     </tr>
-//                                             <tr>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;">NO. OF PERSON :</td>
-//                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;"> ${noOfPerson}</td>
-//                                     </tr>
-                                  
-//                                 </table>
-
-//                             </td>
-//                         </tr>
-                                  
-//                     </table>
-//                 </td>
-//             </tr>
-//         </tbody>
-                   
-//     </table>
-//        <center>  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
-// </body>
-  
-  
-//       `;
+//     return replacedContent;
+//   } catch (error) {
+//     console.log(error);
+//     return ''; // Return an empty string or handle the error as needed
+//   }
 // };
+
+
+
+
+const sendApprovalEmailTemplate = (
+  nameOfDriver,
+  mobNoOfDriver,
+  bookedTransportName,
+  bookedTransportNumber,
+  bookedTransportCapacity,
+  // bookedTransportPhoto,
+  // eventName,
+//   organizingClub,
+  institution,
+  department,
+  eventDate,
+  selfOrGuest,
+  noOfPerson,
+  eventDateType,
+  eventStartDate,
+  eventEndDate,
+  bookingId
+) => {
+  return `
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+      a,
+      a:link,
+      a:visited {
+          text-decoration: none;
+          color: #00788a;
+      }
+
+      a:hover {
+          text-decoration: underline;
+      }
+
+      h2,
+      h2 a,
+      h2 a:visited,
+      h3,
+      h3 a,
+      h3 a:visited,
+      h4,
+      h5,
+      h6,
+      .t_cht {
+          color: #000 !important;
+      }
+
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td {
+          line-height: 100%;
+      }
+
+      .ExternalClass {
+          width: 100%;
+      }
+  </style>
+</head>
+
+<body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
+  <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
+      <tbody>
+          <tr>
+              <td style="padding: 50px; background-color: #fff; max-width: 660px">
+                  <table style="width: 100%;">
+                      <tr>
+                          <td style="text-align:center">
+                              <h1 style="font-size: 30px; color: #16a34a; margin-top: 0;">Booking Request Approved</h1>
+                              <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
+                              <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
+                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Driver Details</h1>
+                              <table style="width: 100%;" >
+                                  <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%; width:50%;">Driver Name:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%; width:50%;">${nameOfDriver}</td>
+                                  </tr>
+                                  <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Mobile No.:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${mobNoOfDriver}</td>
+                                  </tr>
+                              </table>
+                            
+                            
+                                  
+                              <table style="width: 100%;">
+                      <tr>
+                          <br>
+                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details</h1>
+                              <table style="width: 100%;" >
+                                  <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Name:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${bookedTransportName}</td>
+                                  </tr>
+                                  <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Number:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportNumber}</td>
+                                  </tr>
+                              <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Capacity:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportCapacity}</td>
+                                  </tr>
+                                
+                              </table>
+                        <br>
+                          <table style="width: 100%;" >
+                      <tr>
+                          
+                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
+                              <table style="width: 100%;" >
+                                 
+                                 
+                                        <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${institution}</td>
+                                  </tr>
+                                    <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Departmant :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${department}</td>
+                                  </tr>
+                                  ${eventDateType === "full" || eventDateType === "half" ? `
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Date:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventDate}</td>
+                                    </tr>`
+                                    :
+                                    `
+                                            <tr>
+                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">From:</td>
+                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventStartDate}</td>
+                                        </tr>
+
+                                        <tr>
+                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">To:</td>
+                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventEndDate}</td>
+                                    </tr>
+
+                                    `} 
+                                        <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Self / Guest :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${selfOrGuest}</td>
+                                  </tr>
+                                          <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">No. Of Person :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${noOfPerson}</td>
+                                  </tr>
+                                
+                              </table>
+
+                          </td>
+                      </tr>
+                                
+                  </table>
+              </td>
+          </tr>
+          <br/>
+          <center>  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
+      </tbody>
+                 
+  </table>
+</body>
+
+
+  
+  
+      `;
+};
 
 const deleteTransportBooking = async (req, res, next) => {
   try {

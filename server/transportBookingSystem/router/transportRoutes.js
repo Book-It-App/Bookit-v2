@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 router.get('/transports', transportController.getTransports);
 router.get('/transports/:transportId',authenticate, transportController.getTransportById);
 router.post('/transports',authenticate,upload.single('photo'), transportController.createTransport);
-router.put('/transports/:transportId',upload.single('photo'),authenticate, transportController.updateTransport);
+router.put('/transports/:transportId',authenticate,upload.single('photo'), transportController.updateTransport);
 router.delete('/transports/:transportId',authenticate, transportController.deleteTransport);
 
 module.exports = router;

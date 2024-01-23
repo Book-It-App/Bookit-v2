@@ -38,7 +38,7 @@ const BookingsAdmin = () => {
 
   //   try {
   //     await axios.put(
-  //       `${process.env.REACT_APP_SERVER_URL}/bookingsEdit/${selectedBookingId}`,
+  //       `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsEdit/${selectedBookingId}`,
   //       {
   //         isApproved: 'Rejected By Admin',
   //         rejectionReason: rejectionReason.trim(), // Send rejection reason in the request
@@ -96,7 +96,7 @@ const BookingsAdmin = () => {
 
   const getBookingData = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/bookingsAdmin`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsAdmin`, {
         withCredentials: true, // include credentials in the request
         headers: {
           Accept: "application/json",
@@ -176,7 +176,7 @@ const BookingsAdmin = () => {
     //consolelog(isApproved);
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/bookingsEdit/${bookingId}`,
+        `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsEdit/${bookingId}`,
         {
           isApproved: isApproved,
           rejectionReason:
@@ -210,7 +210,7 @@ const BookingsAdmin = () => {
 
 
   //   try {
-  //     const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/bookings/${bookingId}`,
+  //     const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookings/${bookingId}`,
 
   //       {
   //         withCredentials: true, // To include credentials in the request
@@ -383,7 +383,7 @@ const BookingsAdmin = () => {
             {/* <p className="py-2 text-base text-gray-800">Sorry about that! Please visit our hompage to get where you need to go.</p> */}
             <div>
 
-              <Link to="/profile" ><button
+              <Link to="/canteen-booking-system/profile" ><button
                 className="w-full lg:w-auto my-4 rounded-md px-1 sm:px-16 py-5 bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">Verify Email
               </button>
               </Link>

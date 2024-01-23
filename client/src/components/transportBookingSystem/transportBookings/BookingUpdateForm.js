@@ -20,7 +20,7 @@ const BookingForm = () => {
       eventDateType:"",
       eventStartDate:"",
       eventEndDate:"",
-      eventName: "",
+      // eventName: "",
       eventDate: "",  
       startTime: "",
       endTime: "",
@@ -30,13 +30,15 @@ const BookingForm = () => {
       bookedTransportName: "",
       selfOrGuest:"",
       noOfPerson:"",
+      roundOrOneway:"",
+      outstaionOrLocal:"",
       naneOfGuest:"",
       mobNoOfGuest:"",
       nameOfDriver:"",
       mobNoOfDriver:"",
       pickupLocation:"",
       dropLocation:"",
-      organizingClub: "",
+      // organizingClub: "",
       phoneNumber: "",
       altNumber: "",  
       isApproved:""
@@ -67,7 +69,7 @@ const BookingForm = () => {
         userId:data.userId,
         eventManager: data.eventManager,
         // department:data.department,
-        eventName: data.eventName,
+        // eventName: data.eventName,
         eventDateType:data.eventDateType,
         eventStartDate: data.eventStartDate ? data.eventStartDate.split("T")[0] : null,
         eventEndDate: data.eventEndDate ? data.eventEndDate.split("T")[0] : null,
@@ -82,20 +84,23 @@ const BookingForm = () => {
 
         selfOrGuest:data.selfOrGuest,
         noOfPerson:data.noOfPerson,
+        roundOrOneway:data.roundOrOneway,
+      outstaionOrLocal:data.outstaionOrLocal,
     naneOfGuest:data.naneOfGuest,
     mobNoOfGuest:data.mobNoOfGuest,
     pickupLocation:data.pickupLocation,
     dropLocation:data.dropLocation,
     nameOfDriver:data.nameOfDriver,
     mobNoOfDriver:data.mobNoOfDriver,
-        organizingClub: data.organizingClub,
+
+        // organizingClub: data.organizingClub,
         phoneNumber: data.phoneNumber,
         altNumber: data.altNumber,  
         isApproved:data.isApproved
       });
 
       setIsLoading(false);
-
+      console.log(bookingData)
       // if (response.status !== 200) {
       //   throw new Error(response.error);
       // }
@@ -130,7 +135,7 @@ const BookingForm = () => {
     const { eventManager,
       userId,
       // department,
-      eventName,
+      // eventName,
       eventDateType,
       eventStartDate,
       eventEndDate,
@@ -142,6 +147,8 @@ const BookingForm = () => {
       bookedTransportId,
             selfOrGuest,
       noOfPerson,
+      roundOrOneway,
+      outstaionOrLocal,
   naneOfGuest,
   mobNoOfGuest,
   pickupLocation,
@@ -149,7 +156,7 @@ const BookingForm = () => {
   nameOfDriver,
   mobNoOfDriver,
       bookedTransportName,
-      organizingClub,
+      // organizingClub,
       phoneNumber,
       altNumber,
       isApproved } = bookingData;
@@ -177,7 +184,7 @@ const BookingForm = () => {
           userId,
           // department,
           eventManager,
-          eventName,
+          // eventName,
           eventDateType,
           eventStartDate,
           eventEndDate,
@@ -188,6 +195,8 @@ const BookingForm = () => {
           userType,
           selfOrGuest,
           noOfPerson,
+          roundOrOneway,
+      outstaionOrLocal,
       naneOfGuest,
       mobNoOfGuest,
       pickupLocation,
@@ -196,7 +205,7 @@ const BookingForm = () => {
   mobNoOfDriver,
           bookedTransportId,
           bookedTransportName,
-          organizingClub,
+          // organizingClub,
           phoneNumber,
           altNumber,
           isApproved
@@ -265,7 +274,7 @@ const BookingForm = () => {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                 htmlFor="grid-event-manager"
               >
-                Event Coordinator Name
+                Booking Faculty/Staff
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -274,13 +283,13 @@ const BookingForm = () => {
                 value={bookingData.eventManager}
                 name="eventManager"
                 onChange={handleInputs}
-                placeholder="Event Coordinator Name"
+                placeholder="Booking Faculty/Staff"
               />
               {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
             </div>
 
 
-            <div className="w-full md:w-1/2 px-3">
+            {/* <div className="w-full md:w-1/2 px-3">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-event-name"
@@ -321,8 +330,7 @@ const BookingForm = () => {
                         type="text"
                         placeholder="Organizing Club"
                       />
-                      {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
-                    </div>
+                    </div> */}
 
 
 
@@ -518,7 +526,7 @@ const BookingForm = () => {
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                       htmlFor="grid-no-of-person">
-                      No. Of Person
+                      No. Of Person Traveling
                     </label>
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -601,6 +609,49 @@ const BookingForm = () => {
 
  )}
 
+
+<div className="flex flex-wrap -mx-3 mb-6">
+{bookingData.selfOrGuest === "guest" && (
+<div className="w-full md:w-1/2 px-3">
+  <label
+    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+    htmlFor="grid-round-or-oneway">
+    Round Or One-Way Trip
+  </label>
+  <select
+    className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+    id="grid-round-or-oneway"
+    name="roundOrOneway"
+    value={bookingData.roundOrOneway}
+    onChange={handleInputs}>
+    <option value="">Select</option>
+    <option value="round">Round</option>
+    <option value="oneway">One-Way</option>
+   
+  </select>
+  
+</div>
+
+)}
+<div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+  <label
+    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+    htmlFor="grid-outstaion-or-local">
+    Outstaion or Local
+  </label>
+  <select
+    className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+    id="grid-outstaion-or-local"
+    name="outstaionOrLocal"
+    value={bookingData.outstaionOrLocal}
+    onChange={handleInputs}>
+    <option value="">Select</option>
+    <option value="outstaion">Outstaion</option>
+    <option value="oneway">Local</option>
+   
+  </select>
+</div>
+</div>
 
 
 <div className="flex flex-wrap -mx-3 mb-6">
@@ -686,7 +737,7 @@ const BookingForm = () => {
 
 
 
-
+  {bookingData.isApproved === "Approved By Admin" && 
           <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
@@ -718,10 +769,11 @@ const BookingForm = () => {
                   name="mobNoOfDriver"
                   onChange={handleInputs}
                   placeholder="Mob. No. Of Driver"
-                />
+                  />
               </div>
             </div>
 
+                }
 
 
 

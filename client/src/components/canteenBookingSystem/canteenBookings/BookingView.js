@@ -47,7 +47,7 @@ const BookingsView = () => {
 
   //   try {
   //     await axios.put(
-  //       `${process.env.REACT_APP_SERVER_URL}/bookingsEdit/${selectedBookingId}`,
+  //       `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsEdit/${selectedBookingId}`,
   //       {
   //         isApproved: 'Rejected By Admin',
   //         rejectionReason: rejectionReason.trim(), // Send rejection reason in the request
@@ -77,7 +77,7 @@ const BookingsView = () => {
 
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/bookingsView/${bookingId}`,
+        `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsView/${bookingId}`,
         {
           withCredentials: true,
           headers: {
@@ -112,7 +112,7 @@ const BookingsView = () => {
     //consolelog(isApproved);
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/bookingsEdit/${bookingId}`,
+        `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsEdit/${bookingId}`,
         {
           isApproved: isApproved,
           rejectionReason:
@@ -142,7 +142,7 @@ const BookingsView = () => {
 
   // const deleteBooking = async (bookingId) => {
   //   try {
-  //     const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/bookings/${bookingId}`,
+  //     const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookings/${bookingId}`,
   //       {
   //         withCredentials: true,
   //         headers: {
@@ -215,7 +215,7 @@ const BookingsView = () => {
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                     htmlFor="grid-event-manager">
-                    Event Coordinator Name
+                    Booking Faculty/Staff
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"

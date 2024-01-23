@@ -259,7 +259,7 @@ const BookingsView = () => {
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                     htmlFor="grid-event-manager">
-                    Event Coordinator Name
+                    Booking Faculty/Staff
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -268,7 +268,7 @@ const BookingsView = () => {
                   </p>
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                 </div>
-                <div className="w-full md:w-1/2 px-3">
+                {/* <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-event-name">
@@ -293,8 +293,7 @@ const BookingsView = () => {
                     id="grid-organizing-club">
                     {bookingData.organizingClub}
                   </p>
-                  {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
-                </div>
+                </div> */}
 
                 {/* <div className="w-full md:w-1/2 px-3">
                   <h1
@@ -451,7 +450,7 @@ const BookingsView = () => {
                     Self or Guest
                   </h1>
                   <p
-                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="appearance-none block w-full capitalize text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-self-or-guest">
                     {bookingData.selfOrGuest}
                   </p>
@@ -486,6 +485,40 @@ const BookingsView = () => {
                   </div>
                 </div>
               )}
+
+
+
+
+<div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-round-or-oneway">
+    Round Or One-Way Trip
+                  </h1>
+                  <p
+                    className="appearance-none block w-full capitalize text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-round-or-oneway">
+                    {bookingData.roundOrOneway}
+                  </p>
+                </div>
+                <div className="w-full md:w-1/2 px-3">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-outstaion-or-local">
+    Outstaion or Local
+                  </h1>
+                  <p
+                    className="appearance-none block w-full capitalize  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-outstaion-or-local">
+                    {bookingData.outstaionOrLocal}
+                  </p>
+                </div>
+              </div>
+
+
+
+
 
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">

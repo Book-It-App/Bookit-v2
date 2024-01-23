@@ -14,16 +14,16 @@ const BookingForm = () => {
   const [authStatus, setAuthStatus] = useState("");
   const [emailVerified, setEmailVerified] = useState(false);
 
-  const { transportId, transportName } = useParams();
-  //consolelog(transportId);
+  const { hallId, hallName } = useParams();
+  //consolelog(hallId);
   const [isLoading, setIsLoading] = useState(true);
-  // const { transportId, transportName } = props.location.state;
+  // const { hallId, hallName } = props.location.state;
   const [bookingData, setBookingData] = useState({
     userId: "",
     eventManager: "",
     department: "",
     institution: "",
-    // eventName: "",
+    eventName: "",
     eventDateType: "",
     eventDate: "",
     eventStartDate: "",
@@ -32,17 +32,9 @@ const BookingForm = () => {
     endTime: "",
     email: "",
     userType: "",
-    bookedTransportId: transportId,
-    bookedTransportName: transportName,
-    selfOrGuest:"",
-    noOfPerson:"",
-    roundOrOneway:"",
-    outstaionOrLocal:"",
-naneOfGuest:"",
-mobNoOfGuest:"",
-pickupLocation:"",
-dropLocation:"",
-    // organizingClub: "",
+    bookedHallId: hallId,
+    bookedHallName: hallName,
+    organizingClub: "",
     phoneNumber: "",
     altNumber: "",
     isApproved: "",
@@ -50,7 +42,8 @@ dropLocation:"",
 
   const userContact = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/getdata`,
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/getdata`,
         {
           withCredentials: true, // include credentials in the request
           headers: {
@@ -115,8 +108,6 @@ dropLocation:"",
   // send to backend
 
   const bookingForm = async (e) => {
-
-    console.log(bookingData)
     e.preventDefault();
     // setShowModal(false)
     setIsLoading(true);
@@ -125,7 +116,7 @@ dropLocation:"",
       userId,
       department,
       institution,
-      // eventName,
+      eventName,
       eventDateType,
       eventDate,
       eventStartDate,
@@ -134,31 +125,24 @@ dropLocation:"",
       endTime,
       email,
       userType,
-      bookedTransportId,
+      bookedHallId,
 
-      bookedTransportName,
-      selfOrGuest,
-     noOfPerson,
-     roundOrOneway,
-    outstaionOrLocal,
-naneOfGuest,
-mobNoOfGuest,
-pickupLocation,
-dropLocation,
-      // organizingClub,
+      bookedHallName,
+      organizingClub,
       phoneNumber,
       altNumber,
       isApproved,
     } = bookingData;
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookings`,
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookings`,
         {
           userId,
           department,
           institution,
           eventManager,
-          // eventName,
+          eventName,
           eventDate,
           eventDateType,
           eventStartDate,
@@ -167,17 +151,9 @@ dropLocation,
           endTime: parseISO(`2000-01-01T${endTime}:00.000Z`),
           email,
           userType,
-          bookedTransportId,
-          bookedTransportName,
-          selfOrGuest,
-          noOfPerson,
-          roundOrOneway,
-    outstaionOrLocal,
-naneOfGuest,
-mobNoOfGuest,
-pickupLocation,
-dropLocation,
-          // organizingClub,
+          bookedHallId,
+          bookedHallName,
+          organizingClub,
           phoneNumber,
           altNumber,
           isApproved,
@@ -194,7 +170,7 @@ dropLocation,
 
       if (data.message === "Booking created successfully") {
         toast.success("Booking created successfully!");
-        navigate("/transport-booking-system/bookings");
+        navigate("/bookings");
       } else {
         toast.error("Request not sent!");
       }
@@ -248,7 +224,7 @@ dropLocation,
             </p>
             {/* <p className="py-2 text-base text-gray-800">Sorry about that! Please visit our hompage to get where you need to go.</p> */}
             <div>
-              <Link to="/profile">
+              <Link to="/canteen-booking-system/profile">
                 <button className="w-full lg:w-auto my-4 rounded-md px-1 sm:px-16 py-5 bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">
                   Verify Email
                 </button>
@@ -261,10 +237,10 @@ dropLocation,
           <div className="max-w-screen-md mx-auto p-5 my-10 bg-white shadow-2xl shadow-blue-200">
             <div className="text-center mb-16">
               <p className="mt-4 text-sm leading-7 text-gray-500 font-regular uppercase">
-                Book Vehicle
+                Book Hall
               </p>
               <h3 className="text-3xl sm:text-4xl leading-normal font-extrabold tracking-tight text-gray-900">
-                Book Your <span className="text-indigo-600">Vehicle </span>Now
+                Book Your <span className="text-indigo-600">Hall </span>Now
               </h3>
             </div>
 
@@ -274,7 +250,7 @@ dropLocation,
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                     htmlFor="grid-event-manager">
-                    Booking Faculty/Staff
+                    Event Coordinator Name
                   </label>
                   <input
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -283,11 +259,11 @@ dropLocation,
                     value={bookingData.eventManager}
                     name="eventManager"
                     onChange={handleInputs}
-                    placeholder="Booking Faculty/Staff"
-                    disabled
+                    placeholder="Event Coordinator Name"
                   />
+                  {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                 </div>
-{/* 
+
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -322,13 +298,14 @@ dropLocation,
                     type="text"
                     placeholder="Organizing Club"
                   />
-                </div> */}
+                  {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
+                </div>
 
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-event-date-type">
-                    Booking Date Type
+                    Event Date Type
                   </label>
 
                   <select
@@ -361,7 +338,7 @@ dropLocation,
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-event-date"
               >
-                Booking Date
+                Event Date
               </label>
               <input
                 value={bookingData.eventDate}
@@ -390,7 +367,7 @@ dropLocation,
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-event-date"
               >
-                Booking Date
+                Event Date
               </label>
               <input
                 value={bookingData.eventDate}
@@ -458,7 +435,7 @@ dropLocation,
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="grid-event-date">
-                      Booking Date
+                      Event Date
                     </label>
                     <input
                       value={bookingData.eventDate}
@@ -476,24 +453,23 @@ dropLocation,
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-transport-name">
-                    Vehicle Name
+                    htmlFor="grid-hall-name">
+                    Hall Name
                   </label>
                   <input
                     className="appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-transport-name"
+                    id="grid-hall-name"
                     type="text"
-                    value={bookingData.bookedTransportName}
-                    name="bookedTransportName"
+                    value={bookingData.bookedHallName}
+                    name="bookedHallName"
                     onChange={handleInputs}
-                    placeholder="Vehicle Name"
+                    placeholder="Hall Name"
                     disabled
                   />
                 </div>
               </div>
 
-{/* displat start and end time in all date types */}
-              {/* {bookingData.eventDateType === "half" && ( */}
+              {bookingData.eventDateType === "half" && (
                 <div className="flex flex-wrap -mx-3 mb-6">
                   <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label
@@ -528,194 +504,212 @@ dropLocation,
                     />
                   </div>
                 </div>
-              {/* )} */}
+              )}
+{/* 
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-institution">
+                    Institution
+                  </label>
 
-
- {/* {bookingData.eventDateType === "half" && ( */}
-                <div className="flex flex-wrap -mx-3 mb-6">
-                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-no-of-person">
-                      No. Of Person Traveling
-                    </label>
+                  {bookingData.userType !== "admin" && (
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-no-of-person"
-                      type="number"
-                      value={bookingData.noOfPerson}
-                      name="noOfPerson"
+                      id="grid-institution"
+                      type="text"
+                      value={institutionName}
+                      name="institution"
                       onChange={handleInputs}
-                      placeholder="No. Of Person"
+                      placeholder="Institution"
+                      disabled
                     />
-                  </div>
-                  <div className="w-full md:w-1/2 px-3">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-selfOrGuest">
-                      Self Or Guest
-                    </label>
+                  )}
+
+                  {bookingData.userType === "admin" && (
                     <select
                       className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-self-or-guest"
-                      name="selfOrGuest"
-                      value={bookingData.selfOrGuest}
+                      id="institution"
+                      name="institution"
+                      value={bookingData.institution}
                       onChange={handleInputs}>
-                      <option value="">Select</option>
-                      <option value="self">Self</option>
-                      <option value="guest">Guest</option>
-                     
+                      <option value="null">Select</option>
+                      <option value="AITR">
+                        Acropolis Institute of Technology and Research
+                      </option>
+                      <option value="AIMSR">
+                        Acropolis Institute of Management Studies & Research
+                      </option>
+                      <option value="AIPER">
+                        Acropolis Institute Of Pharmaceutical Education &
+                        Research
+                      </option>
+                      <option value="AMR">
+                        Acropolis Faculty of Management and Research
+                      </option>
+                      <option value="AILAW">Acropolis Institute of LAW</option>
+
+                      <option value="CDC">Career Development Cell</option>
+                      <option value="AC">Acro Care</option>
                     </select>
-                    
-                  </div>
+                  )}
                 </div>
 
+                <div className="w-full md:w-1/2 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-department">
+                    Department
+                  </label>
 
-
-
-
-
-
-
-
-
- {bookingData.selfOrGuest === "guest" && (
-  
- <div className="flex flex-wrap -mx-3 mb-6">
-                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-name-of-guest">
-                      Name Of Guest
-                    </label>
+                  {bookingData.userType !== "admin" && (
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-name-of-guest"
+                      id="grid-department"
                       type="text"
-                      value={bookingData.naneOfGuest}
-                      name="naneOfGuest"
+                      value={departmentName}
+                      name="department"
                       onChange={handleInputs}
-                      placeholder="Name Of Guest"
+                      placeholder="Department"
+                      disabled
                     />
-                  </div>
-                  <div className="w-full md:w-1/2 px-3">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-mobNoOfGuest">
-                      Mob. No. Of Guest
-                    </label>
-                    <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-mob-no-of-guest"
-                      type="number"
-                      value={bookingData.mobNoOfGuest}
-                      name="mobNoOfGuest"
-                      onChange={handleInputs}
-                      placeholder="Mob. No. Of Guest"
-                     
-                    />
-                    
-                  </div>
+                  )}
 
-                  
+                  {bookingData.userType === "admin" && (
+                    <>
+                      {bookingData.institution === "null" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="">Select</option>
+                        </select>
+                      )}
+
+                      {bookingData.institution === "CDC" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="CDC">Career Development Cell</option>
+                          <option value="EDC">EDC</option>
+                          <option value="PLACEMENT">Placement</option>
+                          <option value="TRAINING">Training</option>
+                          <option value="IIPC">IIPC</option>
+                        </select>
+                      )}
+
+                      {bookingData.institution === "AC" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="AC">Acro Care</option>
+                        </select>
+                      )}
+                      {bookingData.institution === "AIPER" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="AIPER">
+                            Acropolis Institute Of Pharmaceutical Education &
+                            Research
+                          </option>
+                        </select>
+                      )}
+
+                      {bookingData.institution === "AILAW" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="AILAW">
+                            Acropolis Institute of LAW
+                          </option>
+                        </select>
+                      )}
+
+                      {bookingData.institution === "AMR" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="AMR">
+                            Acropolis Faculty of Management and Research
+                          </option>
+                        </select>
+                      )}
+
+                      {bookingData.institution === "AIMSR" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="">Select</option>
+                          <option value="BSC">Bio Science</option>
+                          <option value="BBA">
+                            Bachelor of Business Administration
+                          </option>
+                          <option value="AIMSR">
+                            Acropolis Institute of Management Studies & Research
+                          </option>
+                        </select>
+                      )}
+
+                      {bookingData.institution === "AITR" && (
+                        <select
+                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="department"
+                          name="department"
+                          value={bookingData.department}
+                          onChange={handleInputs}>
+                          <option value="">Select</option>
+                          <option value="CE">Civil Engineering</option>
+                          <option value="ME">Mechanical Engineering</option>
+                          <option value="EC">
+                            Electronics & Communication
+                          </option>
+                          <option value="CSE">
+                            Computer Science & Engineering
+                          </option>
+                          <option value="AIML">
+                            Artificial Intelligence and Machine Learning
+                          </option>
+                          <option value="IT">Information Technology</option>
+                          <option value="CSIT">
+                            Computer Science and Information Technology
+                          </option>
+                          <option value="FCA">
+                            Faculty of Computer Applications
+                          </option>
+                          <option value="HUMI">Huminities</option>
+                          <option value="CHEM">Chemistry</option>
+                        </select>
+                      )}
+                    </>
+                  )}
                 </div>
-
-
-  )}
-
-<div className="flex flex-wrap -mx-3 mb-6">
-{bookingData.selfOrGuest === "guest" && (
-<div className="w-full md:w-1/2 px-3">
-  <label
-    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-    htmlFor="grid-round-or-oneway">
-    Round Or One-Way Trip
-  </label>
-  <select
-    className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-    id="grid-round-or-oneway"
-    name="roundOrOneway"
-    value={bookingData.roundOrOneway}
-    onChange={handleInputs}>
-    <option value="">Select</option>
-    <option value="round">Round</option>
-    <option value="oneway">One-Way</option>
-   
-  </select>
-  
-</div>
-
-)}
-<div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-  <label
-    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-    htmlFor="grid-outstaion-or-local">
-    Outstaion or Local
-  </label>
-  <select
-    className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-    id="grid-outstaion-or-local"
-    name="outstaionOrLocal"
-    value={bookingData.outstaionOrLocal}
-    onChange={handleInputs}>
-    <option value="">Select</option>
-    <option value="outstaion">Outstaion</option>
-    <option value="oneway">Local</option>
-   
-  </select>
-</div>
-</div>
+              </div>
 
 
 
-
-
-
-
-<div className="flex flex-wrap -mx-3 mb-6">
-                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-pickup-location">
-                      Pickup Location
-                    </label>
-                    <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-pickup-location"
-                      type="text"
-                      value={bookingData.pickupLocation}
-                      name="pickupLocation"
-                      onChange={handleInputs}
-                      placeholder="Pickup Location"
-                    />
-                  </div>
-                  <div className="w-full md:w-1/2 px-3">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-drop-location">
-                       Drop Location
-                    </label>
-                    <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-drop-location"
-                      type="text"
-                      value={bookingData.dropLocation}
-                      name="dropLocation"
-                      onChange={handleInputs}
-                      placeholder="Drop Location"
-                     
-                    />
-                    
-                  </div>
-                </div>
-
-
-
-
-
-
-
-
+ */}
 
 
 
@@ -908,7 +902,7 @@ dropLocation,
                   <button
                     // onClick={handleConfirmModal}
                     onClick={bookingForm}
-                    className="shadow bg-indigo-700 hover:bg-indigo-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+                    className="shadow bg-indigo-600 hover:bg-indigo-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
                     type="submit">
                     Send Request
                   </button>

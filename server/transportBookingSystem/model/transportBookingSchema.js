@@ -18,10 +18,10 @@ const transportBookingSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    eventName: {
-      type: String,
-      required: true
-    },
+    // eventName: {
+    //   type: String,
+    //   required: true
+    // },
     eventDate: {
       type: Date,
   
@@ -53,6 +53,14 @@ const transportBookingSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+
+    roundOrOneway:{
+      type: String,
+    },
+    outstaionOrLocal:{
+      type: String,
+    },
+
 naneOfGuest:{
   type: String,
 
@@ -100,10 +108,10 @@ mobNoOfDriver:{
       type: String,
       required: true
     },
-    organizingClub: {
-      type: String,
-      required: true
-    },
+    // organizingClub: {
+    //   type: String,
+    //   required: true
+    // },
     phoneNumber: {
       type: Number,
       required: true

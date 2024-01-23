@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link ,useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../LoadingSpinner";
 import axios from "axios";
@@ -11,9 +11,10 @@ import { institutions, InstitutionList, DepartmentList } from "../../Institution
 import notVerified from "../../../assets/notVerified.jpg";
 const BookingForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [authStatus, setAuthStatus] = useState("");
   const [emailVerified, setEmailVerified] = useState(false);
-
+  const [showSidebar, setShowSidebar] = useState(true);
   const { hallId, hallName } = useParams();
   //consolelog(hallId);
   const [isLoading, setIsLoading] = useState(true);
@@ -88,11 +89,20 @@ const BookingForm = () => {
       navigate("/login");
     }
   };
-
+  const data = location.state;
   useEffect(() => {
+
+    // const location = useLocation();
+
+    // const data = location.state;
+    // const selectedItems = location.state.selectedItems;
+
+    // Now 'selectedItems' contains the state passed from the previous component
+    console.log(data);
+    
     userContact();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, data);
 
   // handle change here
 
@@ -136,7 +146,7 @@ const BookingForm = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/bookings`,
+        `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookings`,
         {
           userId,
           department,
@@ -204,6 +214,18 @@ const BookingForm = () => {
   const departmentName =
     DepartmentList[bookingData.department] || bookingData.department;
 
+
+    // const handleItemSelect = (itemId, itemName, quantity) => {
+    //   setSelectedItems((selectedItems) => ({
+    //     ...selectedItems,
+    //     [itemId]: {  itemName,quantity },
+    //   }));
+    //   setShowSidebar(true);
+    // };
+  
+    const handleSidebarClose = () => {
+      setShowSidebar(false);
+    };
   return (
     <>
       {isLoading ? (
@@ -224,7 +246,7 @@ const BookingForm = () => {
             </p>
             {/* <p className="py-2 text-base text-gray-800">Sorry about that! Please visit our hompage to get where you need to go.</p> */}
             <div>
-              <Link to="/profile">
+              <Link to="/canteen-booking-system/profile">
                 <button className="w-full lg:w-auto my-4 rounded-md px-1 sm:px-16 py-5 bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">
                   Verify Email
                 </button>
@@ -234,6 +256,7 @@ const BookingForm = () => {
         </div>
       ) : (
         <div>
+
           <div className="max-w-screen-md mx-auto p-5 my-10 bg-white shadow-2xl shadow-blue-200">
             <div className="text-center mb-16">
               <p className="mt-4 text-sm leading-7 text-gray-500 font-regular uppercase">
@@ -244,6 +267,37 @@ const BookingForm = () => {
               </h3>
             </div>
 
+
+ <div className={`w-1/4  ${showSidebar ? 'block' : 'hidden'}`}>
+              {/* Sidebar */}
+              <div className="fixed  right-0 bg-white w-64 p-4 shadow-lg">
+                <h2 className="text-lg font-semibold mb-4">Selected Items</h2>
+
+                {Object.entries(data).map(([itemId, { itemName,quantity}]) => (
+                  <div key={itemId} className="mb-2">
+                    <p>
+                      {itemName} , Quantity: {quantity}
+                    </p>
+                  </div>
+                ))} 
+                {/* <Link to={"/canteen-booking-system/bookingForm"}
+                  state= { data } 
+                              className="rounded px-2 py-2  bg-indigo-700 hover:bg-indigo-600 focus:shadow-outline focus:outline-none text-white font-bold"
+                              // onClick={() =>
+                              //   handleBookingClick()
+                              // }
+                            >
+                              Book Now form
+                            </Link>
+
+                <button
+                  className="bg-indigo-700 text-white px-3 py-2 rounded"
+                  onClick={handleSidebarClose}
+                >
+                  Close
+                </button> */}
+              </div>
+            </div>
             <form method="POST" className="w-full">
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">

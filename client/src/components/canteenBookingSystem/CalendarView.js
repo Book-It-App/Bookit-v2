@@ -39,9 +39,9 @@ export const CalendarView = () => {
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
 
-  const [hallNames, setHallNames] = useState([]); // State to store hall names
+  const [canteenNames, setCanteenNames] = useState([]); // State to store canteen names
 
-  const [selectedHalls, setSelectedHalls] = useState([]); // State for selected hall
+  const [selectedCanteens, setSelectedCanteens] = useState([]); // State for selected canteen
 
   // State for the events fetched from the API
   const [events, setEvents] = useState([]);
@@ -51,7 +51,7 @@ export const CalendarView = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_SERVER_URL}/events`,
+          `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/events`,
           {
             // withCredentials: true, // include credentials in the request
             headers: {
@@ -72,36 +72,36 @@ export const CalendarView = () => {
   }, []);
 
 
-  // Fetch hall names from the API
+  // Fetch canteen names from the API
   useEffect(() => {
-    const fetchHallNames = async () => {
+    const fetchCanteenNames = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_SERVER_URL}/halls`
+          `${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/canteens`
         );
-        setHallNames(response.data.halls); // Assuming halls are retrieved as an array of objects with 'name' property
+        setCanteenNames(response.data.canteens); // Assuming canteens are retrieved as an array of objects with 'name' property
       } catch (error) {
-        console.error("Error fetching hall names:", error);
+        console.error("Error fetching canteen names:", error);
       }
     };
 
-    fetchHallNames();
+    fetchCanteenNames();
   }, []);
-    // Function to handle hall selection
-    const handleHallSelection = (hallName) => {
-      if (selectedHalls.includes(hallName)) {
-        // Deselect hall if already selected
-        setSelectedHalls(selectedHalls.filter((hall) => hall !== hallName));
+    // Function to handle canteen selection
+    const handleCanteenSelection = (canteenName) => {
+      if (selectedCanteens.includes(canteenName)) {
+        // Deselect canteen if already selected
+        setSelectedCanteens(selectedCanteens.filter((canteen) => canteen !== canteenName));
       } else {
-        // Select hall if not selected
-        setSelectedHalls([...selectedHalls, hallName]);
+        // Select canteen if not selected
+        setSelectedCanteens([...selectedCanteens, canteenName]);
       }
     };
-    const isHallSelected = (hallName) => {
-      return selectedHalls.includes(hallName);
+    const isCanteenSelected = (canteenName) => {
+      return selectedCanteens.includes(canteenName);
     };
-    const filteredEvents = selectedHalls.length > 0
-    ? events.filter((event) => selectedHalls.includes(event.bookedHallName))
+    const filteredEvents = selectedCanteens.length > 0
+    ? events.filter((event) => selectedCanteens.includes(event.bookedCanteenName))
     : events;
 
   let days = eachDayOfInterval({
@@ -174,24 +174,24 @@ export const CalendarView = () => {
           {/* <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-center text-indigo-700 font-black leading-7 ml-3 md:leading-10">
           Filters </h1> */}
           <h2 class="text-xl font-bold mb-4 text-indigo-700 -mt-1">
-                By Hall Name
+                By Canteen Name
               </h2>
         
 
 <button
-            className={`py-2 px-8 rounded-full mb-4  mx-4  focus:outline-none ${selectedHalls.length === 0 ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
-            onClick={() => setSelectedHalls([])}
+            className={`py-2 px-8 rounded-full mb-4  mx-4  focus:outline-none ${selectedCanteens.length === 0 ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
+            onClick={() => setSelectedCanteens([])}
           >
             All
           </button>
 
 
-          {hallNames.map((hall) => (
-          <button key={hall.id}
-            className={` py-2 px-8 rounded-full mb-4 mx-4 focus:outline-none ${isHallSelected(hall.name) ? "bg-indigo-100 text-indigo-800 " : "bg-white text-gray-800 hover:bg-gray-100"}`}
-            onClick={() => handleHallSelection(hall.name)}
+          {canteenNames.map((canteen) => (
+          <button key={canteen.id}
+            className={` py-2 px-8 rounded-full mb-4 mx-4 focus:outline-none ${isCanteenSelected(canteen.name) ? "bg-indigo-100 text-indigo-800 " : "bg-white text-gray-800 hover:bg-gray-100"}`}
+            onClick={() => handleCanteenSelection(canteen.name)}
           >
-            {hall.name}
+            {canteen.name}
           </button>
 
 ))}
@@ -369,7 +369,7 @@ function Meeting({ events }) {
             <div class="flex items-center  my-3">
               <MdLocationPin className=" text-gray-700 mr-2" />
               <small class="text-sm  text-gray-700">
-                {events.bookedHallName} {events.bookedHall.location}
+                {events.bookedCanteenName} {events.bookedCanteen.location}
               </small>
             </div>
 

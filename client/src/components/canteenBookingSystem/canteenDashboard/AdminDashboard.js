@@ -1,5 +1,5 @@
 import React from 'react'
-import BookingsAdmin from '../hallBookings/BookingsAdmin'
+import BookingsAdmin from '../canteenBookings/BookingsAdmin'
 // import BookingsHod from '../bookings/BookingsHod'
 
 // import Events from '../bookings/Events'

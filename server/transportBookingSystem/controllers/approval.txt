@@ -1,4 +1,5 @@
- <head>
+
+      <head>
       <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
       <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
       <style>
@@ -49,20 +50,22 @@
               <tr>
                 <td style="text-align:center">
                  
-                  <h1 style="font-size: 30px; color: #16a34a; margin-top: 0;">Booking Request Approved</h1>
+                  <h1 style="font-size: 30px; color: #ef4444; margin-top: 0;">Booking Request Rejected</h1>
                   
                   <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
-                  <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
+                  <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your booking request has been rejected due to following reason. Please review the booking details provided below and click the button below to view the booking.</p>
+                    <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Reason for Rejection</h1>
+                  <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; text-align: left;">${rejectionReason}</p>
                    <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
                   
                   <div style="text-align: justify; margin:20px; display: flex;">
                     
                     <div style="flex: 1; margin-right: 20px;">
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">EVENT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">TRANSPORT NAME	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">ORGANIZING CLUB	 :</h1>
-                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">INSTITUTION :</h1>
-                           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">DEPARTMENT :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Event Name	 :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Vehicle Name	 :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Organizing Club	 :</h1>
+                      <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Institution :</h1>
+                           <h1 style="font-size: 20px; color: #202225; margin-top: 0;">Departmant :</h1>
                      
                     </div>
                     <div style="flex: 1;">
@@ -85,4 +88,3 @@
   
       </table>
       </body>
-  

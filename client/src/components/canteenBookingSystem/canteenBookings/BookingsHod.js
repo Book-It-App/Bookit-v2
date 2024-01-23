@@ -51,7 +51,7 @@ const BookingsHod = () => {
   }, []);
   const getBookingData = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/bookingsHod`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsHod`, {
         withCredentials: true, // include credentials in the request
         headers: {
           Accept: "application/json",
@@ -123,7 +123,7 @@ const BookingsHod = () => {
 
     //consolelog(isApproved);
     try {
-      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/bookingsEdit/${bookingId}`, {
+      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/canteen-booking-system/bookingsEdit/${bookingId}`, {
         isApproved: isApproved
       }, {
         withCredentials: true, // include credentials in the request
@@ -266,7 +266,7 @@ const BookingsHod = () => {
                 {/* <p className="py-2 text-base text-gray-800">Sorry about that! Please visit our hompage to get where you need to go.</p> */}
                 <div>
       
-                  <Link to="/about" ><button
+                  <Link to="/canteen-booking-system/about" ><button
                     className="w-full lg:w-auto my-4 rounded-md px-1 sm:px-16 py-5 bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">Verify Email
                   </button>
                   </Link>

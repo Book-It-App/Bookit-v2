@@ -26,7 +26,7 @@ const RenderUser = () => {
   if (state.userType === "admin") {
     return (
       <div>
-        <Link to="/canteen-booking-system/halls">Halls</Link>
+        <Link to="/canteen-booking-system/canteens">Menu</Link>
       </div>
     );
   } else if (state.userType === "faculty") {
@@ -38,7 +38,7 @@ const RenderUser = () => {
   } else {
     return (
       <div>
-        <Link to="/canteen-booking-system/halls">Halls</Link>
+        <Link to="/canteen-booking-system/canteens">Menu</Link>
       </div>
     );
   }
@@ -124,10 +124,10 @@ const RenderUser = () => {
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/canteen-booking-system/events">Events</Link>
               </li>
-
+{/* 
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/canteen-booking-system/calendar">Calendar</Link>
-              </li>
+              </li> */}
 
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 {/* <Link to="/bookings">Bookings</Link> */}
