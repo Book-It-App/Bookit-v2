@@ -504,16 +504,17 @@ const updateTransportBooking = async (req, res, next) => {
       dropLocation,
       // email,
 
-      // bookedTransportId,
+      bookedTransportId,
+      bookedTransportName,
       // transportId,
       rejectionReason,
       isApproved,
     } = req.body;
 
-    // const transport = await Transport.findById(transportId);
-    // if (!transport) {
-    //   return res.status(404).json({ message: 'Transport not found' });
-    // }
+    const transport = await Transport.findById(bookedTransportId);
+    if (!transport) {
+      return res.status(404).json({ message: 'Transport not found' });
+    }
 
     // if(isApproved === "Approved By Admin"){
     //   if(!nameOfDriver || !mobNoOfDriver){
@@ -543,6 +544,8 @@ const updateTransportBooking = async (req, res, next) => {
         mobNoOfDriver,
         pickupLocation,
         dropLocation,
+        bookedTransportId,
+      bookedTransportName,
         //  transportId: transport._id,email,
         isApproved,
         rejectionReason,

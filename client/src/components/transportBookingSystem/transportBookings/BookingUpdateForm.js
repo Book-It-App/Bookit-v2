@@ -13,6 +13,9 @@ const BookingForm = () => {
   //consolelog(bookingId);
   const [isLoading, setIsLoading] = useState(true);
   // const { transportId, transportName } = props.location.state;
+ 
+  const [vehicles, setVehicles] = useState([]);
+
   const [bookingData, setBookingData] = useState(
     { userId:"",
       eventManager: "",
@@ -46,7 +49,24 @@ const BookingForm = () => {
 
     });
 
-
+    const fetchVehicles = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`, {
+          withCredentials: true,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response.data);
+        const vehicleList = response.data.transports; // Modify this based on your API response structure
+    
+        setVehicles(vehicleList);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
+    
 
   const getbookingById = async () => {
     try {
@@ -115,6 +135,8 @@ const BookingForm = () => {
   useEffect(() => {
     
     getbookingById();
+    fetchVehicles();
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -145,6 +167,7 @@ const BookingForm = () => {
       email,
       userType,
       bookedTransportId,
+      bookedTransportName,
             selfOrGuest,
       noOfPerson,
       roundOrOneway,
@@ -155,13 +178,12 @@ const BookingForm = () => {
   dropLocation,
   nameOfDriver,
   mobNoOfDriver,
-      bookedTransportName,
       // organizingClub,
       phoneNumber,
       altNumber,
       isApproved } = bookingData;
 
-
+      console.log(bookingData)
       
 
 
@@ -243,9 +265,20 @@ const BookingForm = () => {
   };
 
 
+  const handleVehicleSelect = (e) => {
+    const selectedVehicleId = e.target.value;
+    const selectedVehicleObject = vehicles.find((vehicle) => vehicle._id === selectedVehicleId);
+  
+    setBookingData((bookingData) => ({
+      ...bookingData,
+      bookedTransportId: selectedVehicleObject._id,
+      bookedTransportName: selectedVehicleObject.name ,
 
 
-
+    }));
+    console.log(bookingData)
+  };
+  
 
   return (
     <>
@@ -459,17 +492,41 @@ const BookingForm = () => {
               >
                 Transport Name
               </label>
-              <input
-                className="appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+
+              <select
+    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+    id="grid-transport-name"
+    name="bookedTransportName"
+    value={bookingData.bookedTransportId}
+    // onChange={handleInputs}
+    onChange={(e) => handleVehicleSelect(e)}
+  >
+    {/* <option value="">Select a vehicle</option> */}
+    {/* <option value={bookingData.bookedTransportName}>{bookingData.bookedTransportName}</option> */}
+    
+    {vehicles.map((vehicle) => (
+      <option key={vehicle._id} value={vehicle._id}>
+        {vehicle.number} {vehicle.name} 
+      </option>
+    ))}
+  </select>
+
+              {/* <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-transport-name"
                 type="text"
                 value={bookingData.bookedTransportName}
                 name="bookedTransportName"
                 onChange={handleInputs}
                 placeholder="Transport Name"
-                disabled
-              />
+              /> */}
             </div>
+
+
+
+
+
+
           </div>
 
             
@@ -497,7 +554,6 @@ const BookingForm = () => {
                 onChange={handleInputs}
                 placeholder="Start Time"
               />
-              {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
             </div>
             <div className="w-full md:w-1/2 px-3">
               <label
@@ -600,7 +656,7 @@ const BookingForm = () => {
                       name="mobNoOfGuest"
                       onChange={handleInputs}
                       placeholder="Mob. No. Of Guest"
-                     
+                      
                     />
                     
                   </div>
@@ -711,7 +767,6 @@ const BookingForm = () => {
                 placeholder="Phone Number"
 
               />
-              {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
             </div>
 
 
@@ -794,21 +849,6 @@ const BookingForm = () => {
 
 
           <div className="flex flex-wrap -mx-3 mb-6">
-            {/* <div className="w-full px-3">
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="grid-password"
-              >
-                Your Message
-              </label>
-              <textarea
-                value={bookingData.message}
-                name="message"
-                onChange={handleInputs}
-                rows="10"
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              ></textarea>
-            </div> */}
 
             <div className="flex justify-between w-full px-3">
               <button
