@@ -374,7 +374,7 @@ const BookingForm = () => {
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="grid-event-date-type"
                     >
-                      Event Date Type
+                      Booking date Type
                     </label>
                     
 
@@ -420,7 +420,7 @@ const BookingForm = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-event-date"
                 type="date"
-                placeholder="Event Date"
+                placeholder="Booking date"
                 min={new Date().toISOString().split("T")[0]}
 
               />
@@ -439,7 +439,7 @@ const BookingForm = () => {
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-event-end-date"
                 type="date"
-                placeholder="Event Date"
+                placeholder="Booking date"
                 min={new Date().toISOString().split("T")[0]}
 
               />
@@ -467,7 +467,7 @@ const BookingForm = () => {
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-event-date"
                   >
-                    Event Date
+                    Booking date
                   </label>
                   <input
                     value={bookingData.eventDate}
@@ -476,7 +476,7 @@ const BookingForm = () => {
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-event-date"
                     type="date"
-                    placeholder="Event Date"
+                    placeholder="Booking date"
                     min={new Date().toISOString().split("T")[0]}
 
                   />
@@ -656,7 +656,7 @@ const BookingForm = () => {
                       name="mobNoOfGuest"
                       onChange={handleInputs}
                       placeholder="Mob. No. Of Guest"
-                      
+
                     />
                     
                   </div>

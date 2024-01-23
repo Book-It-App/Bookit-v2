@@ -300,7 +300,7 @@ const BookingsView = () => {
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-event-date"
                   >
-                    Event Date
+                    Booking date
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -312,7 +312,7 @@ const BookingsView = () => {
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-event-date">
-                    Event Date Type
+                    Booking date Type
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -369,7 +369,7 @@ const BookingsView = () => {
                     <h1
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                       htmlFor="grid-department">
-                      Event Date
+                      Booking date
                     </h1>
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -435,7 +435,7 @@ const BookingsView = () => {
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                     htmlFor="grid-no-of-person">
-                    No. Of Person
+                    No. Of Person Traveling
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -490,6 +490,8 @@ const BookingsView = () => {
 
 
 <div className="flex flex-wrap -mx-3 mb-6">
+
+{bookingData.selfOrGuest === "guest" && (
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -502,6 +504,8 @@ const BookingsView = () => {
                     {bookingData.roundOrOneway}
                   </p>
                 </div>
+)}
+
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -571,7 +575,7 @@ const BookingsView = () => {
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-alt-number">
-                    {bookingData.altNumber}
+                    {bookingData.altNumber ? bookingData.altNumber : "Not Provided"}
                   </p>
                 </div>
               </div>
