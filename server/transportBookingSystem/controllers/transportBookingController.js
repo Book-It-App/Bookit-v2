@@ -589,31 +589,27 @@ const sendApprovalEmail = async (booking, bookingId,MainDate,StartDate,EndDate) 
 
 
 
-const approvalEmail = approvalEmailTemplate(booking.nameOfDriver,
-  booking.mobNoOfDriver,
-  booking.bookedTransportName,
-  booking.bookedTransport.number,
-  booking.bookedTransport.capacity,
-  // booking.bookedTransport.photo,
-  // booking.eventName,
- //           booking.organizingClub,
-  booking.institution,
-  booking.department,
-  MainDate,
-  booking.selfOrGuest,
-  booking.noOfPerson,
-  booking.eventDateType,
-  StartDate,
-  EndDate,
-  bookingId);
+// const approvalEmail = approvalEmailTemplate(booking.nameOfDriver,
+  // booking.mobNoOfDriver,
+  // booking.bookedTransportName,
+  // booking.bookedTransport.number,
+  // booking.bookedTransport.capacity,
+
+  // booking.institution,
+  // booking.department,
+  // MainDate,
+  // booking.selfOrGuest,
+  // booking.noOfPerson,
+  // booking.eventDateType,
+  // StartDate,
+  // EndDate,
+  // bookingId);
 
 
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
       subject: "Booking Request Approved",
-      // html: approvalEmail
-      
       html: sendApprovalEmailTemplate(
         
         booking.nameOfDriver,
