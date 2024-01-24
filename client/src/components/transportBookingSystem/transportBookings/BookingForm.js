@@ -37,7 +37,7 @@ const BookingForm = () => {
     selfOrGuest:"",
     noOfPerson:"",
     roundOrOneway:"",
-    outstaionOrLocal:"",
+    outstationOrLocal:"",
 naneOfGuest:"",
 mobNoOfGuest:"",
 pickupLocation:"",
@@ -140,7 +140,7 @@ dropLocation:"",
       selfOrGuest,
      noOfPerson,
      roundOrOneway,
-    outstaionOrLocal,
+    outstationOrLocal,
 naneOfGuest,
 mobNoOfGuest,
 pickupLocation,
@@ -172,7 +172,7 @@ dropLocation,
           selfOrGuest,
           noOfPerson,
           roundOrOneway,
-    outstaionOrLocal,
+    outstationOrLocal,
 naneOfGuest,
 mobNoOfGuest,
 pickupLocation,
@@ -655,8 +655,8 @@ dropLocation,
   <select
     className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
     id="grid-outstaion-or-local"
-    name="outstaionOrLocal"
-    value={bookingData.outstaionOrLocal}
+    name="outstationOrLocal"
+    value={bookingData.outstationOrLocal}
     onChange={handleInputs}>
     <option value="">Select</option>
     <option value="outstaion">Outstaion</option>

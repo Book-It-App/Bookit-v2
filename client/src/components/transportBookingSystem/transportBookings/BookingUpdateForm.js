@@ -34,7 +34,7 @@ const BookingForm = () => {
       selfOrGuest:"",
       noOfPerson:"",
       roundOrOneway:"",
-      outstaionOrLocal:"",
+      outstationOrLocal:"",
       naneOfGuest:"",
       mobNoOfGuest:"",
       nameOfDriver:"",
@@ -98,14 +98,14 @@ const BookingForm = () => {
         endTime: data.endTime ? data.endTime.split("T")[1].slice(0, 5) : null,
         email: data.userId.email,
         userType:data.userId.userType,
-        bookedTransportId: data.bookedTransportId,
+        bookedTransportId: data.bookedTransportId._id,
         bookedTransportName: data.bookedTransportName,
 
 
         selfOrGuest:data.selfOrGuest,
         noOfPerson:data.noOfPerson,
         roundOrOneway:data.roundOrOneway,
-      outstaionOrLocal:data.outstaionOrLocal,
+      outstationOrLocal:data.outstationOrLocal,
     naneOfGuest:data.naneOfGuest,
     mobNoOfGuest:data.mobNoOfGuest,
     pickupLocation:data.pickupLocation,
@@ -171,7 +171,7 @@ const BookingForm = () => {
             selfOrGuest,
       noOfPerson,
       roundOrOneway,
-      outstaionOrLocal,
+      outstationOrLocal,
   naneOfGuest,
   mobNoOfGuest,
   pickupLocation,
@@ -218,7 +218,7 @@ const BookingForm = () => {
           selfOrGuest,
           noOfPerson,
           roundOrOneway,
-      outstaionOrLocal,
+      outstationOrLocal,
       naneOfGuest,
       mobNoOfGuest,
       pickupLocation,
@@ -698,8 +698,8 @@ const BookingForm = () => {
   <select
     className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
     id="grid-outstaion-or-local"
-    name="outstaionOrLocal"
-    value={bookingData.outstaionOrLocal}
+    name="outstationOrLocal"
+    value={bookingData.outstationOrLocal}
     onChange={handleInputs}>
     <option value="">Select</option>
     <option value="outstaion">Outstaion</option>

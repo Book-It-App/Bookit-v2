@@ -44,7 +44,9 @@ const BookingsAdmin = () => {
   const closeApprovalModal = (bookingId) => {
     setShowApprovalModal(false);
     setDriverDetails({});
+
     setSelectedBookingId("");
+    setIsLoading(false)
   };
   // const handleReject = async () => {
   //   if (rejectionReason.trim() === '') {
@@ -502,17 +504,17 @@ const BookingsAdmin = () => {
                       <th
                         scope="col"
                         className="px-4 py-3 text-l   text-gray-800 uppercase   border-gray-200">
-                        Event Name
+                        Vehicle Number
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3 text-l   text-gray-800 uppercase  border-gray-200">
-                        Transport Name
+                        Vehicle Name
                       </th>
                       <th
                         scope="col"
                         className="px-4 py-3 text-l   text-gray-800 uppercase   border-gray-200">
-                        Organizing Club
+                        Outstation/Local
                       </th>
                       <th
                         scope="col"
@@ -545,9 +547,9 @@ const BookingsAdmin = () => {
                         <tr
                           key={booking._id}
                           className="border-gray-200 text-center border-b-2  ">
-                          <td className="px-5 py-5 font-bold text-m  bg-white  border-gray-200">
+                          <td className="px-5 py-5 text-m  bg-white  border-gray-200">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              {booking.eventName}
+                              {booking.bookedTransportId.number}
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
@@ -556,8 +558,8 @@ const BookingsAdmin = () => {
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
-                            <p className="text-gray-900 whitespace-no-wrap">
-                              {booking.organizingClub}
+                            <p className="text-gray-900 whitespace-no-wrap capitalize">
+                            {booking.outstationOrLocal}
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">

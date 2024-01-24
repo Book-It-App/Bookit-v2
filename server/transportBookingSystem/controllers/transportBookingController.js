@@ -185,7 +185,7 @@ const createTransportBooking = async (req, res, next) => {
       selfOrGuest,
       noOfPerson,
       roundOrOneway,
-    outstaionOrLocal,
+    outstationOrLocal,
       naneOfGuest,
       mobNoOfGuest,
 
@@ -255,7 +255,7 @@ const createTransportBooking = async (req, res, next) => {
       !dropLocation ||
       !noOfPerson || 
       // / !roundOrOneway   || 
-    !outstaionOrLocal
+    !outstationOrLocal
     ) {
       return res.status(422).json({ error: "Please fill all details" });
     }
@@ -310,7 +310,7 @@ const createTransportBooking = async (req, res, next) => {
       selfOrGuest,
       noOfPerson,
       roundOrOneway,
-    outstaionOrLocal,
+    outstationOrLocal,
       naneOfGuest,
       mobNoOfGuest,
       pickupLocation,
@@ -483,7 +483,7 @@ const updateTransportBooking = async (req, res, next) => {
     const { bookingId } = req.params;
 
     const {
-      eventManager,
+      // eventManager,
 
       // eventName,
       eventDateType,
@@ -495,7 +495,7 @@ const updateTransportBooking = async (req, res, next) => {
       selfOrGuest,
       noOfPerson,
       roundOrOneway,
-    outstaionOrLocal,
+    outstationOrLocal,
       naneOfGuest,
       mobNoOfGuest,
       nameOfDriver,
@@ -511,10 +511,11 @@ const updateTransportBooking = async (req, res, next) => {
       isApproved,
     } = req.body;
 
-    const transport = await Transport.findById(bookedTransportId);
-    if (!transport) {
-      return res.status(404).json({ message: 'Transport not found' });
-    }
+
+    // const transport = await Transport.findById(bookedTransportId);
+    // if (!transport) {
+    //   return res.status(404).json({ message: 'Transport not found' });
+    // }
 
     // if(isApproved === "Approved By Admin"){
     //   if(!nameOfDriver || !mobNoOfDriver){
@@ -537,7 +538,7 @@ const updateTransportBooking = async (req, res, next) => {
         selfOrGuest,
         noOfPerson,
         roundOrOneway,
-    outstaionOrLocal,
+    outstationOrLocal,
         naneOfGuest,
         mobNoOfGuest,
         nameOfDriver,

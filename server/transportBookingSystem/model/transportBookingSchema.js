@@ -57,7 +57,7 @@ const transportBookingSchema = new mongoose.Schema(
     roundOrOneway:{
       type: String,
     },
-    outstaionOrLocal:{
+    outstationOrLocal:{
       type: String,
     },
 
