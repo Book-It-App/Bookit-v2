@@ -43,7 +43,8 @@ const TransportBookingRoutes = (props) => {
           <Route exact path="/bookingsEdit/:bookingId" element={props.userState.userType === "admin" ? <BookingUpdateFrom/>  : process.env.REACT_APP_HOD_FEATURE &&  props.userState.userType === "hod" ? <BookingUpdateFrom/>  : <Unauthorized />} />
           <Route path="/transportForm" element={props.userState.userType === "admin" ?<TransportForm /> : <Unauthorized />} />
           <Route path="/bookings" element={props.userState.userType === "admin" ? <BookingsAdmin/> : props.userState.userType === "faculty" ? <BookingFaculty/> :  process.env.REACT_APP_HOD_FEATURE && props.userState.userType === "hod" ? <BookingsHod/>  : <Unauthorized />} />
-          <Route exact path="/bookingForm/:transportId/:transportName" element={<BookingForm />} />
+          {/* <Route exact path="/bookingForm/:transportId/:transportName" element={<BookingForm />} /> */}
+          <Route exact path="/bookingForm" element={<BookingForm />} />
           <Route exact path="/bookingsView/:bookingId" element={<BookingsView/>} />
           {/* Transport booking routes ends here */}
           <Route path="/profile" element={<About />} />

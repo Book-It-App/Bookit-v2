@@ -92,19 +92,25 @@ mobNoOfDriver:{
       required: true
     },
     
-    bookedTransportId: {
+    bookedTransportId: [{
       type: mongoose.Schema.Types.ObjectId,
+      
       ref: 'Transport',
-      required: true
-    },
-    bookedTransport: {
-      // type: mongoose.Schema.Types.Subdocument,
+      // required: true
+    }],
+    // bookedTransport: {
+    //   // type: mongoose.Schema.Types.Subdocument,
 
-      type: Object,
-      required: true,
-    },
+    //   type: Object,
+    //   // required: true,
+    // },
 
-    bookedTransportName: {
+    // bookedTransportName: {
+    //   type: String,
+    //   // required: true
+    // },
+
+    vehicleType:{
       type: String,
       required: true
     },

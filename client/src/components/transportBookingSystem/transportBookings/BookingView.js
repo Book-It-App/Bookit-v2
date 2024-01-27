@@ -26,24 +26,25 @@ const BookingsView = () => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
-  const [driverDetails, setDriverDetails] = useState({  nameOfDriver:"",
-  mobNoOfDriver:""});
+  const [driverDetails, setDriverDetails] = useState({
+    nameOfDriver: "",
+    mobNoOfDriver: "",
+  });
+
+  const [vehicles, setVehicles] = useState([]);
+
   const { state } = useContext(UserContext);
 
   //consolelog(state.userType);
 
   const openRejectionModal = (bookingId) => {
-
     setShowRejectionModal(true);
-
   };
 
   const openApprovalModal = (bookingId) => {
-
     setShowApprovalModal(true);
-
   };
-  
+
   const closeRejectionModal = () => {
     setShowRejectionModal(false);
     setRejectionReason("");
@@ -88,6 +89,27 @@ const BookingsView = () => {
   //   }
   // };
 
+  const fetchVehicles = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`,
+        {
+          withCredentials: true,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      const vehicleList = response.data.transports; // Modify this based on your API response structure
+
+      setVehicles(vehicleList);
+    } catch (error) {
+      console.error("Error fetching vehicles:", error);
+    }
+  };
+
   const getbookingById = async () => {
     try {
       const response = await axios.get(
@@ -101,7 +123,7 @@ const BookingsView = () => {
         }
       );
       const data = response.data.booking;
-      //consolelog(data);
+      console.log(data);
       setBookingData(data);
       setIsLoading(false);
       //consolelog("booking wveie ")
@@ -114,7 +136,6 @@ const BookingsView = () => {
   //consolelog(bookingData);
 
   const updateBooking = async (bookingId, isApproved) => {
-
     if (isApproved === "Rejected By Admin") {
       if (rejectionReason.trim() === "") {
         toast.error("Please provide a reason for rejection.");
@@ -123,16 +144,19 @@ const BookingsView = () => {
         setRejectionReason(null);
       }
     }
-    const { nameOfDriver, mobNoOfDriver } = driverDetails;
-
+    // const {  nameOfDriver, mobNoOfDriver } = driverDetails;
+    const { bookedTransportId, bookedTransportName , nameOfDriver, mobNoOfDriver } = bookingData;
+    console.log(bookingData)
     if (isApproved === "Approved By Admin") {
-      if ((nameOfDriver.trim() === "") && (mobNoOfDriver.trim() === "")) {
+      if (nameOfDriver.trim() === "" && mobNoOfDriver.trim() === "") {
         toast.error("Please fill all details.");
         return;
-      } else if (mobNoOfDriver.length !== 10) {  
-        toast.error("Please enter a valid mobile number.");
-        return;
-      }
+      } 
+      // else if (mobNoOfDriver.length !== 10) {
+      //   console.log(mobNoOfDriver.length)
+      //   toast.error("Please enter a valid mobile number.");
+      //   return;
+      // }
     }
     //consolelog(isApproved);
     setIsLoading(true);
@@ -140,10 +164,15 @@ const BookingsView = () => {
       const response = await axios.put(
         `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${bookingId}`,
         {
+          bookedTransportId : bookedTransportId._id,
+          bookedTransportName : bookedTransportName,
           isApproved: isApproved,
-          nameOfDriver:isApproved === "Rejected By Admin" ? null : nameOfDriver,
-          mobNoOfDriver: isApproved === "Rejected By Admin" ? null : mobNoOfDriver,
-          rejectionReason: isApproved === "Approved By Admin" ? null : rejectionReason,
+          nameOfDriver:
+            isApproved === "Rejected By Admin" ? null : nameOfDriver,
+          mobNoOfDriver:
+            isApproved === "Rejected By Admin" ? null : mobNoOfDriver,
+          rejectionReason:
+            isApproved === "Approved By Admin" ? null : rejectionReason,
         },
         {
           withCredentials: true,
@@ -164,16 +193,16 @@ const BookingsView = () => {
         throw new Error(response.error);
       }
     } catch (error) {
-      if(error.response.status === 422){
+      if (error.response.status === 422) {
         const data = error.response.data;
-           // Handle validation errors
-           // You can set specific error messages for different fields if needed
-           if (data && data.error) {
-             const errorMessage = data.error;
-             setIsLoading(false);
-             toast.error(errorMessage);
-           }
-           }
+        // Handle validation errors
+        // You can set specific error messages for different fields if needed
+        if (data && data.error) {
+          const errorMessage = data.error;
+          setIsLoading(false);
+          toast.error(errorMessage);
+        }
+      }
       //consolelog(error);
     }
   };
@@ -220,19 +249,35 @@ const BookingsView = () => {
   // const handleDeleteBooking = () => {
   //   deleteBooking(selectedBookingId);
   // };
+
   const handleDriverDetails = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setDriverDetails({ ...driverDetails, [name]: value });
+    // setDriverDetails({ ...driverDetails, [name]: value });
+    setBookingData({ ...bookingData, [name]: value });
   };
-
 
   useEffect(() => {
     getbookingById();
-
+    fetchVehicles();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleVehicleSelect = (e) => {
+    const selectedVehicleId = e.target.value;
+    const selectedVehicleObject = vehicles.find(
+      (vehicle) => vehicle._id === selectedVehicleId
+    );
+      console.log(selectedVehicleId);
+    setBookingData((bookingData) => ({
+      ...bookingData,
+      bookedTransportId: selectedVehicleObject,
+      bookedTransportName: selectedVehicleObject.name,
+      nameOfDriver: selectedVehicleObject.nameOfDriver,
+      mobNoOfDriver: selectedVehicleObject.mobNoOfDriver,
+    }));
+    console.log(bookingData);
+  };
   const institutionName =
     InstitutionList[bookingData.institution] || bookingData.institution;
   const departmentName =
@@ -312,16 +357,17 @@ const BookingsView = () => {
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-event-date">
-                    Booking date Type
+                    Booking Type
                   </h1>
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-event-date">
                     {bookingData.eventDateType === "multiple"
                       ? "Multiple Days"
-                      : bookingData.eventDateType === "half"
-                      ? "Half Day"
-                      : "Full Day"}
+                      : // : event.eventDateType === "half"
+                        // ? "Half Day"
+                        // : "Full Day"}
+                        "Single Day"}
                   </p>
                 </div>
               </div>
@@ -387,12 +433,12 @@ const BookingsView = () => {
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                     htmlFor="grid-transport-name">
-                    Vehicle Name
+                    Vehicle Type
                   </h1>
                   <p
-                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="appearance-none block w-full capitalize text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-transport-name">
-                    {bookingData.bookedTransportName}
+                    {bookingData.vehicleType}
                   </p>
                 </div>
               </div>
@@ -486,31 +532,27 @@ const BookingsView = () => {
                 </div>
               )}
 
-
-
-
-<div className="flex flex-wrap -mx-3 mb-6">
-
-{bookingData.selfOrGuest === "guest" && (
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <h1
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-round-or-oneway">
-    Round Or One-Way Trip
-                  </h1>
-                  <p
-                    className="appearance-none block w-full capitalize text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-round-or-oneway">
-                    {bookingData.roundOrOneway}
-                  </p>
-                </div>
-)}
+              <div className="flex flex-wrap -mx-3 mb-6">
+                {bookingData.selfOrGuest === "guest" && (
+                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <h1
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                      htmlFor="grid-round-or-oneway">
+                      Round Or One-Way Trip
+                    </h1>
+                    <p
+                      className="appearance-none block w-full capitalize text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-round-or-oneway">
+                      {bookingData.roundOrOneway}
+                    </p>
+                  </div>
+                )}
 
                 <div className="w-full md:w-1/2 px-3">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-outstaion-or-local">
-    Outstaion or Local
+                    Outstaion or Local
                   </h1>
                   <p
                     className="appearance-none block w-full capitalize  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -519,10 +561,6 @@ const BookingsView = () => {
                   </p>
                 </div>
               </div>
-
-
-
-
 
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -575,7 +613,9 @@ const BookingsView = () => {
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-alt-number">
-                    {bookingData.altNumber ? bookingData.altNumber : "Not Provided"}
+                    {bookingData.altNumber
+                      ? bookingData.altNumber
+                      : "Not Provided"}
                   </p>
                 </div>
               </div>
@@ -639,33 +679,63 @@ const BookingsView = () => {
                 </div>
               </div>
               {bookingData.isApproved === "Approved By Admin" && (
-                <div className="flex flex-wrap -mx-3 mb-6">
-                  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <h1
-                      className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-name-of-driver">
-                      Name of Driver
-                    </h1>
-                    <p
-                      className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
-                      id="grid-name-of-driver">
-                      {bookingData.nameOfDriver}
-                    </p>
-                    {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
+                <>
+                  <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <h1
+                        className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2 "
+                        htmlFor="grid-name-of-driver">
+                        Name of Driver
+                      </h1>
+                      <p
+                        className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+                        id="grid-name-of-driver">
+                        {bookingData.nameOfDriver}
+                      </p>
+                      {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
+                    </div>
+                    <div className="w-full md:w-1/2 px-3">
+                      <h1
+                        className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2 "
+                        htmlFor="grid-mob-no-of-dvier">
+                        Mob. No. of Driver
+                      </h1>
+                      <p
+                        className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+                        id="grid-mob-no-of-dvier">
+                        {bookingData.mobNoOfDriver}
+                      </p>
+                    </div>
                   </div>
-                  <div className="w-full md:w-1/2 px-3">
-                    <h1
-                      className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2 "
-                      htmlFor="grid-mob-no-of-dvier">
-                      Mob. No. of Driver
-                    </h1>
-                    <p
-                      className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
-                      id="grid-mob-no-of-dvier">
-                      {bookingData.mobNoOfDriver}
-                    </p>
+
+                  <div className="flex flex-wrap -mx-3 mb-6">
+                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <h1
+                        className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2 "
+                        htmlFor="grid-vehicle-number">
+                        Vehicle Number
+                      </h1>
+                      <p
+                        className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+                        id="grid-vehicle-number">
+                        { bookingData.bookedTransportId.number || bookingData.bookedTransportId[0].number}
+                      </p>
+                      {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
+                    </div>
+                    <div className="w-full md:w-1/2 px-3">
+                      <h1
+                        className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2 "
+                        htmlFor="grid-vehicle-name">
+                        Vehicle Name
+                      </h1>
+                      <p
+                        className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+                        id="grid-vehicle-name">
+                        {bookingData.bookedTransportId.name || bookingData.bookedTransportId[0].name}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
 
               {bookingData.rejectionReason && (
@@ -788,6 +858,93 @@ const BookingsView = () => {
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded-md shadow-md w-1/3">
             <h2 className="text-lg font-bold mb-4">Driver Details</h2>
+
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                  htmlFor="grid-vehicle-type">
+                  Vehicle Type
+                </label>
+                <input
+                  className="appearance-none block w-full capitalize bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-vehicle-type"
+                  type="text"
+                  value={bookingData.vehicleType}
+                  name="vehicleType"
+                  // onChange={handleDriverDetails}
+                  placeholder=" Vehicle Type"
+                  disabled
+                />
+              </div>
+
+              {bookingData.vehicleType === "bus" ? (
+                <div className="w-full md:w-1/2 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-mobNoOfDriver">
+                    Bus Number
+                  </label>
+
+                  <select
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-transport-name"
+                    name="bookedTransportName"
+                    value={bookingData.bookedTransportId._id}
+                    // onChange={handleInputs}
+                    onChange={(e) => handleVehicleSelect(e)}>
+                    <option value="">Select a vehicle</option>
+                    {/* <option value={bookingData.bookedTransportName}>{bookingData.bookedTransportName}</option> */}
+
+                    {vehicles
+                      .filter((vehicle) => vehicle.trasportType === "bus")
+                      .map((bus) => (
+                        <option key={bus._id} value={bus._id}>
+                          {bus.number} {bus.name}
+                        </option>
+                      ))}
+                  </select>
+
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-mob-no-of-driver"
+                    type="text"
+                    value={bookingData.mobNoOfDriver}
+                    name="mobNoOfDriver"
+                    onChange={handleDriverDetails}
+                    placeholder="Mob. No. Of Driver"
+                  />
+                </div>
+              ) : (
+                <div className="w-full md:w-1/2 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-mobNoOfDriver">
+                    Select Vehicle
+                  </label>
+
+                  <select
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-transport-name"
+                    name="bookedTransportName"
+                    value={bookingData.bookedTransportId._id}
+                    // onChange={handleInputs}
+                    onChange={(e) => handleVehicleSelect(e)}>
+                    <option value="">Select a vehicle</option>
+                    {/* <option value={bookingData.bookedTransportName}>{bookingData.bookedTransportName}</option> */}
+
+                    {vehicles
+                      .filter((vehicle) => vehicle.trasportType === "car")
+                      .map((car) => (
+                        <option key={car._id} value={car._id}>
+                          {car.number} {car.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              )}
+            </div>
+
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
@@ -799,8 +956,7 @@ const BookingsView = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-name-of-driver"
                   type="text"
-                  
-                  value={driverDetails.nameOfDriver}
+                  value={bookingData.nameOfDriver}
                   name="nameOfDriver"
                   onChange={handleDriverDetails}
                   placeholder="Name Of Driver"
@@ -816,8 +972,7 @@ const BookingsView = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-mob-no-of-driver"
                   type="number"
-                  
-                  value={driverDetails.mobNoOfDriver}
+                  value={bookingData.mobNoOfDriver}
                   name="mobNoOfDriver"
                   onChange={handleDriverDetails}
                   placeholder="Mob. No. Of Driver"

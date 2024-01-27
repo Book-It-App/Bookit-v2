@@ -374,7 +374,7 @@ const BookingForm = () => {
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="grid-event-date-type"
                     >
-                      Booking date Type
+                      Booking  Type
                     </label>
                     
 
@@ -385,8 +385,8 @@ const BookingForm = () => {
                             value={bookingData.eventDateType}
                             onChange={handleInputs}>
                             <option value="">Select</option>
-                            <option value="half">Half Day</option>
-                            <option value="full">Full Day</option>
+                            {/* <option value="half">Half Day</option> */}
+                            <option value="full">Single Day</option>
                             <option value="multiple">Miltiple Days</option>
                           </select>
 

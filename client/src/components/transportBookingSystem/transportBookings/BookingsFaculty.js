@@ -193,12 +193,12 @@ const BookingFaculty = () => {
                       <tr key={booking._id} className="border-gray-200 text-center border-b-2  ">
                         <td className="px-5 py-5  text-m  bg-white  border-gray-200">
                           <p className="text-gray-900 whitespace-no-wrap">
-                            {booking.bookedTransportId.number}
+                            {/* {booking.bookedTransportId.number} */}dfgdfg
                           </p>
                         </td>
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
                           <p className="text-gray-900 whitespace-no-wrap">
-                            {booking.bookedTransportName}
+                            {/* {booking.bookedTransportName} */}dfgdfgdfg
 
                           </p>
                         </td>

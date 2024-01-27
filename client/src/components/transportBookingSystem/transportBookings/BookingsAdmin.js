@@ -113,7 +113,7 @@ const BookingsAdmin = () => {
   const getBookingData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsAdmin`,
+        `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookings`,
         {
           withCredentials: true, // include credentials in the request
           headers: {
@@ -326,7 +326,12 @@ const BookingsAdmin = () => {
 
       <div className="mt-6">
         <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-center text-gray-800 font-black leading-7 ml-3 md:leading-10">
-          Booking<span className="text-indigo-700"> Requests</span>{" "}
+          Booking<span className="text-indigo-700"> Requests</span>
+
+          <Link to="/transport-booking-system/bookingForm">
+            <button className="flex self-end bg-indigo-700 lg:text-lg lg:font-bold absolute right-6 top-32  md:block  hover:bg-indigo-500 rounded border border-indigo-700 text-white  sm:px-8 py-1 sm:py-3 text-sm">
+              Book Now</button>
+          </Link>
         </h1>
 
         <div className="flex flex-wrap my-8 justify-center">
@@ -524,7 +529,7 @@ const BookingsAdmin = () => {
                       <th
                         scope="col"
                         className="px-4 py-3 text-l   text-gray-800 uppercase   border-gray-200">
-                        Event Date
+                        Booking Date
                       </th>
                       <th
                         scope="col"
@@ -549,12 +554,12 @@ const BookingsAdmin = () => {
                           className="border-gray-200 text-center border-b-2  ">
                           <td className="px-5 py-5 text-m  bg-white  border-gray-200">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              {booking.bookedTransportId.number}
+                              {/* {booking.bookedTransportId.number} */}nothing
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              {booking.bookedTransportName}
+                              {/* {booking.bookedTransportName} */}nothing
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">

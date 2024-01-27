@@ -118,9 +118,10 @@ const Events = () => {
                       <p className="text-base font-medium text-navy-700 ">
                         {event.eventDateType === "multiple"
                           ? "Multiple Days"
-                          : event.eventDateType === "half"
-                          ? "Half Day"
-                          : "Full Day"}
+                          // : event.eventDateType === "half"
+                          // ? "Half Day"
+                          // : "Full Day"}
+                          : "Single Day"}
                       </p>
                     </div>
 

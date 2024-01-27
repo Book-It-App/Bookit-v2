@@ -14,7 +14,7 @@ const BookingForm = () => {
   const [authStatus, setAuthStatus] = useState("");
   const [emailVerified, setEmailVerified] = useState(false);
 
-  const { transportId, transportName } = useParams();
+  // const { transportId, transportName } = useParams();
   //consolelog(transportId);
   const [isLoading, setIsLoading] = useState(true);
   // const { transportId, transportName } = props.location.state;
@@ -32,8 +32,10 @@ const BookingForm = () => {
     endTime: "",
     email: "",
     userType: "",
-    bookedTransportId: transportId,
-    bookedTransportName: transportName,
+    // bookedTransportId: transportId,
+    // bookedTransportName: transportName,
+    vehicleType:"",
+
     selfOrGuest:"",
     noOfPerson:"",
     roundOrOneway:"",
@@ -134,9 +136,10 @@ dropLocation:"",
       endTime,
       email,
       userType,
-      bookedTransportId,
+      // bookedTransportId,
 
-      bookedTransportName,
+      // bookedTransportName,
+      vehicleType,
       selfOrGuest,
      noOfPerson,
      roundOrOneway,
@@ -167,8 +170,9 @@ dropLocation,
           endTime: parseISO(`2000-01-01T${endTime}:00.000Z`),
           email,
           userType,
-          bookedTransportId,
-          bookedTransportName,
+          // bookedTransportId,
+          // bookedTransportName,
+          vehicleType,
           selfOrGuest,
           noOfPerson,
           roundOrOneway,
@@ -328,7 +332,7 @@ dropLocation,
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-event-date-type">
-                    Booking Date Type
+                    Booking  Type
                   </label>
 
                   <select
@@ -338,8 +342,9 @@ dropLocation,
                     value={bookingData.eventDateType}
                     onChange={handleInputs}>
                     <option value="">Select</option>
-                    <option value="half">Half Day</option>
-                    <option value="full">Full Day</option>
+                    {/* <option value="half">Half Day</option>
+                    <option value="full">Full Day</option> */}
+                    <option value="full">Single Day</option>
                     <option value="multiple">Multiple Days</option>
                   </select>
 
@@ -412,6 +417,77 @@ dropLocation,
                 )
                 } */}
 
+             
+
+              <div className="flex flex-wrap -mx-3 mb-6">
+                {(bookingData.eventDateType === "full" ||
+                  bookingData.eventDateType === "half") && (
+                  <div className="w-full md:w-1/2 px-3">
+                    <label
+                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      htmlFor="grid-event-date">
+                      Booking Date
+                    </label>
+                    <input
+                      value={bookingData.eventDate}
+                      name="eventDate"
+                      onChange={handleInputs}
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-event-date"
+                      type="date"
+                      placeholder="Event Date"
+                      min={new Date().toISOString().split("T")[0]}
+                    />
+                  </div>
+                )}
+
+                {/* <div className="w-full md:w-1/2 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-transport-name">
+                    Vehicle Name
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-transport-name"
+                    type="text"
+                    value={bookingData.bookedTransportName}
+                    name="bookedTransportName"
+                    onChange={handleInputs}
+                    placeholder="Vehicle Name"
+                    disabled
+                  />
+                </div> */}
+
+
+
+
+
+                <div className="w-full md:w-1/2 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-vehicle-type">
+                    Vehicle Type
+                  </label>
+
+                  <select
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="vehicleType"
+                    name="vehicleType"
+                    value={bookingData.vehicleType}
+                    onChange={handleInputs}>
+                    <option value="">Select</option>
+                    <option value="bus">Bus</option>
+                    <option value="car">Car</option>
+                    
+                  </select>
+
+                  </div>
+              </div>
+
+
+
+
               {bookingData.eventDateType === "multiple" && (
                 <div className="flex flex-wrap -mx-3 mb-6">
                   <div className="w-full md:w-1/2 px-3">
@@ -450,48 +526,6 @@ dropLocation,
                   </div>
                 </div>
               )}
-
-              <div className="flex flex-wrap -mx-3 mb-6">
-                {(bookingData.eventDateType === "full" ||
-                  bookingData.eventDateType === "half") && (
-                  <div className="w-full md:w-1/2 px-3">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-event-date">
-                      Booking Date
-                    </label>
-                    <input
-                      value={bookingData.eventDate}
-                      name="eventDate"
-                      onChange={handleInputs}
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-event-date"
-                      type="date"
-                      placeholder="Event Date"
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                  </div>
-                )}
-
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-transport-name">
-                    Vehicle Name
-                  </label>
-                  <input
-                    className="appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-transport-name"
-                    type="text"
-                    value={bookingData.bookedTransportName}
-                    name="bookedTransportName"
-                    onChange={handleInputs}
-                    placeholder="Vehicle Name"
-                    disabled
-                  />
-                </div>
-              </div>
-
 {/* displat start and end time in all date types */}
               {/* {bookingData.eventDateType === "half" && ( */}
                 <div className="flex flex-wrap -mx-3 mb-6">

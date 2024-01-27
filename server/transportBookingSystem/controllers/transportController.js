@@ -10,6 +10,7 @@ const createTransport = async (req, res, next) => {
     const { name, number, capacity,transportCreater } = req.body;
     const photo = file ? file.path : ''; // Change 'file.path' to the correct path attribute
     console.log(photo);
+    
     if (!name || !number || !capacity  || !transportCreater) {
       return res.status(422).json({ error: "Please fill all details" });
     }

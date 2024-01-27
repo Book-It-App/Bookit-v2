@@ -10,25 +10,33 @@ const InstitutionList = {
 };
 
 const DepartmentList = {
-  CE: 'Civil Engineering',
-  ME: 'Mechanical Engineering',
-  EC: 'Electronics & Communication',
-  CSE: 'Computer Science & Engineering',
-  AIML: 'Artificial Intelligence and Machine Learning',
-  IT: 'Information Technology',
-  CSIT: 'Computer Science and Information Technology',
-  FCA: 'Faculty of Computer Applications',
-  HUMI: 'Humanities',
-  CHEM: 'Chemistry',
+
+
+
+
+
+
+
+
+  CE: 'Civil Engineering', // availabe
+  ME: 'Mechanical Engineering', // availabe
+  EC: 'Electronics & Communication', // availabe
+  CSE: 'Computer Science & Engineering',   // availabe
+  AIML: 'Artificial Intelligence and Machine Learning', // availabe
+  IT: 'Information Technology', // availabe
+  CSIT: 'Computer Science and Information Technology', // availabe
+  FCA: 'Faculty of Computer Applications', // availabe
+  HUMI: 'Humanities', 
+  CHEM: 'Chemistry',// availabe
   AC: 'Acro Care',
   CDC: 'Career Development Cell',
   BSC: 'Bio Science',
-  BBA: 'Bachelor of Business Administration',
-  AILAW: 'Acropolis Institute of LAW',
-  AMR: 'Acropolis Faculty of Management and Research',
-  AIMSR: 'Acropolis Institute of Management Studies & Research',
-  AIPER: 'Acropolis Institute Of Pharmaceutical Education & Research',
-  EDC: 'EDC',
+  BBA: 'Bachelor of Business Administration', 
+  AILAW: 'Acropolis Institute of LAW', 
+  AMR: 'Acropolis Faculty of Management and Research', 
+  AIMSR: 'Acropolis Institute of Management Studies & Research', 
+  AIPER: 'Acropolis Institute Of Pharmaceutical Education & Research', 
+  EDC: 'EDC', 
   PLACEMENT: 'Placement',
   TRAINING: 'Training',
   IIPC: 'IIPC',

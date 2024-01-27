@@ -11,14 +11,29 @@ const transportSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  capacity: {
-    type: Number,
-    required: true,
-  },  
-  photo: {
+
+  trasportType:{
     type: String,
     required: true,
-  },  
+  },
+
+  nameOfDriver:{
+    type: String,
+    required: true,
+
+  },
+  mobNoOfDriver:{
+    type: Number,
+    required: true,
+  },
+  // capacity: {
+  //   type: Number,
+  //   required: true,
+  // },  
+  // photo: {
+  //   type: String,
+  //   required: true,
+  // },  
   // description: {
   //   type: String,
   //   required: true,

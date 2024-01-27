@@ -30,8 +30,8 @@ const generateBookingEmailTemplate = (
   eventDateType,
   StartDate,
   EndDate,
-  bookedTransportName,
-  bookedTransportNumber,
+  // bookedTransportName,
+  // bookedTransportNumber,
 //   organizingClub,
   institution,
   department,
@@ -100,14 +100,7 @@ const generateBookingEmailTemplate = (
                               <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
                               <table style="width: 100%;" >
                                  
-          <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Transport Name:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${bookedTransportName}</td>
-                                  </tr>
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Number:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportNumber}</td>
-                                  </tr>                       
+                           
                                  
                                         <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
@@ -180,8 +173,9 @@ const createTransportBooking = async (req, res, next) => {
       startTime,
       endTime,
       email,
-      bookedTransportId,
-      bookedTransportName,
+      // bookedTransportId,
+      // bookedTransportName,
+      vehicleType,
       selfOrGuest,
       noOfPerson,
       roundOrOneway,
@@ -197,10 +191,10 @@ const createTransportBooking = async (req, res, next) => {
       isApproved,
     } = req.body;
 
-    const transport = await Transport.findById(bookedTransportId);
-    if (!transport) {
-      return res.status(422).json({ error: "Transport not found" });
-    }
+    // const transport = await Transport.findById(bookedTransportId);
+    // if (!transport) {
+    //   return res.status(422).json({ error: "Transport not found" });
+    // }
 
     const user = await User.findById(userId);
     if (!user) {
@@ -248,9 +242,11 @@ const createTransportBooking = async (req, res, next) => {
       !startTime ||
       !endTime ||
       !selfOrGuest ||
+      
       // || !altNumber
       // / !eventName ||
       // / !organizingClub ||
+      !vehicleType ||
       !pickupLocation ||
       !dropLocation ||
       !noOfPerson || 
@@ -261,9 +257,11 @@ const createTransportBooking = async (req, res, next) => {
     }
 
     if (selfOrGuest === "guest") {
-      if (!naneOfGuest || !mobNoOfGuest) {
-        return res.status(422).json({ error: "Please fill all details" });
-      } else if (mobNoOfGuest.length !== 10) {
+      // if (!naneOfGuest || !mobNoOfGuest) {
+      //   return res.status(422).json({ error: "Please fill all details" });
+      // } else 
+      
+      if (mobNoOfGuest.length !== 10) {
         return res.status(422).json({
           error: "Please enter a valid 10-digit phone number of Guest",
         });
@@ -304,9 +302,10 @@ const createTransportBooking = async (req, res, next) => {
       startTime,
       endTime,
       email,
-      bookedTransportId: transport._id,
-      bookedTransport: transport,
-      bookedTransportName,
+      // bookedTransportId: transport._id,
+      // bookedTransport: transport,
+      // bookedTransportName,
+      vehicleType,
       selfOrGuest,
       noOfPerson,
       roundOrOneway,
@@ -337,7 +336,8 @@ const createTransportBooking = async (req, res, next) => {
 
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
-      to: transport.transportCreater, // Use the transport creator's email here
+      // to: transport.transportCreater, // Use the transport creator's email here
+      to: process.env.ADMIN_EMAIL, // Use the transport creator's email here
       subject: "New Booking Request",
       html: generateBookingEmailTemplate(
         // eventName,
@@ -347,8 +347,8 @@ const createTransportBooking = async (req, res, next) => {
         eventDateType,
         StartDate,
         EndDate,
-        bookedTransportName,
-        transport.number,
+        // bookedTransportName,
+        // transport.number,
       //   organizingClub,
         institution,
         department,
@@ -481,7 +481,7 @@ const getTransportBookingHod = async (req, res, next) => {
 const updateTransportBooking = async (req, res, next) => {
   try {
     const { bookingId } = req.params;
-
+console.log(req.body)
     const {
       // eventManager,
 
@@ -506,6 +506,7 @@ const updateTransportBooking = async (req, res, next) => {
 
       bookedTransportId,
       bookedTransportName,
+      vehicleType,
       // transportId,
       rejectionReason,
       isApproved,
@@ -547,12 +548,14 @@ const updateTransportBooking = async (req, res, next) => {
         dropLocation,
         bookedTransportId,
       bookedTransportName,
+      vehicleType,
         //  transportId: transport._id,email,
         isApproved,
         rejectionReason,
       },
       { new: true }
-    ).populate("bookedTransportId");
+    )
+    .populate("bookedTransportId");
 
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
@@ -650,7 +653,7 @@ const sendRejectionEmail = async (booking, bookingId, rejectionReason) => {
       subject: "Booking Request Rejected",
       html: sendRejectionEmailTemplate(
         // booking.eventName,
-        booking.bookedTransportName,
+        // booking.bookedTransportName,
 //           booking.organizingClub,
         booking.institution,
         booking.department,
@@ -667,7 +670,7 @@ const sendRejectionEmail = async (booking, bookingId, rejectionReason) => {
 
 const sendRejectionEmailTemplate = (
   // eventName,
-  bookedTransportName,
+  // bookedTransportName,
 //   organizingClub,
   institution,
   department,
@@ -739,10 +742,7 @@ const sendRejectionEmailTemplate = (
                               <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
                               <table style="width: 100%;" >
                                  
-                                         <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Name  :</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${bookedTransportName}</td>
-                                  </tr>
+                                  
                                  
                                         <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
