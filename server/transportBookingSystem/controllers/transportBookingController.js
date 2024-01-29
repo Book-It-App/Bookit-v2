@@ -621,9 +621,9 @@ const sendApprovalEmail = async (booking, bookingId,MainDate,StartDate,EndDate) 
         
         booking.nameOfDriver,
         booking.mobNoOfDriver,
-        booking.bookedTransportName,
-        booking.bookedTransport.number,
-        booking.bookedTransport.capacity,
+        booking.bookedTransportId[0].name,
+        booking.bookedTransportId[0].number,
+        booking.bookedTransportId[0].transportType,
         // booking.bookedTransport.photo,
         // booking.eventName,
 //           booking.organizingClub,
@@ -842,7 +842,7 @@ const sendApprovalEmailTemplate = (
   mobNoOfDriver,
   bookedTransportName,
   bookedTransportNumber,
-  bookedTransportCapacity,
+  bookedTransportTransportType,
   // bookedTransportPhoto,
   // eventName,
 //   organizingClub,
@@ -937,8 +937,8 @@ const sendApprovalEmailTemplate = (
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportNumber}</td>
                                   </tr>
                               <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Capacity:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportCapacity}</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Type:</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0;  text-transform: capitalize; text-align: left;width:50%;"> ${bookedTransportTransportType}</td>
                                   </tr>
                                 
                               </table>
