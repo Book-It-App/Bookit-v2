@@ -757,15 +757,7 @@ const handleVehicleSelect = (e) => {
                                         ))}
                                     </select>
                   
-                                    <input
-                                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                      id="grid-mob-no-of-driver"
-                                      type="text"
-                                      value={booking.mobNoOfDriver}
-                                      name="mobNoOfDriver"
-                                      onChange={handleDriverDetails}
-                                      placeholder="Mob. No. Of Driver"
-                                    />
+                                   
                                   </div>
                                 ) : (
                                   <div className="w-full md:w-1/2 px-3">
