@@ -554,12 +554,12 @@ const BookingsAdmin = () => {
                           className="border-gray-200 text-center border-b-2  ">
                           <td className="px-5 py-5 text-m  bg-white  border-gray-200">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              {/* {booking.bookedTransportId.number} */}nothing
+                            {booking.bookedTransportId[0] && booking.bookedTransportId[0].number ? booking.bookedTransportId[0].number : "Not Alloted"}
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
                             <p className="text-gray-900 whitespace-no-wrap">
-                              {/* {booking.bookedTransportName} */}nothing
+                            {booking.bookedTransportId[0] && booking.bookedTransportId[0].name ? booking.bookedTransportId[0].name : "Not Alloted"}
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
@@ -602,7 +602,8 @@ const BookingsAdmin = () => {
                             {booking.isApproved === "Approved By Admin" && (
                               // <ApprovedByAdmin />
                               <p className="text-green-600 font-bold whitespace-no-wrap">
-                                {booking.isApproved}
+                                {/* {booking.isApproved} */}
+                                Approved
                               </p>
                               // <p className="text-m text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-green-500 font-black">
                               // </p>
@@ -623,7 +624,8 @@ const BookingsAdmin = () => {
 
                             {booking.isApproved === "Rejected By Admin" && (
                               <p className="text-red-900 font-bold  whitespace-no-wrap">
-                                {booking.isApproved}
+                                {/* {booking.isApproved} */}
+                                Rejected
                               </p>
                             )}
                           </td>

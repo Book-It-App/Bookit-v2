@@ -897,7 +897,7 @@ const BookingsView = () => {
                     {/* <option value={bookingData.bookedTransportName}>{bookingData.bookedTransportName}</option> */}
 
                     {vehicles
-                      .filter((vehicle) => vehicle.trasportType === "bus")
+                      .filter((vehicle) => vehicle.transportType === "bus")
                       .map((bus) => (
                         <option key={bus._id} value={bus._id}>
                           {bus.number} {bus.name}
@@ -934,7 +934,7 @@ const BookingsView = () => {
                     {/* <option value={bookingData.bookedTransportName}>{bookingData.bookedTransportName}</option> */}
 
                     {vehicles
-                      .filter((vehicle) => vehicle.trasportType === "car")
+                      .filter((vehicle) => vehicle.transportType === "car")
                       .map((car) => (
                         <option key={car._id} value={car._id}>
                           {car.number} {car.name}

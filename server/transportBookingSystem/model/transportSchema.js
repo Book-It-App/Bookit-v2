@@ -12,7 +12,7 @@ const transportSchema = new mongoose.Schema({
     unique: true,
   },
 
-  trasportType:{
+  transportType:{
     type: String,
     required: true,
   },

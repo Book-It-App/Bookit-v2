@@ -134,17 +134,17 @@ const TransportsAdmin = () => {
 
   const filteredTransports = Object.values(transportData).filter((transportData) => {
     if (filterValue === "bus") {
-      return transportData.trasportType === "bus";
+      return transportData.transportType === "bus";
     } else if (filterValue === "car") {
-      return transportData.trasportType === "car";
+      return transportData.transportType === "car";
     } else {
       return transportData;
     }
   });
 
-  const handleBookingClick = (transportId, transportName) => {
-    navigate(`/transport-booking-system/bookingForm/${transportId}/${transportName}`)
-  };
+  // const handleBookingClick = (transportId, transportName) => {
+  //   navigate(`/transport-booking-system/bookingForm/${transportId}/${transportName}`)
+  // };
 
   const handleEditClick = (transportId, transportName) => {
     navigate(`/transport-booking-system/transports/${transportId}/${transportName}`)
@@ -311,7 +311,7 @@ const TransportsAdmin = () => {
                         </td>
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
                           <p className="text-gray-900 whitespace-no-wrap capitalize">
-                          {transport.trasportType}
+                          {transport.transportType}
                           </p>
                         </td>
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
@@ -490,7 +490,7 @@ const TransportsAdmin = () => {
 
 
 {/* <> */}
-{isLoading ? (
+{/* {isLoading ? (
           <LoadingSpinner />
         ) : 
     <div className="mt-6 min-h-screen"> 
@@ -589,7 +589,7 @@ const TransportsAdmin = () => {
 
       </div>
       </div>
-}
+} */}
 
   
 

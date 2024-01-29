@@ -1,19 +1,20 @@
 const Transport = require('../model/transportSchema');
 const User = require("../../authService/model/userSchema");
-const fs = require('fs'); // Import the Node.js file system module
+// const fs = require('fs'); // Import the Node.js file system module
 
 const createTransport = async (req, res, next) => {
   try {
-    console.log(req.body);
-    const file = req.file;
-    console.log(file);
-    const { name, number, capacity,transportCreater } = req.body;
-    const photo = file ? file.path : ''; // Change 'file.path' to the correct path attribute
-    console.log(photo);
+    console.log(req.body.transportType);
+    // const file = req.file;
+    // console.log(file);
+    const { name, number, transportType, nameOfDriver,mobNoOfDriver,transportCreater } = req.body;
+    // const photo = file ? file.path : ''; // Change 'file.path' to the correct path attribute
+    // console.log(photo);
     
-    if (!name || !number || !capacity  || !transportCreater) {
+    if (!name || !number || !transportType  || !nameOfDriver ||!mobNoOfDriver  || !transportCreater) {
       return res.status(422).json({ error: "Please fill all details" });
     }
+
 
 
 
@@ -26,18 +27,21 @@ const createTransport = async (req, res, next) => {
 
 
 
-    if (capacity <= 0) {
-      return res.status(422).json({ error: "Please enter a valid capacity greater than zero" });
-    }
+    // if (capacity <= 0) {
+    //   return res.status(422).json({ error: "Please enter a valid capacity greater than zero" });
+    // }
 
     if (number.length !== 10) {
       return res.status(422).json({ error: "Please enter a valid vehicle number" });
     }
     
 
+    if (mobNoOfDriver.length !== 10) {
+      return res.status(422).json({ error: "Please enter a valid Mob.No. number of Driver" });
+    }
 
 
-    const transport = new Transport({ name, number, capacity,photo,transportCreater });
+    const transport = new Transport({ name, number,transportType, nameOfDriver,mobNoOfDriver,transportCreater });
     await transport.save();
     res.status(201).json({ message: 'Transport created successfully' });
   } catch (error) {
@@ -72,10 +76,10 @@ const updateTransport = async (req, res, next) => {
     console.log("thisis update");
     console.log(req.body);
     const { transportId } = req.params;
-    const file = req.file;
-    console.log(file);
-    const { name, number, capacity ,photo} = req.body;
-    const newPhoto = file ? file.path : ''; 
+    // const file = req.file;
+    // console.log(file);
+    const { name, number, transportType, nameOfDriver,mobNoOfDriver} = req.body;
+    // const newPhoto = file ? file.path : ''; 
     const currentUserMail = req.rootUser.email; // Renamed to avoid conflict
     const masterAdminmail = process.env.REACT_APP_MASTER_ADMIN;
     const transport = await Transport.findById(transportId);
@@ -89,19 +93,28 @@ const updateTransport = async (req, res, next) => {
       return res.status(403).json({ message: 'Unauthorized' }); // 403 means "Forbidden"
     }
 
-    if (file && transport.photo !== newPhoto) {
-      // Remove existing photo
-      fs.unlink(transport.photo, (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
+    if (number.length !== 10) {
+      return res.status(422).json({ error: "Please enter a valid vehicle number" });
     }
+    
 
+    if (mobNoOfDriver.length !== 10) {
+      return res.status(422).json({ error: "Please enter a valid Mob.No. number of Driver" });
+    }
+    // if (file && transport.photo !== newPhoto) {
+    //   // Remove existing photo
+    //   fs.unlink(transport.photo, (err) => {
+    //     if (err) {
+    //       console.error(err);
+    //     }
+    //   });
+    // }
+
+   
 
     const updatedTransport = await Transport.findByIdAndUpdate(
       transportId,
-      { name, number, capacity, photo: file ? newPhoto : photo },
+      { name, number, transportType, nameOfDriver,mobNoOfDriver },
       { new: true }
     );
 

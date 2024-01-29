@@ -237,7 +237,8 @@ const BookingFaculty = () => {
                           {booking.isApproved === "Approved By Admin" && (
                             // <ApprovedByAdmin />
                             <p className="text-green-600 font-bold whitespace-no-wrap">
-                              {booking.isApproved}
+                              {/* {booking.isApproved} */}
+                              Approved
                             </p>
                             // <p className="text-m text-xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-3xl text-green-500 font-black">
                             // </p>
@@ -259,7 +260,8 @@ const BookingFaculty = () => {
 
                           {booking.isApproved === "Rejected By Admin" && (
                             <p className="text-red-900 font-bold  whitespace-no-wrap">
-                              {booking.isApproved}
+                              {/* {booking.isApproved} */}
+                              Rejected
                             </p>
 
                           )}

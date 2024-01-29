@@ -13,8 +13,8 @@ const TransportsEdit = () => {
   // eslint-disable-next-line no-unused-vars
   const [authStatus, setAuthStatus] = useState("");
   const { transportId } = useParams();
-  const [existingPhoto, setExistingPhoto] = useState('');
-  const [existingPhotoName, setExistingPhotoName] = useState('');
+  // const [existingPhoto, setExistingPhoto] = useState('');
+  // const [existingPhotoName, setExistingPhotoName] = useState('');
   // const [uploadedPhotoName, setUploadedPhotoName] = useState('');
   const getTransportsData = async () => {
     try {
@@ -33,9 +33,9 @@ const TransportsEdit = () => {
       console.log(data.transport);
       setTransportData(data.transport);
       
-      setExistingPhoto(
-        `${process.env.REACT_APP_SERVER_URL}/${data.transport.photo}`
-      );
+      // setExistingPhoto(
+      //   `${process.env.REACT_APP_SERVER_URL}/${data.transport.photo}`
+      // );
       setIsLoading(false);
 
       if (response.status !== 200) {
@@ -55,7 +55,7 @@ const TransportsEdit = () => {
 
   const UpdateTransportForm = async (e) => {
     e.preventDefault();
-    const { name, number, capacity, photo } = transportData;
+    const { name, number, transportType,nameOfDriver,mobNoOfDriver } = transportData;
 
    
     
@@ -74,14 +74,17 @@ const TransportsEdit = () => {
         {
           name,
     number:number.toUpperCase(),
-    capacity,photo
+    transportType,
+    nameOfDriver,
+    mobNoOfDriver,
+    
           
         }
         ,
         {
           withCredentials: true, // To include credentials in the request
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
@@ -98,37 +101,26 @@ const TransportsEdit = () => {
         // setBookingData({ ...bookingData });
       }
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 422) {
-          const data = error.response.data;
-          // Handle validation errors
-          // You can set specific error messages for different fields if needed
-          if (data && data.errors) {
-            const errorMessage = data.errors.join(", ");
-            toast.error(errorMessage);
-            setAuthStatus(errorMessage);
-          }
-        } else if (error.response.status === 403) {
-          toast.error("Unauthorized request!");
-        } else {
-          console.error(error);
-          toast.error("An error occurred while updating the transport.");
-        }
+      if (error.response.status === 422 && error.response) {
+        const data = error.response.data;
+        setAuthStatus(data.error);
+        // console.log(data.error);
+        // window.alert(data.error);
       } else {
         console.error(error);
-        toast.error("An error occurred while updating the transport.");
       }
+      // console.log(error);
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setTransportData({ ...transportData, photo: file });
-      setExistingPhoto(URL.createObjectURL(file));
-      setExistingPhotoName(file.name);
-    }
-  };
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setTransportData({ ...transportData, photo: file });
+  //     setExistingPhoto(URL.createObjectURL(file));
+  //     setExistingPhotoName(file.name);
+  //   }
+  // };
   const handleInputs = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -206,59 +198,69 @@ const TransportsEdit = () => {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-capacity">
-                    Seating Capacity
+                    htmlFor="grid-transport-type">
+                    Vehicle Type
                   </label>
-                  <input
-                    value={transportData.capacity}
-                    name="capacity"
-                    onChange={handleInputs}
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-capacity"
-                    type="number"
-                    placeholder="Capacity"
-                  />
+                  <select
+    className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+    id="grid-transport-type"
+    name="transportType"
+    value={transportData.transportType}
+    onChange={handleInputs}>
+    <option value="">Select</option>
+    <option value="bus">Bus</option>
+    <option value="car">Car</option>
+   
+  </select>
+                 
                 </div>
 
 
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-nameof-driver">
+                    Driver Name
+                  </label>
+                  <input
+                    value={transportData.nameOfDriver}
+                    name="nameOfDriver"
+                    onChange={handleInputs}
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-nameof-driver"
+                    type="text"
+                    placeholder="DRIVER NAME"
+                  />
+                </div>
 
-
-                <div className="w-full md:w-1/2 px-3">
-  <label
-    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-    htmlFor="grid-photo"
-  >
-    Photo of Vehicle
-  </label>
-  {/* Display the existing image if available */}
-  {existingPhoto && (
-    <img src={existingPhoto} alt="Existing" />
-  )}
-  <div className="relative">
-    <label
-      htmlFor="grid-photo"
-      className="cursor-pointer bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 block w-full font-bold  text-center"
-    >
-      Choose image of vehicle
-    </label>
-    <input
-      name="photo"
-      accept="image/*"
-      onChange={handleFileChange}
-      className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
-      id="grid-photo"
-      type="file"
-    />
-  </div>
-  {existingPhoto && (
-  <p>Photo : {existingPhotoName || existingPhoto.split('\\').pop()}</p>
-)}
-
-
-</div>
-
+              
               </div>
 
+
+
+              <div className="flex flex-wrap -mx-3 mb-6">
+              
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-mob-no-of-driver">
+                    Driver Mob.No
+                  </label>
+                  <input
+                    value={transportData.mobNoOfDriver}
+                    name="mobNoOfDriver"
+                    onChange={handleInputs}
+                    
+                  
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-mob-no-of-driver"
+                    type="number"
+                    placeholder="DRIVER MOB.NO."
+                  />
+                </div>
+
+              
+              </div>
            
 
               <div className="my-4">
