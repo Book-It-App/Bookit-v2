@@ -193,12 +193,16 @@ const BookingFaculty = () => {
                       <tr key={booking._id} className="border-gray-200 text-center border-b-2  ">
                         <td className="px-5 py-5  text-m  bg-white  border-gray-200">
                           <p className="text-gray-900 whitespace-no-wrap">
-                            {/* {booking.bookedTransportId.number} */}dfgdfg
+                            {/* {booking.bookedTransportId.number} */}
+                            {booking.bookedTransportId[0] && booking.bookedTransportId[0].number ? booking.bookedTransportId[0].number : "Not Alloted"}
+
                           </p>
                         </td>
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
                           <p className="text-gray-900 whitespace-no-wrap">
-                            {/* {booking.bookedTransportName} */}dfgdfgdfg
+                            {/* {booking.bookedTransportName} */}
+                            {booking.bookedTransportId[0] && booking.bookedTransportId[0].name ? booking.bookedTransportId[0].name : "Not Alloted"}
+
 
                           </p>
                         </td>
