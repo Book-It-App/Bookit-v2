@@ -861,6 +861,7 @@ const handleVehicleSelect = (e) => {
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
                             <p className="text-gray-900 whitespace-no-wrap capitalize">
                             {booking.outstationOrLocal}
+                            
                             </p>
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
