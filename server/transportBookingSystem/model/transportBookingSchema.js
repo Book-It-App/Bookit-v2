@@ -122,8 +122,8 @@ mobNoOfDriver:{
       type: Number,
       required: true
     },
-    altNumber: {
-      type: Number
+    hodEmail: {
+      type: String,
     },
     remark: {
       type: String,
