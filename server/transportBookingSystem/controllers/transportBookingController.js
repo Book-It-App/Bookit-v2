@@ -188,6 +188,7 @@ const createTransportBooking = async (req, res, next) => {
     //   organizingClub,
       phoneNumber,
       altNumber,
+      remark,
       isApproved,
     } = req.body;
 
@@ -319,6 +320,7 @@ const createTransportBooking = async (req, res, next) => {
       // eventDetailText,
       phoneNumber,
       altNumber,
+      remark,
       isApproved,
     });
     // await booking.validate();
@@ -509,6 +511,7 @@ console.log(req.body)
       vehicleType,
       // transportId,
       rejectionReason,
+      remark,
       isApproved,
     } = req.body;
 
@@ -551,6 +554,7 @@ console.log(req.body)
       vehicleType,
         //  transportId: transport._id,email,
         isApproved,
+        remark,
         rejectionReason,
       },
       { new: true }
