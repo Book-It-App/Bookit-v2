@@ -145,13 +145,18 @@ const BookingsView = () => {
       }
     }
     // const {  nameOfDriver, mobNoOfDriver } = driverDetails;
-    const { bookedTransportId, bookedTransportName , nameOfDriver, mobNoOfDriver } = bookingData;
-    console.log(bookingData)
+    const {
+      bookedTransportId,
+      bookedTransportName,
+      nameOfDriver,
+      mobNoOfDriver,
+    } = bookingData;
+    console.log(bookingData);
     if (isApproved === "Approved By Admin") {
       if (nameOfDriver.trim() === "" && mobNoOfDriver.trim() === "") {
         toast.error("Please fill all details.");
         return;
-      } 
+      }
       // else if (mobNoOfDriver.length !== 10) {
       //   console.log(mobNoOfDriver.length)
       //   toast.error("Please enter a valid mobile number.");
@@ -164,8 +169,8 @@ const BookingsView = () => {
       const response = await axios.put(
         `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${bookingId}`,
         {
-          bookedTransportId : bookedTransportId._id,
-          bookedTransportName : bookedTransportName,
+          bookedTransportId: bookedTransportId._id,
+          bookedTransportName: bookedTransportName,
           isApproved: isApproved,
           nameOfDriver:
             isApproved === "Rejected By Admin" ? null : nameOfDriver,
@@ -268,7 +273,7 @@ const BookingsView = () => {
     const selectedVehicleObject = vehicles.find(
       (vehicle) => vehicle._id === selectedVehicleId
     );
-      console.log(selectedVehicleId);
+    console.log(selectedVehicleId);
     setBookingData((bookingData) => ({
       ...bookingData,
       bookedTransportId: selectedVehicleObject,
@@ -679,9 +684,6 @@ const BookingsView = () => {
                 </div>
               </div>
 
-
-
-
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full px-3 mb-6 md:mb-0">
                   <h1
@@ -692,15 +694,11 @@ const BookingsView = () => {
                   <p
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-remark">
-                    {bookingData.remark}
+                    {bookingData.remark ? bookingData.remark : "Not Remark"}
                   </p>
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                 </div>
-               
               </div>
-
-
-
 
               {bookingData.isApproved === "Approved By Admin" && (
                 <>
@@ -742,7 +740,8 @@ const BookingsView = () => {
                       <p
                         className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
                         id="grid-vehicle-number">
-                        { bookingData.bookedTransportId.number || bookingData.bookedTransportId[0].number}
+                        {bookingData.bookedTransportId.number ||
+                          bookingData.bookedTransportId[0].number}
                       </p>
                       {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                     </div>
@@ -755,7 +754,8 @@ const BookingsView = () => {
                       <p
                         className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
                         id="grid-vehicle-name">
-                        {bookingData.bookedTransportId.name || bookingData.bookedTransportId[0].name}
+                        {bookingData.bookedTransportId.name ||
+                          bookingData.bookedTransportId[0].name}
                       </p>
                     </div>
                   </div>
@@ -928,8 +928,6 @@ const BookingsView = () => {
                         </option>
                       ))}
                   </select>
-
-                
                 </div>
               ) : (
                 <div className="w-full md:w-1/2 px-3">
