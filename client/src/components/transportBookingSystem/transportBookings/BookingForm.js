@@ -50,7 +50,7 @@ const BookingForm = () => {
     dropLocation: "",
     // organizingClub: "",
     phoneNumber: "",
-    altNumber: "",
+    hodEmail: "",
     remark: "",
     isApproved: "",
   });
@@ -155,7 +155,7 @@ const BookingForm = () => {
       dropLocation,
       // organizingClub,
       phoneNumber,
-      altNumber,
+      hodEmail,
       isApproved,
       remark,
     } = bookingData;
@@ -190,7 +190,7 @@ const BookingForm = () => {
           dropLocation,
           // organizingClub,
           phoneNumber,
-          altNumber,
+          hodEmail,
           remark,
           isApproved,
         },
@@ -845,18 +845,18 @@ const BookingForm = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-alt-number"
+                    htmlFor="grid-hod-email"
                   >
-                    Alternate Number
+                    HOD/Director email
                   </label>
                   <input
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-alt-number"
-                    type="number"
-                    value={bookingData.remark}
-                    name="altNumber"
+                    id="grid-hod-email"
+                    type="email"
+                    value={bookingData.hodEmail}
+                    name="hodEmail"
                     onChange={handleInputs}
-                    placeholder="Alternate Number"
+                    placeholder="HOD/Director email"
                   />
                 </div>
               </div>
@@ -876,7 +876,7 @@ const BookingForm = () => {
                     value={bookingData.remark}
                     name="remark"
                     onChange={handleInputs}
-                    placeholder="Enter your Remark here.."
+                    placeholder="Enter Remark here.."
                   />
                 </div>
               </div>
