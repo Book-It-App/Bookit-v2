@@ -10,10 +10,11 @@ import { format } from "date-fns";
 // eslint-disable-next-line no-unused-vars
 // import Index from "./Table";
 const BookingsAdmin = () => {
+  const [filterValue, setFilterValue] = useState("Request Sent");
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [filterValue, setFilterValue] = useState("Approved By HOD");
+  // const [filterValue, setFilterValue] = useState("Approved By HOD");
   const [emailVerified, setEmailVerified] = useState(false);
   const [userData, setUserData] = useState({});
   const [showRejectionModal, setShowRejectionModal] = useState(false);
