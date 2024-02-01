@@ -125,6 +125,9 @@ mobNoOfDriver:{
     altNumber: {
       type: Number
     },
+    remark: {
+      type: String,
+    },
     rejectionReason: {
       type: String,
     },
