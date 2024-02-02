@@ -134,9 +134,9 @@ const RenderUser = () => {
                 <RenderUser/>
               </li>
 
-              <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+              {/* <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/hall-booking-system/contact">Contact</Link>
-              </li>
+              </li> */}
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/hall-booking-system/profile">Profile</Link>
               </li>
