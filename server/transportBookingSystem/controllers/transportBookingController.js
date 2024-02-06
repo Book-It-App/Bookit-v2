@@ -158,6 +158,146 @@ const generateBookingEmailTemplate = (
   `;
 };
 
+
+
+
+const generateHodEmailTemplate = (
+  // eventName,
+  MainDate,
+  selfOrGuest,
+  noOfPerson,
+  
+  eventDateType,
+  StartDate,
+  EndDate,
+  // bookedTransportName,
+  // bookedTransportNumber,
+//   organizingClub,
+  institution,
+  department,
+  bookingId
+) => {
+  return `
+
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+      a,
+      a:link,
+      a:visited {
+          text-decoration: none;
+          color: #00788a;
+      }
+
+      a:hover {
+          text-decoration: underline;
+      }
+
+      h2,
+      h2 a,
+      h2 a:visited,
+      h3,
+      h3 a,
+      h3 a:visited,
+      h4,
+      h5,
+      h6,
+      .t_cht {
+          color: #000 !important;
+      }
+
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td {
+          line-height: 100%;
+      }
+
+      .ExternalClass {
+          width: 100%;
+      }
+  </style>
+</head>
+
+<body style="font-size: 1.25rem;font-family: 'Roboto', sans-serif;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:20px; background-color: #FAFAFA; width: 75%; max-width: 1280px; min-width: 600px; margin-right: auto; margin-left: auto">
+  <table cellpadding="12" cellspacing="0" width="100%" bgcolor="#FAFAFA" style="border-collapse: collapse;margin: auto">
+      <tbody>
+          <tr>
+              <td style="padding: 50px; background-color: #fff; max-width: 660px">
+                  <table style="width: 100%;">
+                      <tr>
+                          <td style="text-align:center">
+                             <h1 style="font-size: 30px; color: #4f46e5; margin-top: 0;">New Transport Booking Request</h1> 
+          <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello</h1>
+            <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">A new booking has been requested from your Department. Please review the booking details provided below and click the button to view the booking.</p>     
+
+                          <table style="width: 100%;" >
+                      <tr>
+                          
+                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
+                              <table style="width: 100%;" >
+                                 
+                           
+                                 
+                                        <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${institution}</td>
+                                  </tr>
+                                    <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Departmant :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${department}</td>
+                                  </tr>
+                                    ${eventDateType === "full" || eventDateType === "half" ? `
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Date:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainDate}</td>
+                                    </tr>`
+                                    :
+                                    `
+                                            <tr>
+                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">From:</td>
+                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${StartDate}</td>
+                                        </tr>
+
+                                        <tr>
+                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">To:</td>
+                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${EndDate}</td>
+                                    </tr>
+
+                                    `} 
+                                        <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Self / Guest :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${selfOrGuest}</td>
+                                  </tr>
+                                          <tr>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">No. Of Person :</td>
+                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${noOfPerson}</td>
+                                  </tr>
+                                
+                              </table>
+
+                          </td>
+                      </tr>
+                                
+                  </table>
+              </td>
+          </tr>
+          <br/>
+          <center>  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
+      </tbody>
+                 
+  </table>
+</body>
+
+
+
+
+  `;
+};
+
+
+
 const createTransportBooking = async (req, res, next) => {
   try {
     const {
@@ -187,7 +327,7 @@ const createTransportBooking = async (req, res, next) => {
       dropLocation,
     //   organizingClub,
       phoneNumber,
-      altNumber,
+      hodEmail,
       remark,
       isApproved,
     } = req.body;
@@ -244,7 +384,7 @@ const createTransportBooking = async (req, res, next) => {
       !endTime ||
       !selfOrGuest ||
       
-      // || !altNumber
+       !hodEmail ||
       // / !eventName ||
       // / !organizingClub ||
       !vehicleType ||
@@ -286,9 +426,23 @@ const createTransportBooking = async (req, res, next) => {
         .json({ error: "Please enter a valid 10-digit phone number" });
     }
 
-    // if (altNumber.length !== 10) {
-    //   return res.status(422).json({ error: "Please enter a valid 10-digit alternate number" });
-    // }
+
+
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+  
+    if (!emailRegex.test(hodEmail)) {
+      return res.status(422).json({ error: "Kindly provide a valid email address." });
+    }
+    
+    const acropolisEmailRegex = /@acropolis\.in$/;
+    const acropolisEduEmailRegex = /@acropolis\.edu\.in$/;
+
+    if (!acropolisEmailRegex.test(hodEmail) && !acropolisEduEmailRegex.test(hodEmail) ) {
+      return res.status(422).json({ error: "Kindly provide a email address associated with Acropolis Institute" });
+    }
+
+
 
     const booking = new TransportBooking({
       userId: user._id,
@@ -320,7 +474,7 @@ const createTransportBooking = async (req, res, next) => {
       // eventDetailFile,
       // eventDetailText,
       phoneNumber,
-      altNumber,
+      hodEmail,
       remark,
       isApproved,
     });
@@ -366,6 +520,52 @@ const createTransportBooking = async (req, res, next) => {
         console.log("Email sent:", info.response);
       }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const hodEmailOptions = {
+      from: process.env.SENDER_EMAIL,
+      // to: transport.transportCreater, // Use the transport creator's email here
+      to: hodEmail, // Use the transport creator's email here
+      subject: "New Booking Request",
+      html: generateHodEmailTemplate(
+        // eventName,
+        MainDate,
+        selfOrGuest,
+        noOfPerson,
+        eventDateType,
+        StartDate,
+        EndDate,
+        // bookedTransportName,
+        // transport.number,
+      //   organizingClub,
+        institution,
+        department,
+        booking._id
+      ),
+    };
+
+    transporter.sendMail(hodEmailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+
+
+
 
     res.status(201).json({ message: "Booking created successfully" });
   } catch (error) {
