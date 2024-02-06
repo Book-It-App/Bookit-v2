@@ -25,8 +25,8 @@ const BookingFaculty = () => {
       });
 
       const data = response.data;
-      //consolelog(data);
       setBookingData(data.booking);
+      console.log(data.booking);
    
 
       setIsLoading(false);
@@ -191,19 +191,28 @@ const BookingFaculty = () => {
                       // <div key={booking._id} className="my-2 ">
 
                       <tr key={booking._id} className="border-gray-200 text-center border-b-2  ">
-                        <td className="px-5 py-5  text-m  bg-white  border-gray-200">
-                        {booking.bookedTransportId.map((transport, index) => (
-    <p key={index} className="text-gray-900 whitespace-no-wrap">
-      {transport.number ? transport.number : "Not Alloted"}
-    </p>
-  ))}
-                        </td>
+                       <td className="px-5 py-5 text-m bg-white border-gray-200">
+  {booking.bookedTransportId.length > 0 ? (
+    booking.bookedTransportId.map((transport, index) => (
+      <p key={index} className="text-gray-900 whitespace-no-wrap">
+        {transport.number}
+      </p>
+    ))
+  ) : (
+    <p className="text-gray-900 whitespace-no-wrap">Not Alloted</p>
+  )}
+</td>
+
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
-                        {booking.bookedTransportId.map((transport, index) => (
-    <p key={index} className="text-gray-900 whitespace-no-wrap">
-      {transport.name ? transport.name : "Not Alloted"}
-    </p>
-  ))}
+                        {booking.bookedTransportId.length > 0 ? (
+    booking.bookedTransportId.map((transport, index) => (
+      <p key={index} className="text-gray-900 whitespace-no-wrap">
+        {transport.name}
+      </p>
+    ))
+  ) : (
+    <p className="text-gray-900 whitespace-no-wrap">Not Alloted</p>
+  )}
                         </td>
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
                           <p className="text-gray-900 whitespace-no-wrap capitalize">
