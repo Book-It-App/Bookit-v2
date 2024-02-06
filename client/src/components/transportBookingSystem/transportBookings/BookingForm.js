@@ -651,7 +651,7 @@ const BookingForm = () => {
               )}
 
               <div className="flex flex-wrap -mx-3 mb-6">
-                {bookingData.selfOrGuest === "guest" && (
+                {/* {bookingData.selfOrGuest === "guest" && ( */}
                   <div className="w-full md:w-1/2 px-3">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -671,7 +671,7 @@ const BookingForm = () => {
                       <option value="oneway">One-Way</option>
                     </select>
                   </div>
-                )}
+                {/*  )} */}
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -876,7 +876,7 @@ const BookingForm = () => {
                     value={bookingData.remark}
                     name="remark"
                     onChange={handleInputs}
-                    placeholder="Enter your Remark here.."
+                    placeholder="Enter your Remark here.. If Any"
                   />
                 </div>
               </div>

@@ -1,22 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const transportBookingSchema = new mongoose.Schema(
-  { userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'USER',
-    required: true
-  },
-  institution:{
-    type: String,
-    required: true
-  },
-    department:{
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "USER",
+      required: true,
+    },
+    institution: {
       type: String,
-      required: true
+      required: true,
+    },
+    department: {
+      type: String,
+      required: true,
     },
     eventManager: {
       type: String,
-      required: true
+      required: true,
     },
     // eventName: {
     //   type: String,
@@ -24,11 +25,10 @@ const transportBookingSchema = new mongoose.Schema(
     // },
     eventDate: {
       type: Date,
-  
     },
     eventDateType: {
       type: String,
-      required: true
+      required: true,
     },
     eventStartDate: {
       type: Date,
@@ -44,60 +44,60 @@ const transportBookingSchema = new mongoose.Schema(
       type: Date,
     },
 
-
-    selfOrGuest:{
+    selfOrGuest: {
       type: String,
-      required: true
+      required: true,
     },
-    noOfPerson:{
+    noOfPerson: {
       type: Number,
-      required: true
+      required: true,
     },
 
-    roundOrOneway:{
+    roundOrOneway: {
       type: String,
     },
-    outstationOrLocal:{
+    outstationOrLocal: {
       type: String,
     },
 
-naneOfGuest:{
-  type: String,
-
-},
-mobNoOfGuest:{
-  type: Number,
-
-},
-pickupLocation:{
-  type: String,
-  required: true
-},
-dropLocation:{
-  type: String,
-  required: true
-},
-nameOfDriver:{
-  type: String,
-  
-},
-mobNoOfDriver:{
-  type: Number,
-  
-},
-
+    naneOfGuest: {
+      type: String,
+    },
+    mobNoOfGuest: {
+      type: Number,
+    },
+    noOfVehicle: {
+      // default: 1,
+      type: Number,
+    },
+    pickupLocation: {
+      type: String,
+      required: true,
+    },
+    dropLocation: {
+      type: String,
+      required: true,
+    },
+    // nameOfDriver: {
+    //   type: String,
+    // },
+    // mobNoOfDriver: {
+    //   type: Number,
+    // },
 
     email: {
       type: String,
-      required: true
+      required: true,
     },
-    
-    bookedTransportId: [{
-      type: mongoose.Schema.Types.ObjectId,
-      
-      ref: 'Transport',
-      // required: true
-    }],
+
+    bookedTransportId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+
+        ref: "Transport",
+        // required: true
+      },
+    ],
     // bookedTransport: {
     //   // type: mongoose.Schema.Types.Subdocument,
 
@@ -110,9 +110,9 @@ mobNoOfDriver:{
     //   // required: true
     // },
 
-    vehicleType:{
+    vehicleType: {
       type: String,
-      required: true
+      required: true,
     },
     // organizingClub: {
     //   type: String,
@@ -120,10 +120,10 @@ mobNoOfDriver:{
     // },
     phoneNumber: {
       type: Number,
-      required: true
+      required: true,
     },
     altNumber: {
-      type: Number
+      type: Number,
     },
     remark: {
       type: String,
@@ -134,15 +134,18 @@ mobNoOfDriver:{
     isApproved: {
       default: "Request Sent",
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
 // transportBookingSchema.index({ eventDate: 1 }, { expireAfterSeconds: 86400 });
-const TransportBooking = mongoose.model('TransportBooking', transportBookingSchema);
+const TransportBooking = mongoose.model(
+  "TransportBooking",
+  transportBookingSchema
+);
 
 module.exports = TransportBooking;

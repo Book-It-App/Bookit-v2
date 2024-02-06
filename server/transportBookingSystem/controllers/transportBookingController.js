@@ -173,7 +173,7 @@ const createTransportBooking = async (req, res, next) => {
       startTime,
       endTime,
       email,
-      // bookedTransportId,
+      bookedTransportId,
       // bookedTransportName,
       vehicleType,
       selfOrGuest,
@@ -303,10 +303,11 @@ const createTransportBooking = async (req, res, next) => {
       startTime,
       endTime,
       email,
-      // bookedTransportId: transport._id,
+      bookedTransportId,
       // bookedTransport: transport,
       // bookedTransportName,
       vehicleType,
+      
       selfOrGuest,
       noOfPerson,
       roundOrOneway,
@@ -500,22 +501,23 @@ console.log(req.body)
     outstationOrLocal,
       naneOfGuest,
       mobNoOfGuest,
-      nameOfDriver,
-      mobNoOfDriver,
+      // nameOfDriver,
+      // mobNoOfDriver,
       pickupLocation,
       dropLocation,
       // email,
-
+      noOfVehicle,
       bookedTransportId,
-      bookedTransportName,
+      // bookedTransportName,
       vehicleType,
+
       // transportId,
       rejectionReason,
       remark,
       isApproved,
     } = req.body;
-
-
+console.log("thois os bodyyyyyyyyyyyyy")
+console.log(req.body);
     // const transport = await Transport.findById(bookedTransportId);
     // if (!transport) {
     //   return res.status(404).json({ message: 'Transport not found' });
@@ -545,13 +547,14 @@ console.log(req.body)
     outstationOrLocal,
         naneOfGuest,
         mobNoOfGuest,
-        nameOfDriver,
-        mobNoOfDriver,
+        // nameOfDriver,
+        // mobNoOfDriver,
         pickupLocation,
         dropLocation,
         bookedTransportId,
-      bookedTransportName,
+      // bookedTransportName,
       vehicleType,
+      noOfVehicle,
         //  transportId: transport._id,email,
         isApproved,
         remark,
