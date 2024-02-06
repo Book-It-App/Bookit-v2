@@ -10,16 +10,16 @@ import { format } from "date-fns";
 // eslint-disable-next-line no-unused-vars
 // import Index from "./Table";
 const BookingsAdmin = () => {
-  const [filterValue, setFilterValue] = useState("Request Sent");
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  // const [filterValue, setFilterValue] = useState("Approved By HOD");
+  const [filterValue, setFilterValue] = useState("Request Sent");
   const [emailVerified, setEmailVerified] = useState(false);
   const [userData, setUserData] = useState({});
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
-  const [selectedBookingId, setSelectedBookingId] = useState("");
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const [selectedBookingData, setSelectedBookingData] = useState({});
   const [driverDetails, setDriverDetails] = useState({nameOfDriver:"",
   mobNoOfDriver:""});
   const [showApprovalModal, setShowApprovalModal] = useState(false);
@@ -31,12 +31,35 @@ const BookingsAdmin = () => {
   const [vehicles, setVehicles] = useState([]);
 
   const openApprovalModal = (bookingId) => {
-
+    // Capture the provided bookingId
+    const selectedBookingId = bookingId;
+    
+    // Log the bookingId for debugging
+    console.log(selectedBookingId);
+  
+    // Set the selectedBookingId state
+    // setSelectedBookingId(selectedBookingId);
+  
+    // Find the booking data for the selected bookingId
+    const foundBooking = bookingData.find((booking) => booking._id === selectedBookingId);
+  
+    // Log the found booking data (Note: This log may not show the updated state immediately due to asynchronous behavior)
+    console.log(foundBooking);
+    // Set the selectedBookingData state with the found booking data
+    setSelectedBookingData(foundBooking);
+    // setSelectedBookingData((selectedBookingData) => ({
+    //   ...selectedBookingData,
+    //   noOfVehicles: 1
+    // }));
+    console.log(selectedBookingData);
+  
+    // Log the selectedBookingId (it should be the same as the initially logged bookingId)
+    console.log(selectedBookingId);
+  
+    // Show the approval modal
     setShowApprovalModal(true);
-    setSelectedBookingId(bookingId);
-
   };
-
+  
   const closeRejectionModal = () => {
     setShowRejectionModal(false);
     setRejectionReason("");
@@ -48,36 +71,183 @@ const BookingsAdmin = () => {
     setDriverDetails({});
 
     setSelectedBookingId("");
+
     setIsLoading(false)
   };
-  // const handleReject = async () => {
-  //   if (rejectionReason.trim() === '') {
-  //     toast.error('Please provide a reason for rejection.');
-  //     return;
+
+
+
+  const handleNoOfVehicle = (e) => {
+    const name = "noOfVehicle";
+    // const value = bookingData.bookedTransportId.length;
+    // const value = selectedBookingData.noOfVehicle + 1;
+  
+    let value = selectedBookingData.noOfVehicle || 0; // Initialize with 0 if it's NaN or undefined
+  
+    // Increment the value by 1
+    value += 1;
+    setSelectedBookingData({
+      ...selectedBookingData,
+      [name]: value,
+      bookedTransportId: [...selectedBookingData.bookedTransportId, {}],
+    });
+
+    console.log(selectedBookingData);
+  };
+  
+
+  // const handleNoOfVehicle = (e,bookingId) => {
+  //   const name = e.target.name;
+  //   const value = e.target.value;
+  //   console.log(bookingId);
+
+
+  //    // Map through the array and update the selected booking
+  // const updatedBookings = bookingData.map((booking) => {
+  //   if (booking._id === bookingId) {
+  //     return { ...booking, [name]: value };
+  //   }
+  //   return booking;
+  // });
+
+  // setBookingData(updatedBookings);
+
+  // console.log(bookingData);
+  //   // setDriverDetails({ ...driverDetails, [name]: value });
+  //   // setBookingData({ ...bookingData, [name]: value });
+  // };
+
+  const handleRemoveVehicle = (vehicleId) => {
+    const updatedTransportId = selectedBookingData.bookedTransportId.filter(vehicle => vehicle._id !== vehicleId);
+  
+    setSelectedBookingData({
+      ...selectedBookingData,
+      bookedTransportId: updatedTransportId,
+      noOfVehicle: updatedTransportId.length, // Update the number of vehicles
+    });
+  };
+
+  // const handleRemoveVehicle = (vehicleId) => {
+  //   const updatedTransportId = bookingData.bookedTransportId.filter(vehicle => vehicle._id !== vehicleId);
+  
+  //   setBookingData({
+  //     ...bookingData,
+  //     bookedTransportId: updatedTransportId,
+  //     noOfVehicle: updatedTransportId.length, // Update the number of vehicles
+  //   });
+  // };
+
+
+
+  const handleDriverDetails = (e, index) => {
+    const { name, value } = e.target;
+
+    // Create a copy of the state
+    const updatedBookingData = { ...selectedBookingData };
+
+    // Check if bookedTransportId[index] exists, if not, create an empty object
+    if (!updatedBookingData.bookedTransportId[index]) {
+      updatedBookingData.bookedTransportId[index] = {};
+    }
+
+    if (name === `bookedTransportId[${index}].nameOfDriver` || name === `bookedTransportId[${index}].mobNoOfDriver`) {
+      updatedBookingData.bookedTransportId[index][name.split('.')[1]] = value;
+    }
+    // Find the selected transport (vehicle) based on the ID
+    const selectedTransport = vehicles.find((vehicle) => vehicle._id === value);
+
+
+    if (selectedTransport) {
+      // Check if the selected transport is already in bookedTransportId
+      const isAlreadyBooked = updatedBookingData.bookedTransportId.some(
+        (booking) => booking && booking._id === selectedTransport._id
+      );
+  
+      if (isAlreadyBooked) {
+        // Display toast or perform other actions for already booked transport
+        // Replace the following line with your toast or notification logic
+        toast.error(`${selectedTransport.number} ${selectedTransport.name} is already selected.`);
+
+        // console.log(`Transport with ID ${selectedTransport._id} is already booked.`);
+      } else {
+        updatedBookingData.bookedTransportId[index] = selectedTransport;
+      }
+    }
+   
+    setSelectedBookingData(updatedBookingData);
+  };
+
+
+  
+  // const handleDriverDetails = (e, index, bookingId) => {
+  //   const { name, value } = e.target;
+  
+  //   // Create a copy of the state
+  //   const updatedBookingData = [...bookingData];
+  
+  //   // Find the booking in the array based on the bookingId
+  //   const bookingIndex = updatedBookingData.findIndex((booking) => booking._id === bookingId);
+  
+  //   // If the booking is found, update its bookedTransportId field
+  //   if (bookingIndex !== -1) {
+  //     const booking = updatedBookingData[bookingIndex];
+  
+  //     // Check if bookedTransportId exists, if not, create an empty array
+  //     if (!booking.bookedTransportId) {
+  //       booking.bookedTransportId = [];
+  //     }
+  
+  //     if (name === `bookedTransportId[${index}].nameOfDriver` || name === `bookedTransportId[${index}].mobNoOfDriver`) {
+  //       // Update the specified field in the bookedTransportId array
+  //       booking.bookedTransportId[index] = {
+  //         ...booking.bookedTransportId[index],
+  //         [name.split('.')[1]]: value,
+  //       };
+  //     }
+  
+  //     // Find the selected transport (vehicle) based on the ID
+  //     const selectedTransport = vehicles.find((vehicle) => vehicle._id === value);
+  
+  //     // If the selected transport is found, store its information
+  //     if (selectedTransport) {
+  //       booking.bookedTransportId[index] = selectedTransport;
+  //     }
+  //   } else {
+  //     // If the booking is not found, you may want to create a new booking with the provided details.
+  //     // Please adjust this part based on your data structure and requirements.
+  //     console.log("Booking not found");
+  //   }
+  
+  //   // Update the state
+  //   setBookingData(updatedBookingData);
+  // };
+  
+  // const handleDriverDetails = (e, index,bookingId) => {
+  //   const { name, value } = e.target;
+
+  //   // Create a copy of the state
+  //   const updatedBookingData = { ...bookingData };
+
+  //   // Check if bookedTransportId[index] exists, if not, create an empty object
+  //   if (!updatedBookingData.bookedTransportId[index]) {
+  //     updatedBookingData.bookedTransportId[index] = {};
   //   }
 
-  //   try {
-  //     await axios.put(`${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${selectedBookingId}`,
-  //       {
-  //         isApproved: 'Rejected By Admin',
-  //         rejectionReason: rejectionReason.trim(), // Send rejection reason in the request
-  //       },
-  //       {
-  //         withCredentials: true,
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     );
-  //     closeRejectionModal();
-  //     toast.success('Booking request rejected successfully!');
-  //     getBookingData(); // Refresh booking data
-  //   } catch (error) {
-  //     // Handle error
-  //     toast.error('Failed to reject the booking request.');
+  //   if (name === `bookedTransportId[${index}].nameOfDriver` || name === `bookedTransportId[${index}].mobNoOfDriver`) {
+  //     updatedBookingData.bookedTransportId[index][name.split('.')[1]] = value;
   //   }
+  //   // Find the selected transport (vehicle) based on the ID
+  //   const selectedTransport = vehicles.find((vehicle) => vehicle._id === value);
+
+  //   // If the selected transport is found, store its information
+  //   if (selectedTransport) {
+  //     updatedBookingData.bookedTransportId[index] = selectedTransport;
+  //   }
+
+  //   // Update the state
+  //   setBookingData(updatedBookingData);
   // };
+
   const userContact = async () => {
     try {
       const response = await axios.get(
@@ -109,8 +279,22 @@ const BookingsAdmin = () => {
 
   useEffect(() => {
     userContact();
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
+
+
+  // const handleDriverDetails = (e) => {
+  //   const name = e.target.name;
+  //   const value = e.target.value;
+  //   // setDriverDetails({ ...driverDetails, [name]: value });
+  //   setBookingData({ ...bookingData, [name]: value });
+  // };
+  
+
+
 
 
   const fetchVehicles = async () => {
@@ -191,6 +375,8 @@ const BookingsAdmin = () => {
     getBookingData();
 
     fetchVehicles();
+
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -206,13 +392,36 @@ const BookingsAdmin = () => {
         setRejectionReason(null);
       }
     }
-    const { bookedTransportId, bookedTransportName , nameOfDriver, mobNoOfDriver } = bookingData;
+    const { bookedTransportId, 
+      noOfVehicle
+      // bookedTransportName , nameOfDriver, mobNoOfDriver
+     } = selectedBookingData; 
+    //  bookingData.find((booking) => booking._id === bookingId);
 console.log(bookingData);
     if (isApproved === "Approved By Admin") {
-      if ((nameOfDriver.trim() === "") && (mobNoOfDriver.trim() === "")) {
-        toast.error("Please fill all details.");
+    
+
+      if (noOfVehicle === 0) {
+        toast.error("Please select at least one vehicle.");
         return;
-      } 
+      }
+  
+      
+      const isAnyDetailEmpty = bookedTransportId.some((transport) => {
+        // Ensure that mobNoOfDriver is a string before calling trim()
+        if (!transport.number ) {
+          return true; // Return true to indicate that the detail is empty
+        }else{
+
+          const mobNoOfDriver = transport.mobNoOfDriver ? transport.mobNoOfDriver.toString() : '';
+          return !transport.nameOfDriver.trim() || !mobNoOfDriver.trim();
+        }
+      });
+      
+      if (isAnyDetailEmpty) {
+        toast.error("Please fill all details for each booked transport.");
+        return;
+      }
       // else if (mobNoOfDriver.length !== 10) {  
       //   toast.error("Please enter a valid mobile number.");
       //   return;
@@ -229,13 +438,14 @@ console.log(bookingData);
       const response = await axios.put(
         `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/bookingsEdit/${bookingId}`,
         {
-          bookedTransportId : bookedTransportId._id,
-          bookedTransportName : bookedTransportName,
+          bookedTransportId: bookedTransportId.map((transport) => transport._id),
+          // bookedTransportName : bookedTransportName,
+          noOfVehicle: noOfVehicle,
           isApproved: isApproved,
-          nameOfDriver:
-            isApproved === "Rejected By Admin" ? null : nameOfDriver,
-          mobNoOfDriver:
-            isApproved === "Rejected By Admin" ? null : mobNoOfDriver,
+          // nameOfDriver:
+          //   isApproved === "Rejected By Admin" ? null : nameOfDriver,
+          // mobNoOfDriver:
+          //   isApproved === "Rejected By Admin" ? null : mobNoOfDriver,
           rejectionReason:
             isApproved === "Approved By Admin" ? null : rejectionReason,
        
@@ -273,43 +483,7 @@ console.log(bookingData);
     }
   };
 
-  // const deleteBooking = async (bookingId) => {
-  //   // e.preventDefault();
 
-  //   try {
-  //     const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/bookings/${bookingId}`,
-
-  //       {
-  //         withCredentials: true, // To include credentials in the request
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     const data = response.data;
-
-  //     if (!data) {
-  //       toast.error("Request not send!")
-  //       // //consolelog("Message not send");
-  //     } else {
-  //       getBookingData();
-  //       toast.success("Request send Successfull!")
-  //       // alert("Message send");
-  //       navigate("/")
-  //       // setBookingData({ ...bookingData });
-  //     }
-  //   } catch (error) {
-  //     if (error.response.status === 404 && error.response) {
-  //       const data = error.response.data;
-  //       //consolelog(data.error);
-  //       // window.alert(data.error);
-  //     } else {
-  //       //consoleerror(error);
-  //     }
-  //     // //consolelog(error);
-  //   }
-  // };
 
   const handleFilter = (value) => {
     setFilterValue(value);
@@ -332,12 +506,7 @@ console.log(bookingData);
   });
 
 
-  const handleDriverDetails = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    // setDriverDetails({ ...driverDetails, [name]: value });
-    setBookingData({ ...bookingData, [name]: value });
-  };
+
 
 const handleVehicleSelect = (e) => {
   const selectedVehicleId = e.target.value;
@@ -464,131 +633,153 @@ const handleVehicleSelect = (e) => {
 
 
 
-        
-        {/* {showApprovalModal && (
-        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-md shadow-md w-1/3">
-            <h2 className="text-lg font-bold mb-4">Driver Details</h2>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                  htmlFor="grid-vehicle-type">
-                  Vehicle Type
-                </label>
-                <input
-                  className="appearance-none block w-full capitalize bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-vehicle-type"
-                  type="text"
-                  value={bookingData.vehicleType}
-                  name="vehicleType"
-                  // onChange={handleDriverDetails}
-                  placeholder=" Vehicle Type"
-                  disabled
-                />
-              </div>
 
-              {bookingData.vehicleType === "bus" ? (
-                <div className="w-full md:w-1/2 px-3">
+
+        {showApprovalModal && (
+        <div className="fixed top-0 left-0  flex items-center justify-center w-full h-full z-20 bg-black bg-opacity-50 overflow-auto">
+          <div className="bg-white p-4 rounded-md shadow-md w-4/5 max-h-full overflow-y-auto">
+           <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-bold mb-4">Vehicle and Driver Details</h2>
+            <button
+            onClick={handleNoOfVehicle}
+            // value={bookingData.noOfVehicle}
+            name="noOfVehicle"
+            className="flex self-end bg-indigo-700  hover:bg-indigo-500 rounded border border-indigo-700 text-white  px-4 py-2 ">
+             Add Vehicle</button>
+        </div>
+           <div className="mb-6 w-1/6">
+               <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="grid-no-of-vehicles">
+                Number of Vehicles
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-no-of-vehicles"
+                type="number"
+                value={selectedBookingData.noOfVehicle}
+                // name="noOfVehicle"
+                // onChange={handleNoOfVehicle}
+                placeholder="Number of Vehicles"
+                // min="1"  
+                disabled 
+                
+              />
+            </div> 
+    
+            {Array.from({ length: Math.max(0, Math.floor(selectedBookingData.noOfVehicle))}).map((_, index) => (
+
+                
+              <div key={index} className="flex flex-wrap -mx-3 mb-6">
+                {/* Vehicle Type Input */}
+                <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-mobNoOfDriver">
-                    Bus Number
+                    htmlFor={`grid-vehicle-type-${index}`}>
+                    Vehicle Type
                   </label>
-
-                  <select
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-transport-name"
-                    name="bookedTransportName"
-                    value={bookingData.bookedTransportId._id}
-                    // onChange={handleInputs}
-                    onChange={(e) => handleVehicleSelect(e)}>
-                    <option value="">Select a vehicle</option>
-
-                    {vehicles
-                      .filter((vehicle) => vehicle.transportType === "bus")
-                      .map((bus) => (
-                        <option key={bus._id} value={bus._id}>
-                          {bus.number} {bus.name}
-                        </option>
-                      ))}
-                  </select>
-
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-mob-no-of-driver"
+                    className="appearance-none block w-full capitalize bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id={`grid-vehicle-type-${index}`}
                     type="text"
-                    value={bookingData.mobNoOfDriver}
-                    name="mobNoOfDriver"
-                    onChange={handleDriverDetails}
-                    placeholder="Mob. No. Of Driver"
+                    name={`bookedTransportId[${index}].vehicleType`}
+                    value={selectedBookingData.vehicleType || ""}
+                    disabled
                   />
                 </div>
-              ) : bookingData.vehicleType === "car" &&(
-                <div className="w-full md:w-1/2 px-3">
+
+                {/* Select Vehicle Input */}
+                <div className="w-full md:w-1/5 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-mobNoOfDriver">
+                    htmlFor={`grid-transport-name-${index}`}>
                     Select Vehicle
                   </label>
 
                   <select
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-transport-name"
-                    name="bookedTransportName"
-                    value={bookingData.bookedTransportId._id}
-                    // onChange={handleInputs}
-                    onChange={(e) => handleVehicleSelect(e)}>
+                    id={`grid-transport-name-${index}`}
+                    name={`bookedTransportId[${index}]`}
+                    value={selectedBookingData.bookedTransportId[index]?._id || ""}
+                    onChange={(e) => handleDriverDetails(e, index)}>
                     <option value="">Select a vehicle</option>
-               
-
-                    {vehicles
-                      .filter((vehicle) => vehicle.transportType === "car")
-                      .map((car) => (
-                        <option key={car._id} value={car._id}>
-                          {car.number} {car.name}
-                        </option>
-                      ))}
+                    {selectedBookingData.vehicleType === "bus"
+                      ? vehicles
+                          .filter((vehicle) => vehicle.transportType === "bus")
+                          .map((bus) => (
+                            <option key={bus._id} value={bus._id}>
+                              {bus.number} {bus.name}
+                            </option>
+                          ))
+                      : vehicles
+                          .filter((vehicle) => vehicle.transportType === "car")
+                          .map((car) => (
+                            <option key={car._id} value={car._id}>
+                              {car.number} {car.name}
+                            </option>
+                          ))}
                   </select>
                 </div>
-              )}
-            </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                {/* Add other input fields for driver details here */}
+                <div className="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor={`grid-name-of-driver-${index}`}>
+                    Name Of Driver
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id={`grid-name-of-driver-${index}`}
+                    type="text"
+                    name={`bookedTransportId[${index}].nameOfDriver`}
+                    value={
+                      selectedBookingData.bookedTransportId[index]?.nameOfDriver || ""
+                    }
+                    onChange={(e) => handleDriverDetails(e, index)}
+                    placeholder="Name Of Driver"
+                  />
+                </div>
+
+                <div className="w-full md:w-1/5 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor={`grid-mob-no-of-driver-${index}`}>
+                    Mob. No. Of Driver
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id={`grid-mob-no-of-driver-${index}`}
+                    type="number"
+                    name={`bookedTransportId[${index}].mobNoOfDriver`}
+                    value={
+                      selectedBookingData.bookedTransportId[index]?.mobNoOfDriver || ""
+                    }
+                    onChange={(e) => handleDriverDetails(e, index)}
+                    placeholder="Mob. No. Of Driver"
+                  />
+                </div>
+
+                <div className="w-full md:w-1/5 px-3 items-center justify-center">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                  htmlFor="grid-name-of-driver">
-                  Name Of Driver
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-name-of-driver"
-                  type="text"
-                  value={bookingData.nameOfDriver}
-                  name="nameOfDriver"
-                  onChange={handleDriverDetails}
-                  placeholder="Name Of Driver"
-                />
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    >
+                    Remove Vehicle
+                  </label>
+                <button
+                            // onClick={handleRemoveVehicle(bookingData.bookedTransportId[index]._id)}
+
+            onClick={(e) => handleRemoveVehicle( selectedBookingData.bookedTransportId[index]._id)}
+            // value={bookingData.noOfVehicle}
+            name="noOfVehicle"
+            className="flex self-end bg-red-700 my-auto w-full hover:bg-red-500 rounded border border-red-700 text-white  px-4 py-2 ">
+             X Remove Vehicle</button>
+                  
+                </div>
               </div>
-              <div className="w-full md:w-1/2 px-3">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="grid-mobNoOfDriver">
-                  Mob. No. Of Driver
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-mob-no-of-driver"
-                  type="number"
-                  value={bookingData.mobNoOfDriver}
-                  name="mobNoOfDriver"
-                  onChange={handleDriverDetails}
-                  placeholder="Mob. No. Of Driver"
-                />
-              </div>
-            </div>
+            ))}
+
             <div className="flex justify-between">
               <button
                 className="px-4 py-2 bg-gray-300 rounded"
@@ -597,16 +788,20 @@ const handleVehicleSelect = (e) => {
               </button>
               <button
                 className="px-4 py-2 bg-green-500 text-white rounded mr-2"
-                // onClick={handleReject}
                 onClick={() =>
-                  updateBooking(bookingData._id, "Approved By Admin")
+                  updateBooking(selectedBookingData._id, "Approved By Admin")
                 }>
                 Approve
               </button>
             </div>
+
+            {/* Rest of your code */}
           </div>
         </div>
-      )} */}
+      )}
+
+        
+       
         {showRejectionModal && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
             <div className="bg-white p-4 rounded-md shadow-md w-1/3">
@@ -707,6 +902,209 @@ const handleVehicleSelect = (e) => {
                         // <div key={booking._id} className="my-2 ">
 
                         <>
+
+
+
+
+
+{/* 
+{showApprovalModal && (
+        <div className="fixed top-0 left-0  flex items-center justify-center w-full h-full z-20 bg-black bg-opacity-25 overflow-auto">
+          <div className="bg-white p-4 rounded-md shadow-md w-4/5 max-h-full overflow-y-auto">
+            <h2 className="text-lg font-bold mb-4">Vehicle and Driver Details</h2>
+
+            <div className="mb-6 w-1/6">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="grid-no-of-vehicles">
+                Number of Vehicles
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-no-of-vehicles"
+                type="number"
+                value={booking.noOfVehicle}
+                name="noOfVehicle"
+                onChange={(e) => handleNoOfVehicle(e, booking._id)}
+                // onChange={handleNoOfVehicle(booking._id)}
+                placeholder="Number of Vehicles"
+                min="1"
+                
+                
+              />
+            </div>
+
+            {Array.from({ length: Math.max(0, Math.floor(booking.noOfVehicle))}).map((_, index) => (
+
+              <div key={index} className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor={`grid-vehicle-type-${index}`}>
+                    Vehicle Type
+                  </label>
+                  <input
+                    className="appearance-none block w-full capitalize bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id={`grid-vehicle-type-${index}`}
+                    type="text"
+                    name={`bookedTransportId[${index}].vehicleType`}
+                    value={booking.vehicleType || ""}
+                    disabled
+                  />
+                </div>
+
+                <div className="w-full md:w-1/4 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor={`grid-transport-name-${index}`}>
+                    Select Vehicle
+                  </label>
+
+                  <select
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id={`grid-transport-name-${index}`}
+                    name={`bookedTransportId[${index}]`}
+                    value={booking.bookedTransportId[index]?._id || ""}
+                    onChange={(e) => handleDriverDetails(e, index,booking._id)}>
+                    <option value="">Select a vehicle</option>
+                    {booking.vehicleType === "bus"
+                      ? vehicles
+                          .filter((vehicle) => vehicle.transportType === "bus")
+                          .map((bus) => (
+                            <option key={bus._id} value={bus._id}>
+                              {bus.number} {bus.name}
+                            </option>
+                          ))
+                      : vehicles
+                          .filter((vehicle) => vehicle.transportType === "car")
+                          .map((car) => (
+                            <option key={car._id} value={car._id}>
+                              {car.number} {car.name}
+                            </option>
+                          ))}
+                  </select>
+                </div>
+
+                <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor={`grid-name-of-driver-${index}`}>
+                    Name Of Driver
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id={`grid-name-of-driver-${index}`}
+                    type="text"
+                    name={`bookedTransportId[${index}].nameOfDriver`}
+                    value={
+                      booking.bookedTransportId[index]?.nameOfDriver || ""
+                    }
+                    onChange={(e) => handleDriverDetails(e, index)}
+                    placeholder="Name Of Driver"
+                  />
+                </div>
+
+                <div className="w-full md:w-1/4 px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor={`grid-mob-no-of-driver-${index}`}>
+                    Mob. No. Of Driver
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id={`grid-mob-no-of-driver-${index}`}
+                    type="number"
+                    name={`bookedTransportId[${index}].mobNoOfDriver`}
+                    value={
+                      booking.bookedTransportId[index]?.mobNoOfDriver || ""
+                    }
+                    onChange={(e) => handleDriverDetails(e, index)}
+                    placeholder="Mob. No. Of Driver"
+                  />
+                </div>
+              </div>
+            ))}
+
+            <div className="flex justify-between">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded"
+                onClick={closeApprovalModal}>
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded mr-2"
+                onClick={() =>
+                  updateBooking(booking._id, "Approved By Admin")
+                }>
+                Approve
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+ */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* 
+
+
                         {showApprovalModal && (
                           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
                             <div className="bg-white p-4 rounded-md shadow-md w-1/3">
@@ -747,7 +1145,6 @@ const handleVehicleSelect = (e) => {
                                       // onChange={handleInputs}
                                       onChange={(e) => handleVehicleSelect(e)}>
                                       <option value="">Select a vehicle</option>
-                                      {/* <option value={booking.bookedTransportName}>{booking.bookedTransportName}</option> */}
                   
                                       {vehicles
                                         .filter((vehicle) => vehicle.transportType === "bus")
@@ -776,7 +1173,6 @@ const handleVehicleSelect = (e) => {
                                       // onChange={handleInputs}
                                       onChange={(e) => handleVehicleSelect(e)}>
                                       <option value="">Select a vehicle</option>
-                                      {/* <option value={booking.bookedTransportName}>{booking.bookedTransportName}</option> */}
                   
                                       {vehicles
                                         .filter((vehicle) => vehicle.transportType === "car")
@@ -841,7 +1237,7 @@ const handleVehicleSelect = (e) => {
                               </div>
                             </div>
                           </div>
-                        )}
+                        )} */}
 
 
 
@@ -850,14 +1246,19 @@ const handleVehicleSelect = (e) => {
                           key={booking._id}
                           className="border-gray-200 text-center border-b-2  ">
                           <td className="px-5 py-5 text-m  bg-white  border-gray-200">
-                            <p className="text-gray-900 whitespace-no-wrap">
-                            {booking.bookedTransportId[0] && booking.bookedTransportId[0].number ? booking.bookedTransportId[0].number : "Not Alloted"}
-                            </p>
+                          {booking.bookedTransportId.map((transport, index) => (
+    <p key={index} className="text-gray-900 whitespace-no-wrap">
+      {transport.number ? transport.number : "Not Alloted"}
+    </p>
+  ))}
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
-                            <p className="text-gray-900 whitespace-no-wrap">
-                            {booking.bookedTransportId[0] && booking.bookedTransportId[0].name ? booking.bookedTransportId[0].name : "Not Alloted"}
-                            </p>
+                          {booking.bookedTransportId.map((transport, index) => (
+    <p key={index} className="text-gray-900 whitespace-no-wrap">
+      {transport.name ? transport.name : "Not Alloted"}
+    </p>
+  ))}
+        
                           </td>
                           <td className="px-5 py-5 text-m bg-white  border-gray-200">
                             <p className="text-gray-900 whitespace-no-wrap capitalize">
