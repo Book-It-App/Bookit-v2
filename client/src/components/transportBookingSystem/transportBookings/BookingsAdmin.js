@@ -20,8 +20,8 @@ const BookingsAdmin = () => {
   const [rejectionReason, setRejectionReason] = useState("");
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const [selectedBookingData, setSelectedBookingData] = useState({});
-  const [driverDetails, setDriverDetails] = useState({nameOfDriver:"",
-  mobNoOfDriver:""});
+  // const [driverDetails, setDriverDetails] = useState({nameOfDriver:"",
+  // mobNoOfDriver:""});
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const openRejectionModal = (bookingId) => {
     setShowRejectionModal(true);
@@ -68,7 +68,7 @@ const BookingsAdmin = () => {
 
   const closeApprovalModal = (bookingId) => {
     setShowApprovalModal(false);
-    setDriverDetails({});
+    // setDriverDetails({});
 
     setSelectedBookingId("");
 
@@ -508,35 +508,27 @@ console.log(bookingData);
 
 
 
-const handleVehicleSelect = (e) => {
-  const selectedVehicleId = e.target.value;
-  const selectedVehicleObject = vehicles.find(
-    (vehicle) => vehicle._id === selectedVehicleId
-  );
-    console.log(selectedVehicleId);
+// const handleVehicleSelect = (e) => {
+//   const selectedVehicleId = e.target.value;
+//   const selectedVehicleObject = vehicles.find(
+//     (vehicle) => vehicle._id === selectedVehicleId
+//   );
+//     console.log(selectedVehicleId);
 
-    setBookingData((bookingData) => {
-      const updatedBookingData = {
-        ...bookingData,
-        bookedTransportId: selectedVehicleObject,
-        bookedTransportName: selectedVehicleObject.name,
-        nameOfDriver: selectedVehicleObject.nameOfDriver,
-        mobNoOfDriver: selectedVehicleObject.mobNoOfDriver,
-      };
-      console.log(updatedBookingData);
-      return updatedBookingData;
-    });
-  // setBookingData((bookingData) => ({
-  //   ...bookingData,
-  //   bookedTransportId: selectedVehicleObject,
-  //   bookedTransportName: selectedVehicleObject.name,
-  //   nameOfDriver: selectedVehicleObject.nameOfDriver,
-  //   mobNoOfDriver: selectedVehicleObject.mobNoOfDriver,
-  // }
-  
-  // ));
-  console.log(bookingData);
-};
+//     setBookingData((bookingData) => {
+//       const updatedBookingData = {
+//         ...bookingData,
+//         bookedTransportId: selectedVehicleObject,
+//         bookedTransportName: selectedVehicleObject.name,
+//         nameOfDriver: selectedVehicleObject.nameOfDriver,
+//         mobNoOfDriver: selectedVehicleObject.mobNoOfDriver,
+//       };
+//       console.log(updatedBookingData);
+//       return updatedBookingData;
+//     });
+
+//   console.log(bookingData);
+// };
 
   // const transportId =userData.transportId
   // const transportName = userData.transportName

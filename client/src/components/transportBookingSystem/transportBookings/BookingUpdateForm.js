@@ -14,7 +14,7 @@ const BookingForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   // const { transportId, transportName } = props.location.state;
 
-  const [vehicles, setVehicles] = useState([]);
+  // const [vehicles, setVehicles] = useState([]);
 
   const [bookingData, setBookingData] = useState({
     userId: "",
@@ -47,26 +47,26 @@ const BookingForm = () => {
     isApproved: "",
   });
 
-  const fetchVehicles = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`,
-        {
-          withCredentials: true,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(response.data);
-      const vehicleList = response.data.transports; // Modify this based on your API response structure
+  // const fetchVehicles = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${process.env.REACT_APP_SERVER_URL}/transport-booking-system/transports`,
+  //       {
+  //         withCredentials: true,
+  //         headers: {
+  //           Accept: "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     const vehicleList = response.data.transports; // Modify this based on your API response structure
 
-      setVehicles(vehicleList);
-    } catch (error) {
-      console.error("Error fetching vehicles:", error);
-    }
-  };
+  //     // setVehicles(vehicleList);
+  //   } catch (error) {
+  //     console.error("Error fetching vehicles:", error);
+  //   }
+  // };
 
   const getbookingById = async () => {
     try {
@@ -140,7 +140,7 @@ const BookingForm = () => {
 
   useEffect(() => {
     getbookingById();
-    fetchVehicles();
+    // fetchVehicles();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -270,19 +270,19 @@ const BookingForm = () => {
     }
   };
 
-  const handleVehicleSelect = (e) => {
-    const selectedVehicleId = e.target.value;
-    const selectedVehicleObject = vehicles.find(
-      (vehicle) => vehicle._id === selectedVehicleId
-    );
+  // const handleVehicleSelect = (e) => {
+  //   const selectedVehicleId = e.target.value;
+  //   const selectedVehicleObject = vehicles.find(
+  //     (vehicle) => vehicle._id === selectedVehicleId
+  //   );
 
-    setBookingData((bookingData) => ({
-      ...bookingData,
-      bookedTransportId: selectedVehicleObject._id,
-      bookedTransportName: selectedVehicleObject.name,
-    }));
-    console.log(bookingData);
-  };
+  //   setBookingData((bookingData) => ({
+  //     ...bookingData,
+  //     bookedTransportId: selectedVehicleObject._id,
+  //     bookedTransportName: selectedVehicleObject.name,
+  //   }));
+  //   console.log(bookingData);
+  // };
 
   return (
     <>

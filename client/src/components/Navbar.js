@@ -22,27 +22,27 @@ const Navbar = () => {
 
 // "Admin"
 
-const RenderUser = () => {
-  if (state.userType === "admin") {
-    return (
-      <div>
-        <Link to="/halls">Halls</Link>
-      </div>
-    );
-  } else if (state.userType === "faculty") {
-    return (
-      <div>
-        <Link to="/bookings">Bookings</Link>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <Link to="/halls">Halls</Link>
-      </div>
-    );
-  }
-};
+// const RenderUser = () => {
+//   if (state.userType === "admin") {
+//     return (
+//       <div>
+//         <Link to="/halls">Halls</Link>
+//       </div>
+//     );
+//   } else if (state.userType === "faculty") {
+//     return (
+//       <div>
+//         <Link to="/bookings">Bookings</Link>
+//       </div>
+//     );
+//   } else {
+//     return (
+//       <div>
+//         <Link to="/halls">Halls</Link>
+//       </div>
+//     );
+//   }
+// };
 // const jwtoken = getCookie('jwtoken');
 
 
@@ -132,10 +132,10 @@ const RenderUser = () => {
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <RenderUser/>
               </li> */}
-{/* 
+ 
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/contact">Contact</Link>
-              </li> */}
+              </li> 
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/profile">Profile</Link>
               </li>

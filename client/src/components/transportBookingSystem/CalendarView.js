@@ -41,7 +41,7 @@ export const CalendarView = () => {
 
   const [transportNumbers, setTransportNumbers] = useState([]); // State to store transport names
 
-  const [selectedTransports, setSelectedTransports] = useState([]); // State for selected transport
+  const [selectedTransports, setSelectedTransports] = useState(""); // State for selected transport
 
   // State for the events fetched from the API
   const [events, setEvents] = useState([]);
@@ -89,6 +89,7 @@ export const CalendarView = () => {
   }, []);
     // Function to handle transport selection
     const handleTransportSelection = (transportNumber) => {
+      console.log(selectedTransports, transportNumber)
       if (selectedTransports.includes(transportNumber)) {
         // Deselect transport if already selected
         setSelectedTransports(selectedTransports.filter((transport) => transport !== transportNumber));
@@ -101,7 +102,7 @@ export const CalendarView = () => {
       return selectedTransports.includes(transportNumber);
     };
     const filteredEvents = selectedTransports.length > 0
-    ? events.filter((event) => selectedTransports.includes(event.bookedTransport.number))
+    ? events.filter((event) => event.bookedTransportId.some(transport => selectedTransports.includes(transport.number)))
     : events;
 
   let days = eachDayOfInterval({
@@ -176,17 +177,38 @@ export const CalendarView = () => {
           <h2 class="text-xl font-bold mb-4 text-indigo-700 -mt-1">
                 By Vehicle Name
               </h2>
-        
+              <div className="flex  mb-4">
+              <button
+    className={`py-2 px-4 rounded-full mb-4 mx-2 focus:outline-none ${selectedTransports.length === 0 ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
+    onClick={() => setSelectedTransports([])}
+  >
+    All
+  </button>
 
-<button
-            className={`py-2 px-8 rounded-full mb-4  mx-4  focus:outline-none ${selectedTransports.length === 0 ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
-            onClick={() => setSelectedTransports([])}
-          >
-            All
-          </button>
+  <button
+    className={`py-2 px-4 rounded-full mb-4 mx-2 focus:outline-none ${selectedTransports.includes("bus") ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
+    onClick={() => setSelectedTransports(selectedTransports.includes("bus") ? [] : ["bus"])}
+  >
+    Bus
+  </button>
 
-
-          {transportNumbers.map((transport) => (
+  <button
+    className={`py-2 px-4 rounded-full mb-4 mx-2 focus:outline-none ${selectedTransports.includes("car") ? "bg-indigo-100 text-indigo-800" : "bg-white text-gray-800 hover:bg-gray-100"}`}
+    onClick={() => setSelectedTransports(selectedTransports.includes("car") ? [] : ["car"])}
+  >
+    Car
+  </button>
+</div>
+          {transportNumbers.filter(transport => selectedTransports.length === 0 || selectedTransports.includes(transport.transportType)).map((transport) => (
+    <button key={transport.id}
+      className={`py-2 px-8 rounded-full mb-4 mx-4 focus:outline-none ${isTransportSelected(transport.number) ? "bg-indigo-100 text-indigo-800 " : "bg-white text-gray-800 hover:bg-gray-100"}`}
+      onClick={() => handleTransportSelection(transport.number)}
+    >
+      {transport.name} {transport.number}
+    </button>
+  ))}
+  
+          {/* {transportNumbers.map((transport) => (
           <button key={transport.id}
             className={` py-2 px-8 rounded-full mb-4 mx-4 focus:outline-none ${isTransportSelected(transport.number) ? "bg-indigo-100 text-indigo-800 " : "bg-white text-gray-800 hover:bg-gray-100"}`}
             onClick={() => handleTransportSelection(transport.number)}
@@ -194,7 +216,7 @@ export const CalendarView = () => {
             {transport.name} {transport.number}
           </button>
 
-))}
+))} */}
 
       
       </div>
@@ -363,12 +385,12 @@ function Meeting({ events }) {
           <div class="">
             <div class="flex  items-center">
               <h2 class="text-2xl font-semibold text-gray-900 -mt-1">
-                {events.bookedTransport.number}
+                {events.bookedTransportId[0].number}
               </h2>
             </div>
             <div class="flex  items-center">
               <h2 class="text-2xl font-semibold text-gray-900 -mt-1">
-                {events.bookedTransportName} 
+                {events.bookedTransportId[0].name} 
               </h2>
             </div>
             <div class="flex items-center  my-3">

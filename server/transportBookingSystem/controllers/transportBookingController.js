@@ -797,42 +797,21 @@ console.log(req.body);
 };
 
 const sendApprovalEmail = async (booking, bookingId,MainDate,StartDate,EndDate) => {
+
+
   try {
     console.log("this is send approveal email asdasdasdasddddddddddddd");
     console.log(booking);
 
 
-
-// const approvalEmail = approvalEmailTemplate(booking.nameOfDriver,
-  // booking.mobNoOfDriver,
-  // booking.bookedTransportName,
-  // booking.bookedTransport.number,
-  // booking.bookedTransport.capacity,
-
-  // booking.institution,
-  // booking.department,
-  // MainDate,
-  // booking.selfOrGuest,
-  // booking.noOfPerson,
-  // booking.eventDateType,
-  // StartDate,
-  // EndDate,
-  // bookingId);
-
+const hodEmail = booking.hodEmail;
   const hodApprovalOptions = {
     from: process.env.SENDER_EMAIL,
     to: hodEmail,
     subject: "Booking Request Approved",
-    html: generateHodApprovalEmailTemplate(
+    html: sendHodApprovalEmailTemplate(
+      booking.bookedTransportId,
 
-      booking.nameOfDriver,
-      booking.mobNoOfDriver,
-      booking.bookedTransportId[0].name,
-      booking.bookedTransportId[0].number,
-      booking.bookedTransportId[0].transportType,
-      // booking.bookedTransport.photo,
-      // booking.eventName,
-//           booking.organizingClub,
       booking.institution,
       booking.department,
       MainDate,
@@ -845,20 +824,25 @@ const sendApprovalEmail = async (booking, bookingId,MainDate,StartDate,EndDate) 
     ),
   };
   
+
+    await transporter.sendMail(hodApprovalOptions);
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    console.log("this is send approveal email asdasdasdasddddddddddddd");
+    console.log(booking);
+
+
+  
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
       subject: "Booking Request Approved",
       html: sendApprovalEmailTemplate(
-        
-        booking.nameOfDriver,
-        booking.mobNoOfDriver,
-        booking.bookedTransportId[0].name,
-        booking.bookedTransportId[0].number,
-        booking.bookedTransportId[0].transportType,
-        // booking.bookedTransport.photo,
-        // booking.eventName,
-//           booking.organizingClub,
+  
+        booking.bookedTransportId,
+
         booking.institution,
         booking.department,
         MainDate,
@@ -875,6 +859,7 @@ const sendApprovalEmail = async (booking, bookingId,MainDate,StartDate,EndDate) 
   } catch (error) {
     console.log(error);
   }
+
 };
 
 const sendRejectionEmail = async (booking, bookingId, rejectionReason) => {
@@ -1070,11 +1055,12 @@ const sendRejectionEmailTemplate = (
 
 
 const sendApprovalEmailTemplate = (
-  nameOfDriver,
-  mobNoOfDriver,
-  bookedTransportName,
-  bookedTransportNumber,
-  bookedTransportTransportType,
+  // nameOfDriver,
+  // mobNoOfDriver,
+  bookedTransportId,
+  // bookedTransportName,
+  // bookedTransportNumber,
+  // bookedTransportTransportType,
   // bookedTransportPhoto,
   // eventName,
 //   organizingClub,
@@ -1088,6 +1074,40 @@ const sendApprovalEmailTemplate = (
   eventEndDate,
   bookingId
 ) => {
+
+  let transportDetails = '';
+
+  bookedTransportId.forEach((transport, index) => {
+    transportDetails += `
+    <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Vehicle ${index + 1}</h1>
+    <table style="width: 100%;" >
+        <tr>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Name:</td>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${transport.name}</td>
+        </tr>
+        <tr>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Number:</td>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${transport.number}</td>
+        </tr>
+    <tr>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Type:</td>
+            <td style="font-size: 20px; color: #202225; margin-top: 0;  text-transform: capitalize; text-align: left;width:50%;"> ${transport.transportType}</td>
+        </tr>
+        <tr>
+        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Driver's Name:</td>
+        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${transport.nameOfDriver}</td>
+    </tr>
+<tr>
+        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Driver's Mobile No.:</td>
+        <td style="font-size: 20px; color: #202225; margin-top: 0;  text-transform: capitalize; text-align: left;width:50%;"> ${transport.mobNoOfDriver}</td>
+    </tr>
+      
+    </table>
+
+    <br>
+    `;
+  });
+
   return `
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -1141,17 +1161,7 @@ const sendApprovalEmailTemplate = (
                               <h1 style="font-size: 30px; color: #16a34a; margin-top: 0;">Booking Request Approved</h1>
                               <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello User</h1>
                               <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Your transport booking request has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
-                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Driver Details</h1>
-                              <table style="width: 100%;" >
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%; width:50%;">Driver Name:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%; width:50%;">${nameOfDriver}</td>
-                                  </tr>
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Mobile No.:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${mobNoOfDriver}</td>
-                                  </tr>
-                              </table>
+                           
                             
                             
                                   
@@ -1159,21 +1169,8 @@ const sendApprovalEmailTemplate = (
                       <tr>
                           <br>
                               <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details</h1>
-                              <table style="width: 100%;" >
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Name:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${bookedTransportName}</td>
-                                  </tr>
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Number:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportNumber}</td>
-                                  </tr>
-                              <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Type:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0;  text-transform: capitalize; text-align: left;width:50%;"> ${bookedTransportTransportType}</td>
-                                  </tr>
-                                
-                              </table>
+                              ${transportDetails}
+                             
                         <br>
                           <table style="width: 100%;" >
                       <tr>
@@ -1239,12 +1236,13 @@ const sendApprovalEmailTemplate = (
 };
 
 
-const generateHodApprovalEmailTemplate  = (
-  nameOfDriver,
-  mobNoOfDriver,
-  bookedTransportName,
-  bookedTransportNumber,
-  bookedTransportTransportType,
+const sendHodApprovalEmailTemplate  = (
+  bookedTransportId,
+  // nameOfDriver,
+  // mobNoOfDriver,
+  // bookedTransportName,
+  // bookedTransportNumber,
+  // bookedTransportTransportType,
   // bookedTransportPhoto,
   // eventName,
 //   organizingClub,
@@ -1258,6 +1256,41 @@ const generateHodApprovalEmailTemplate  = (
   eventEndDate,
   bookingId
 ) => {
+
+  
+  let transportDetails = '';
+
+  bookedTransportId.forEach((transport, index) => {
+    transportDetails += `
+    <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Vehicle ${index + 1}</h1>
+    <table style="width: 100%;" >
+        <tr>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Name:</td>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${transport.name}</td>
+        </tr>
+        <tr>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Number:</td>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${transport.number}</td>
+        </tr>
+    <tr>
+            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Type:</td>
+            <td style="font-size: 20px; color: #202225; margin-top: 0;  text-transform: capitalize; text-align: left;width:50%;"> ${transport.transportType}</td>
+        </tr>
+        <tr>
+        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Driver's Name:</td>
+        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${transport.nameOfDriver}</td>
+    </tr>
+<tr>
+        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Driver's Mobile No.:</td>
+        <td style="font-size: 20px; color: #202225; margin-top: 0;  text-transform: capitalize; text-align: left;width:50%;"> ${transport.mobNoOfDriver}</td>
+    </tr>
+      
+    </table>
+
+    <br>
+    `;
+  });
+
   return `
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -1311,17 +1344,7 @@ const generateHodApprovalEmailTemplate  = (
                               <h1 style="font-size: 30px; color: #16a34a; margin-top: 0;">Booking Request Approved</h1>
                               <h1 style="font-size: 30px; color: #202225; margin-top: 0;">Hello</h1>
                               <p style="font-size: 18px; margin-bottom: 30px; color: #202225; max-width: 60ch; margin-left: auto; margin-right: auto">Transport booking requested from your department has been approved. Please review the booking details provided below and click the button below to view the booking.</p>
-                              <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Driver Details</h1>
-                              <table style="width: 100%;" >
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%; width:50%;">Driver Name:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%; width:50%;">${nameOfDriver}</td>
-                                  </tr>
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Mobile No.:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${mobNoOfDriver}</td>
-                                  </tr>
-                              </table>
+                             
                             
                             
                                   
@@ -1329,21 +1352,7 @@ const generateHodApprovalEmailTemplate  = (
                       <tr>
                           <br>
                               <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Transport Details</h1>
-                              <table style="width: 100%;" >
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Name:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">${bookedTransportName}</td>
-                                  </tr>
-                                  <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Number:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${bookedTransportNumber}</td>
-                                  </tr>
-                              <tr>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Vehicle Type:</td>
-                                      <td style="font-size: 20px; color: #202225; margin-top: 0;  text-transform: capitalize; text-align: left;width:50%;"> ${bookedTransportTransportType}</td>
-                                  </tr>
-                                
-                              </table>
+                             ${transportDetails}
                         <br>
                           <table style="width: 100%;" >
                       <tr>
