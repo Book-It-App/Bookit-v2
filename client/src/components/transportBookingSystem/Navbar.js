@@ -134,10 +134,10 @@ const RenderUser = () => {
                 {/* <Link to="/bookings">Bookings</Link> */}
                 <RenderUser/>
               </li>
-
+{/* 
                <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/transport-booking-system/contact">Contact</Link>
-              </li> 
+              </li>  */}
               <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/transport-booking-system/profile">Profile</Link>
               </li>
