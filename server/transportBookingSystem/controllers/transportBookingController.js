@@ -710,7 +710,7 @@ console.log(req.body)
       bookedTransportId,
       // bookedTransportName,
       vehicleType,
-
+        hodEmail,
       // transportId,
       rejectionReason,
       remark,
@@ -744,7 +744,7 @@ console.log(req.body);
         selfOrGuest,
         noOfPerson,
         roundOrOneway,
-    outstationOrLocal,
+        outstationOrLocal,
         naneOfGuest,
         mobNoOfGuest,
         // nameOfDriver,

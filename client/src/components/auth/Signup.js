@@ -15,6 +15,7 @@ const Signup = () => {
     email: "",
     phone: "",
     userType: "",
+    facultyType:"",
     institution: "",
     department: "",
     password: "",
@@ -38,6 +39,7 @@ const Signup = () => {
       email,
       phone,
       userType,
+      facultyType,
       institution,
       department,
       adminKey,
@@ -53,6 +55,7 @@ const Signup = () => {
           email,
           phone,
           userType,
+          facultyType,
           institution,
           department,
           adminKey,
@@ -160,6 +163,8 @@ const Signup = () => {
                   <option value="">Select</option>
 
                   <option value="faculty">Faculty</option>
+
+                  
                   {process.env.REACT_APP_HOD_FEATURE === "true" && (
                     <option value="hod">HOD</option>
                   )}
@@ -190,10 +195,34 @@ const Signup = () => {
                     />
                   </div>
                 </>
-              ) : (
+              ) :  (
                 <>
 
 
+
+
+<div className="relative mb-4">
+                <label
+                  htmlFor="facultyType"
+                  className="leading-7 block uppercase tracking-wide text-gray-700 text-xs font-bold">
+                  Faculty Type
+                </label>
+
+                <select
+                  className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                  id="facultyType"
+                  name="facultyType"
+                  value={user.facultyType}
+                  onChange={handleInputs}>
+                  <option value="">Select</option>
+
+                  <option value="teaching">Teaching</option>
+                  <option value="nonTeaching">Non - Teaching</option>
+
+                 
+
+                </select>
+              </div>
 
 {/* Institution Dropdown */}
 <div className="relative mb-4">

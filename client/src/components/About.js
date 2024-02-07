@@ -113,7 +113,7 @@ const About = () => {
                     {userData.name}
                   </h2>
                   <p className="mt-2 text-l font-semibold text-zinc-700">
-                    {" "}
+                    
                     {userData.userType === "hod"
                       ? `Head of ${userData.department} Department`
                       : userData.userType === "faculty"
@@ -123,14 +123,20 @@ const About = () => {
                       : ""}
                   </p>
                 </div>
-                {/* <div className="mt-6 grid grid-cols-3 gap-8 text-center items-center lg:text-left">
+
+
+              {userData.userType === "faculty" && (
+                <div className="mt-6 grid grid-cols-3 gap-8 text-center items-center lg:text-left">
                   <div>
-                    <p className="font-bold text-zinc-700">User Id</p>
+                    <p className="font-bold text-zinc-700">Faculty Type</p>
                   </div>
                   <div>
-                    <p className="text-m font-semibold text-zinc-700">{userData._id}</p>
+                    <p className="text-m font-semibold text-zinc-700">{!userData.facultyType ? "Teaching" : userData.facultyType  === "teaching" ? "Teaching" : "Non-Teaching"}</p>
                   </div>
-                </div> */}
+                </div> 
+              )
+              }
+
                 <div className="mt-6 grid grid-cols-3 gap-8 text-center items-center lg:text-left">
                   <div>
                     <p className="font-bold text-zinc-700">Email</p>

@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken")
 
 const register = async (req, res,next) => {
   try {
-    const { name, email,institution,department, phone, userType,adminKey, password, cpassword } = req.body;
+    const { name, email,institution,department, phone, userType,facultyType,adminKey, password, cpassword } = req.body;
   // console.log(process.env.ADMIN_KEY);
   const hodExist = await User.findOne({ department , userType: "hod" });
 
@@ -28,7 +28,7 @@ const register = async (req, res,next) => {
         return res.status(422).json({ error: `Hod for ${department} already exists` });
       }
     }else{
-      if (!name || !institution || !department || !email || !phone || !userType || !password || !cpassword) {
+      if (!name || !institution || !department || !email || !phone || !userType || !facultyType || !password || !cpassword) {
         return res.status(422).json({ error: "Kindly complete all fields." });
       }
     }
@@ -77,11 +77,11 @@ const register = async (req, res,next) => {
        else {
         let user
         if (userType === "admin") {
-           user = new User({ name, email, phone, userType,adminKey,institution:"null",department:"null", password, cpassword });
+           user = new User({ name, email, phone, userType,adminKey,facultyType:"null",institution:"null",department:"null", password, cpassword });
 
         }else{
         
-           user = new User({ name, email, phone, userType,institution,department,adminKey:"null" ,password, cpassword });
+           user = new User({ name, email, phone, userType,facultyType,institution,department,adminKey:"null" ,password, cpassword });
         }
         // console.log(user);
         // Perform additional validation or data processing here

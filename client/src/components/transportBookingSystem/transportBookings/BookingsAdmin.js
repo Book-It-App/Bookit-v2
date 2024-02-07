@@ -1346,7 +1346,7 @@ console.log(bookingData);
                               // }
                               onClick={() => openApprovalModal(booking._id)}
                               className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-green-200 rounded hover:bg-green-300 focus:outline-none">
-                              Approve
+                              {booking.isApproved === "Approved By Admin" ? "Re-Approve" : "Approve"}
                             </button>
                             <button
                               onClick={() => openRejectionModal(booking._id)}

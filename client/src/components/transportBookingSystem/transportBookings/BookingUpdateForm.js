@@ -28,6 +28,7 @@ const BookingForm = () => {
     startTime: "",
     endTime: "",
     email: "",
+    vehicleType:"",
     userType: "",
     bookedTransportId: "",
     bookedTransportName: "",
@@ -43,7 +44,7 @@ const BookingForm = () => {
     dropLocation: "",
     // organizingClub: "",
     phoneNumber: "",
-    altNumber: "",
+    hodEmail: "",
     isApproved: "",
   });
 
@@ -109,7 +110,7 @@ const BookingForm = () => {
         userType: data.userId.userType,
         bookedTransportId: data.bookedTransportId,
         bookedTransportName: data.bookedTransportName,
-
+        vehicleType: data.vehicleType,
         selfOrGuest: data.selfOrGuest,
         noOfPerson: data.noOfPerson,
         roundOrOneway: data.roundOrOneway,
@@ -123,7 +124,7 @@ const BookingForm = () => {
 
         // organizingClub: data.organizingClub,
         phoneNumber: data.phoneNumber,
-        altNumber: data.altNumber,
+        hodEmail: data.hodEmail,
         isApproved: data.isApproved,
       });
 
@@ -182,11 +183,12 @@ const BookingForm = () => {
       mobNoOfGuest,
       pickupLocation,
       dropLocation,
+      vehicleType,
       // nameOfDriver,
       // mobNoOfDriver,
       // organizingClub,
       phoneNumber,
-      altNumber,
+      hodEmail,
       isApproved,
     } = bookingData;
 
@@ -229,13 +231,14 @@ const BookingForm = () => {
           mobNoOfGuest,
           pickupLocation,
           dropLocation,
+          vehicleType,
           // nameOfDriver,
           // mobNoOfDriver,
           bookedTransportId,
           bookedTransportName,
           // organizingClub,
           phoneNumber,
-          altNumber,
+          hodEmail,
           isApproved,
         },
         {
@@ -704,17 +707,18 @@ const BookingForm = () => {
                 <div className="w-full md:w-1/2 px-3">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-alt-number">
-                    Alternate Number
+                    htmlFor="grid-hod-email"
+                  >
+                    HOD/Director email
                   </label>
                   <input
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-alt-number"
-                    type="number"
-                    value={bookingData.altNumber}
-                    name="altNumber"
+                    id="grid-hod-email"
+                    type="email"
+                    value={bookingData.hodEmail}
+                    name="hodEmail"
                     onChange={handleInputs}
-                    placeholder="Alternate Number"
+                    placeholder="HOD/Director email"
                   />
                 </div>
               </div>
@@ -722,7 +726,9 @@ const BookingForm = () => {
               {bookingData.isApproved === "Approved By Admin" && (
                 <>
                   {bookingData.bookedTransportId.map((transport, index) => (
-                    <div key={index}>
+                    <div key={index}
+                    
+                    >
                       <h1
                         className="block uppercase tracking-wide text-green-700 text-s font-bold mb-2 "
                         htmlFor="grid-remark">
@@ -736,9 +742,11 @@ const BookingForm = () => {
                             Name of Driver
                           </h1>
                           <p
+                          
                             className="appearance-none block w-full  text-green-700 border border-green-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
                             id="grid-name-of-driver">
                             {transport.nameOfDriver}
+                            
                           </p>
                           {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                         </div>
@@ -785,9 +793,12 @@ const BookingForm = () => {
                       </div>
                     </div>
                   ))}
+                  <div className="my-4">
+                <p className="text-s text-green-600	 font-bold">Kindly Re-Approve to update Vehicle Details.</p>
+              </div>
                 </>
               )}
-
+              
               <div className="my-4">
                 <p className="text-s text-red-600	 font-bold">{authStatus}</p>
               </div>

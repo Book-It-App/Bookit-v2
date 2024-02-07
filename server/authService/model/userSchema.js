@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  facultyType: {
+    type: String,
+    require: true,
+  },
   adminKey: {
     type: String,
     require: true,
