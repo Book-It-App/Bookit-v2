@@ -27,28 +27,8 @@ import CanteenBookingRoutes from "./routes/CanteenBookingRoutes";
 
 import MasterPage from "./components/MasterPage";
 import CommingSoon from "./components/CommingSoon";
+import Maintenance from "./components/Maintenance";
 
-
-
-
-
-
-
-// import Halls from "./components/halls/Halls";
-// import BookingForm from "./components/hallBookings/BookingForm";
-// import BookingsAdmin from "./components/hallBookings/BookingsAdmin";
-// import BookingsHod from "./components/hallBookings/BookingsHod";
-// import AdminDashboard from "./components/dashboard/AdminDashboard";
-// import FacultyDashboard from "./components/dashboard/FacultyDashboard";
-// import BookingFaculty from "./components/hallBookings/BookingsFaculty";
-// import HallsAdmin from "./components/halls/HallsAdmin";
-// import { CalendarView } from "./components/CalendarView";
-// import HallsEdit from "./components/halls/HallsEdit";
-// import HallForm from "./components/halls/HallForm";
-// import HodDashboard from "./components/dashboard/HodDashboard";
-// import BookingUpdateFrom from "./components/hallBookings/BookingUpdateForm"
-// import Events from "./components/hallBookings/Events";
-// import BookingsView from "./components/hallBookings/BookingView";
 
 
 export const UserContext = createContext();
@@ -67,7 +47,11 @@ const App = () => {
 console.log(state)
 
 
+const isUnderMaintenance = process.env.REACT_APP_MAINTENANCE === 'true';
 
+if (isUnderMaintenance) {
+  return <Maintenance />;
+}
 
   return (
 
@@ -97,40 +81,7 @@ console.log(state)
           <Route path="/hall-booking-system/*" element={<HallBookingRoutes  userState={state}/>} />
         <Route path="/transport-booking-system/*" element={<TransportBookingRoutes userState={state}/>} />
         <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} />
-{/*        
 
-        <Route path="/hall-booking-system" element={<HallBookingRoutes userState={state} />}>
-              <Route path="*" element={<HallBookingRoutes userState={state} />} />
-        </Route>
-
-        <Route path="/transport-booking-system" element={<TransportBookingRoutes userState={state} />}>
-              <Route path="*" element={<TransportBookingRoutes userState={state} />} />
-        </Route>
-
-        <Route path="/canteen-booking-system" element={<CanteenBookingRoutes userState={state} />}>
-              <Route path="*" element={<CanteenBookingRoutes userState={state} />} />
-        </Route>
- */}
-
-          
-   
-          
-          {/* Hall booking routes starts here 
-
-
-          <Route path="/" element={state.userType === "admin" ? <AdminDashboard /> : state.userType === "faculty" ? <FacultyDashboard /> : process.env.REACT_APP_HOD_FEATURE &&  state.userType === "hod" ? <HodDashboard />  : <Login />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/calendar" element={<CalendarView />} />
-          <Route path="/halls" element={state.userType === "admin" ? <HallsAdmin/> : <Halls />}/>
-          <Route exact path="/halls/:hallId/:hallName" element={state.userType === "admin" ?<HallsEdit /> : <Unauthorized />} />
-          <Route exact path="/bookingsEdit/:bookingId" element={state.userType === "admin" ? <BookingUpdateFrom/>  : process.env.REACT_APP_HOD_FEATURE &&  state.userType === "hod" ? <BookingUpdateFrom/>  : <Unauthorized />} />
-          <Route path="/hallForm" element={state.userType === "admin" ?<HallForm /> : <Unauthorized />} />
-          <Route path="/bookings" element={state.userType === "admin" ? <BookingsAdmin/> : state.userType === "faculty" ? <BookingFaculty/> :  process.env.REACT_APP_HOD_FEATURE && state.userType === "hod" ? <BookingsHod/>  : <Unauthorized />} />
-          <Route exact path="/bookingForm/:hallId/:hallName" element={<BookingForm />} />
-          <Route exact path="/bookingsView/:bookingId" element={<BookingsView/>} />
-          
-          
-          Hall booking routes ends here */}
    
 
         </Routes>
