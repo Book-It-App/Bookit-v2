@@ -35,14 +35,14 @@ const TransportBookingRoutes = (props) => {
 <Navbar/>
     <Routes>
           {/* Transport booking routes starts here */}
-          <Route path="/" element={props.userState.userType === "admin" ? <AdminDashboard /> : props.userState.userType === "faculty" ? <FacultyDashboard /> : process.env.REACT_APP_HOD_FEATURE &&  props.userState.userType === "hod" && <HodDashboard />  } />
+          <Route path="/" element={props.userState.userType === "admin" ? <AdminDashboard /> : props.userState.userType === "faculty" ? <FacultyDashboard /> : <Unauthorized />  } />
           {/* <Route path="/events" element={<Events />} />*/}
           <Route path="/calendar" element={<CalendarView />} /> 
           <Route path="/transports" element={props.userState.userType === "admin" ? <TransportsAdmin/> : <Transports />}/>
           <Route exact path="/transports/:transportId/:transportName" element={props.userState.userType === "admin" ?<TransportsEdit /> : <Unauthorized />} />
-          <Route exact path="/bookingsEdit/:bookingId" element={props.userState.userType === "admin" ? <BookingUpdateFrom/>  : process.env.REACT_APP_HOD_FEATURE &&  props.userState.userType === "hod" ? <BookingUpdateFrom/>  : <Unauthorized />} />
+          <Route exact path="/bookingsEdit/:bookingId" element={props.userState.userType === "admin" ? <BookingUpdateFrom/>  :  <Unauthorized />} />
           <Route path="/transportForm" element={props.userState.userType === "admin" ?<TransportForm /> : <Unauthorized />} />
-          <Route path="/bookings" element={props.userState.userType === "admin" ? <BookingsAdmin/> : props.userState.userType === "faculty" ? <BookingFaculty/> :  process.env.REACT_APP_HOD_FEATURE && props.userState.userType === "hod" ? <BookingsHod/>  : <Unauthorized />} />
+          <Route path="/bookings" element={props.userState.userType === "admin" ? <BookingsAdmin/> : props.userState.userType === "faculty" ? <BookingFaculty/> :   <Unauthorized />} />
           {/* <Route exact path="/bookingForm/:transportId/:transportName" element={<BookingForm />} /> */}
           <Route exact path="/bookingForm" element={<BookingForm />} />
           <Route exact path="/bookingsView/:bookingId" element={<BookingsView/>} />

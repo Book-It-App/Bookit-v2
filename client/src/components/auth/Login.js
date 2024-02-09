@@ -99,6 +99,8 @@ const Login = () => {
 
       if (data.userLogin.userType === 'admin') {
         dispatch({ type: 'USER_TYPE', payload: "admin" });
+        dispatch({ type: 'ADMIN_FOR', payload: data.userLogin.adminFor });
+
       } else if (data.userLogin.userType === 'hod') {
         dispatch({ type: 'USER_TYPE', payload: "hod" });
       } else {

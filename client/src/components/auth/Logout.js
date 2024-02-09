@@ -27,7 +27,7 @@ const userId = localStorage.getItem("userId")
         if (res.status === 200) {
           dispatch({ type: "USER", payload: null })
           dispatch({ type: "USER_TYPE", payload: null })
-
+          dispatch({ type: "ADMIN_FOR", payload: null })
           // Clear localStorage
           // localStorage.removeItem("user");
           localStorage.removeItem("userId");

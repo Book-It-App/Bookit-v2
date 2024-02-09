@@ -77,10 +77,42 @@ if (isUnderMaintenance) {
           <Route path="/verifyEmail/:id/:token" element={<><Navbar /><VerifySuccess/></>} />       
           <Route path="/*" element={<><Navbar /><ErrorPage /></>} />
           
+         <Route
+  path="/hall-booking-system/*"
+  element={
+    state.user && state.userType === "admin" && state.adminFor === "hall" ? (
+      <HallBookingRoutes userState={state} />
+    ) : (
+      <HallBookingRoutes userState={{ ...state, userType: "faculty" }} />
+    )
+  }
+/>
 
-          <Route path="/hall-booking-system/*" element={<HallBookingRoutes  userState={state}/>} />
-        <Route path="/transport-booking-system/*" element={<TransportBookingRoutes userState={state}/>} />
-        <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} />
+
+<Route
+  path="/transport-booking-system/*"
+  element={
+    state.user && state.userType === "admin" && state.adminFor === "transport" ? (
+      <TransportBookingRoutes userState={state} />
+    ) : (
+      <TransportBookingRoutes userState={{ ...state, userType: "faculty" }} />
+    )
+  }
+/>
+
+<Route
+  path="/canteen-booking-system/*"
+  element={
+    state.user && state.userType === "admin" && state.adminFor === "canteen" ? (
+      <CanteenBookingRoutes userState={state} />
+    ) : (
+      <CanteenBookingRoutes userState={{ ...state, userType: "faculty" }} />
+    )
+  }
+/>
+          {/* <Route path="/hall-booking-system/*" element={<HallBookingRoutes  userState={state}/>} /> */}
+        {/* <Route path="/transport-booking-system/*" element={<TransportBookingRoutes userState={state}/>} /> */}
+        {/* <Route path="/canteen-booking-system/*" element={<CanteenBookingRoutes userState={state}/>} /> */}
 
    
 

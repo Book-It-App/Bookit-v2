@@ -10,13 +10,14 @@ const jwt = require("jsonwebtoken")
 
 const register = async (req, res,next) => {
   try {
-    const { name, email,institution,department, phone, userType,facultyType,adminKey, password, cpassword } = req.body;
+    const { name, email,institution,department, phone, adminFor, userType,facultyType,adminKey, password, cpassword } = req.body;
   // console.log(process.env.ADMIN_KEY);
+  console.log(req.body);
   const hodExist = await User.findOne({ department , userType: "hod" });
 
     if (userType === "admin") {
 
-      if (!name || !adminKey || !email || !phone || !userType || !password || !cpassword) {
+      if (!name || !adminKey || !email || !phone || !adminFor ||!userType || !password || !cpassword) {
         return res.status(422).json({ error: "Kindly complete all fields." });
       }else if(adminKey !== process.env.ADMIN_KEY){
         return res.status(422).json({ error: "Provided Admin Key is Invalid." });
@@ -77,11 +78,11 @@ const register = async (req, res,next) => {
        else {
         let user
         if (userType === "admin") {
-           user = new User({ name, email, phone, userType,adminKey,facultyType:"null",institution:"null",department:"null", password, cpassword });
+           user = new User({ name, email, phone, userType,adminKey,facultyType:"null",adminFor,institution:"null",department:"null", password, cpassword });
 
         }else{
         
-           user = new User({ name, email, phone, userType,facultyType,institution,department,adminKey:"null" ,password, cpassword });
+           user = new User({ name, email, phone, userType,facultyType,institution,department,adminFor:"null",adminKey:"null" ,password, cpassword });
         }
         // console.log(user);
         // Perform additional validation or data processing here
