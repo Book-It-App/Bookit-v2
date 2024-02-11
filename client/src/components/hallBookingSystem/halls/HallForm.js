@@ -104,7 +104,7 @@ const HallForm = () => {
       } else {
         toast.success("Hall Created Successfull!")
         // alert("Message send");
-        navigate("/halls")
+        navigate("/hall-booking-system/halls")
         // setBookingData({ ...bookingData });
       }
     } catch (error) {

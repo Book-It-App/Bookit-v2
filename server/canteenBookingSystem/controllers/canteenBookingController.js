@@ -134,10 +134,10 @@ const createBooking = async (req, res, next) => {
       isApproved
     } = req.body;
 
-    const canteen = await Canteen.findById(bookedCanteenId);
-    if (!canteen) {
-      return res.status(422).json({ error: 'Canteen not found' });
-    }
+    // const canteen = await Canteen.findById(bookedCanteenId);
+    // if (!canteen) {
+    //   return res.status(422).json({ error: 'Canteen not found' });
+    // }
 
     
     const user = await User.findById(userId);
