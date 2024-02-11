@@ -25,22 +25,34 @@ const Navbar = () => {
 const RenderUser = () => {
   if (state.userType === "admin") {
     return (
-      <div>
-        <Link to="/transport-booking-system/transports">Transports</Link>
-      </div>
+      
+      <>
+          <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+          <Link to="/transport-booking-system/transports">Transports</Link>
+
+              </li>
+
+              <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+              <Link to="/transport-booking-system/calendar">Calendar</Link>
+              </li>
+
+ 
+      </>
+
     );
   } else if (state.userType === "faculty") {
     return (
-      <div>
+         <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
         <Link to="/transport-booking-system/bookings">Bookings</Link>
-        {/* <Link to="/transport-booking-system/bookingForm">Booking From</Link> */}
-      </div>
+              </li>
+    
     );
   } else {
     return (
-      <div>
+      <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
         <Link to="/transport-booking-system/transports">Transports</Link>
-      </div>
+            </li>
+     
     );
   }
 };
@@ -126,14 +138,12 @@ const RenderUser = () => {
                 <Link to="/transport-booking-system/events">Events</Link>
               </li>
 */}
-              {/* <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
-                <Link to="/transport-booking-system/calendar">Calendar</Link>
-              </li>  */}
-
-              <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
-                {/* <Link to="/bookings">Bookings</Link> */}
+            
                 <RenderUser/>
-              </li>
+
+              {/* <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+                <RenderUser/>
+              </li> */}
 {/* 
                <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
                 <Link to="/transport-booking-system/contact">Contact</Link>

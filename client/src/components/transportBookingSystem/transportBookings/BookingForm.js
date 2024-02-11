@@ -282,6 +282,8 @@ const BookingForm = () => {
 
             <form method="POST" className="w-full">
               <div className="flex flex-wrap -mx-3 mb-6">
+
+
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
@@ -297,8 +299,8 @@ const BookingForm = () => {
                     name="eventManager"
                     onChange={handleInputs}
                     placeholder="Booking Faculty/Staff"
-                    disabled
-                  />
+                    disabled={bookingData.userType === "faculty"}
+                    />
                 </div>
                 {/* 
                 <div className="w-full md:w-1/2 px-3">
@@ -498,7 +500,7 @@ const BookingForm = () => {
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="grid-event-date"
                     >
-                      Event Start Date
+                      Booking Start Date
                     </label>
                     <input
                       value={bookingData.eventStartDate}
@@ -516,7 +518,7 @@ const BookingForm = () => {
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="grid-event-start-date"
                     >
-                      Event End Date
+                      Booking End Date
                     </label>
                     <input
                       value={bookingData.eventEndDate}
@@ -595,7 +597,7 @@ const BookingForm = () => {
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-selfOrGuest"
                   >
-                    Self Or Guest
+                    Booking for 
                   </label>
                   <select
                     className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
