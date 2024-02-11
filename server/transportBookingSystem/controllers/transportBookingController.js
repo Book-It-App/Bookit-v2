@@ -13,6 +13,8 @@ const nodemailer = require("nodemailer");
 
 
 
+
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -30,6 +32,8 @@ const generateBookingEmailTemplate = (
   eventDateType,
   StartDate,
   EndDate,
+  eventManager, MainStartTime,
+        MainEndTime,
   // bookedTransportName,
   // bookedTransportNumber,
 //   organizingClub,
@@ -101,7 +105,10 @@ const generateBookingEmailTemplate = (
                               <table style="width: 100%;" >
                                  
                            
-                                 
+                              <tr>
+                              <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Booking Faculty/Staff :</td>
+                              <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventManager}</td>
+                          </tr>
                                         <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${institution}</td>
@@ -128,6 +135,16 @@ const generateBookingEmailTemplate = (
                                     </tr>
 
                                     `} 
+
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Start Time:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainStartTime}</td>
+                                </tr>
+
+                                <tr>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">End Time:</td>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainEndTime}</td>
+                            </tr>
                                         <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Self / Guest :</td>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${selfOrGuest}</td>
@@ -170,6 +187,8 @@ const generateHodEmailTemplate = (
   eventDateType,
   StartDate,
   EndDate,
+  eventManager, MainStartTime,
+        MainEndTime,
   // bookedTransportName,
   // bookedTransportNumber,
 //   organizingClub,
@@ -266,6 +285,16 @@ const generateHodEmailTemplate = (
                                     </tr>
 
                                     `} 
+
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Start Time:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainStartTime}</td>
+                                </tr>
+
+                                <tr>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">End Time:</td>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainEndTime}</td>
+                            </tr>
                                         <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Self / Guest :</td>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${selfOrGuest}</td>
@@ -362,8 +391,8 @@ const createTransportBooking = async (req, res, next) => {
     }
 
     // Validate start and end time
-    //  const startDateTime = new Date(`2000-01-01T${startTime}:00Z`);
-    //  const endDateTime = new Date(`2000-01-01T${endTime}:00Z`);
+    //  const startDateTime = new Date(`2000-01-01T${MainStartTime}:00Z`);
+    //  const endDateTime = new Date(`2000-01-01T${MainEndTime}:00Z`);
 
     //  const startDateTime = new Date(startTime);
     //  const endDateTime = new Date(endTime);
@@ -491,6 +520,10 @@ const createTransportBooking = async (req, res, next) => {
     const EndDate = new Date(booking.eventEndDate).toLocaleDateString('en-GB', options);
     const MainDate = new Date(booking.eventDate).toLocaleDateString('en-GB', options);
 
+    const MainStartTime = new Date(booking.startTime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
+    const MainEndTime = new Date(booking.endTime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
+    
+
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       // to: transport.transportCreater, // Use the transport creator's email here
@@ -504,6 +537,9 @@ const createTransportBooking = async (req, res, next) => {
         eventDateType,
         StartDate,
         EndDate,
+        eventManager,
+        MainStartTime,
+        MainEndTime,
         // bookedTransportName,
         // transport.number,
       //   organizingClub,
@@ -547,6 +583,9 @@ const createTransportBooking = async (req, res, next) => {
         eventDateType,
         StartDate,
         EndDate,
+        eventManager,
+        MainStartTime,
+        MainEndTime,
         // bookedTransportName,
         // transport.number,
       //   organizingClub,
@@ -775,14 +814,21 @@ console.log(req.body);
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
     const StartDate = new Date(booking.eventStartDate).toLocaleDateString('en-GB', options);
-    const EndDate = new Date(booking.eventEndDate).toLocaleDateString('en-GB', options);
+     const EndDate = new Date(booking.eventEndDate).toLocaleDateString('en-GB', options);
     const MainDate = new Date(booking.eventDate).toLocaleDateString('en-GB', options);
+
+    const MainStartTime = new Date(booking.startTime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
+    const MainEndTime = new Date(booking.endTime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
     
+
+    
+
     // const StartTime = new Date(booking.startTime).toLocaleTimeString();
     // const EndTime = new Date(booking.endTime).toLocaleTimeString();
     if (isApproved === "Approved By Admin") {
       // Send email for approval
-      sendApprovalEmail(booking, bookingId,MainDate,StartDate,EndDate);
+      sendApprovalEmail(booking, bookingId,MainStartTime,
+        MainEndTime,MainDate,StartDate,EndDate);
     } else if (isApproved === "Rejected By Admin") {
       // Send email for rejection
       sendRejectionEmail(booking, bookingId, rejectionReason);
@@ -796,7 +842,8 @@ console.log(req.body);
 
 };
 
-const sendApprovalEmail = async (booking, bookingId,MainDate,StartDate,EndDate) => {
+const sendApprovalEmail = async (booking, bookingId,MainStartTime,
+        MainEndTime,MainDate,StartDate,EndDate) => {
 
 
   try {
@@ -811,7 +858,7 @@ const hodEmail = booking.hodEmail;
     subject: "Booking Request Approved",
     html: sendHodApprovalEmailTemplate(
       booking.bookedTransportId,
-
+      booking.eventManager,
       booking.institution,
       booking.department,
       MainDate,
@@ -820,6 +867,8 @@ const hodEmail = booking.hodEmail;
       booking.eventDateType,
       StartDate,
       EndDate,
+      MainStartTime,
+        MainEndTime,
       bookingId
     ),
   };
@@ -851,6 +900,8 @@ const hodEmail = booking.hodEmail;
         booking.eventDateType,
         StartDate,
         EndDate,
+        MainStartTime,
+        MainEndTime,
         bookingId
       ),
     };
@@ -1071,7 +1122,8 @@ const sendApprovalEmailTemplate = (
   noOfPerson,
   eventDateType,
   eventStartDate,
-  eventEndDate,
+  eventEndDate,MainStartTime,
+        MainEndTime,
   bookingId
 ) => {
 
@@ -1194,17 +1246,29 @@ const sendApprovalEmailTemplate = (
                                     </tr>`
                                     :
                                     `
-                                            <tr>
-                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">From:</td>
-                                            <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventStartDate}</td>
-                                        </tr>
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">From:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventStartDate}</td>
+                                </tr>
 
-                                        <tr>
-                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">To:</td>
-                                        <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventEndDate}</td>
-                                    </tr>
+                                <tr>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">To:</td>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventEndDate}</td>
+                            </tr>
 
-                                    `} 
+
+                                    `}          
+                                    
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Start Time:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainStartTime}</td>
+                                </tr>
+
+                                <tr>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">End Time:</td>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainEndTime}</td>
+                            </tr>
+                                    
                                         <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Self / Guest :</td>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${selfOrGuest}</td>
@@ -1223,7 +1287,7 @@ const sendApprovalEmailTemplate = (
               </td>
           </tr>
           <br/>
-          <center>  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style=" background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
+          <center>  <a href="${process.env.CLIENT_URL}/transport-booking-system/bookingsView/${bookingId}"  style="background-color: #4f46e5; color: #fff; padding: 8px 24px;  border-radius: 8px; border-style: solid; border-color: #4f46e5; font-size: 14px; text-decoration: none; cursor: pointer">View Booking</a></center>
       </tbody>
                  
   </table>
@@ -1246,6 +1310,8 @@ const sendHodApprovalEmailTemplate  = (
   // bookedTransportPhoto,
   // eventName,
 //   organizingClub,
+  eventManager,
+  
   institution,
   department,
   eventDate,
@@ -1253,7 +1319,8 @@ const sendHodApprovalEmailTemplate  = (
   noOfPerson,
   eventDateType,
   eventStartDate,
-  eventEndDate,
+  eventEndDate,MainStartTime,
+        MainEndTime,
   bookingId
 ) => {
 
@@ -1359,7 +1426,10 @@ const sendHodApprovalEmailTemplate  = (
                           
                               <h1 style="font-size: 25px;text-align: left; color: #202225; margin-top: 0;">Booking Details</h1>
                               <table style="width: 100%;" >
-                                 
+                              <tr>
+                              <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Booking Faculty/Staff :</td>
+                              <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventManager}</td>
+                          </tr>
                                  
                                         <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Institution :</td>
@@ -1385,9 +1455,19 @@ const sendHodApprovalEmailTemplate  = (
                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">To:</td>
                                         <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${eventEndDate}</td>
                                     </tr>
+                                    
 
                                     `} 
-                                        <tr>
+                                    <tr>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Start Time:</td>
+                                    <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainStartTime}</td>
+                                </tr>
+
+                                <tr>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">End Time:</td>
+                                <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${MainEndTime}</td>
+                            </tr>
+                                   <tr>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;">Self / Guest :</td>
                                       <td style="font-size: 20px; color: #202225; margin-top: 0; text-align: left;width:50%;"> ${selfOrGuest}</td>
                                   </tr>

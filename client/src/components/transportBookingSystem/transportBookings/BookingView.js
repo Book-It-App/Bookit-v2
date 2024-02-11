@@ -420,7 +420,7 @@ const BookingsView = () => {
                     <h1
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                       htmlFor="grid-start-time">
-                      Event Start Date
+                      Booking Start Date
                     </h1>
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -436,7 +436,7 @@ const BookingsView = () => {
                     <h1
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                       htmlFor="grid-end-time">
-                      Event End Date
+                      Booking End Date
                     </h1>
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -535,7 +535,7 @@ const BookingsView = () => {
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     htmlFor="grid-selfOrGuest">
-                    Self or Guest
+                    Booking for 
                   </h1>
                   <p
                     className="appearance-none block w-full capitalize text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
