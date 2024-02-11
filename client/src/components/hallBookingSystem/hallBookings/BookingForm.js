@@ -258,6 +258,7 @@ const BookingForm = () => {
                     name="eventManager"
                     onChange={handleInputs}
                     placeholder="Event Coordinator Name"
+                    disabled={bookingData.userType === "faculty"}
                   />
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                 </div>
