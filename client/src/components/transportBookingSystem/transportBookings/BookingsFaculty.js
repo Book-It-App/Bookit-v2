@@ -87,6 +87,11 @@ const BookingFaculty = () => {
   // const handleBookingClick = () => {
   //   sendData(data);
   // };
+
+  const handleEditClick = (bookingId) => {
+    navigate(`/transport-booking-system/bookingsEdit/${bookingId}`);
+  };
+
   const handleViewClick = (bookingId) => {
     navigate(`/transport-booking-system/bookingsView/${bookingId}`)
   };
@@ -290,13 +295,15 @@ const BookingFaculty = () => {
 
 
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
+                      
+                        {booking.isApproved === "Request Sent" && (  <button
+                              onClick={() => handleEditClick(booking._id)}
+                              className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300  focus:outline-none">
+                              Edit
+                            </button> )}
+
                           <button onClick={() => handleViewClick(booking._id)} className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none">View</button>
-                          {/* <button onClick={() => handleEditClick(booking._id)} */}
-                            {/* className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300  focus:outline-none">Edit</button> */}
-                          {/* <button
-                            onClick={() => updateBooking(booking._id, "Approved By HOD")} className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-green-200 rounded hover:bg-green-300 focus:outline-none">Approve</button> */}
-                          {/* <button
-                            onClick={() => updateBooking(booking._id, "Rejected By HOD")} className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-red-200 rounded hover:bg-red-300 focus:outline-none">Reject</button> */}
+                         
                         </td>
 
                       </tr>
