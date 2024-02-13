@@ -556,7 +556,10 @@ const BookingsView = () => {
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-name-of-guest">
-                      {bookingData.naneOfGuest}
+                         {bookingData.naneOfGuest
+                      ? bookingData.naneOfGuest
+                      : "Not Provided"}
+               
                     </p>
                   </div>
                   <div className="w-full md:w-1/2 px-3">
@@ -568,7 +571,10 @@ const BookingsView = () => {
                     <p
                       className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-mob-no-of-guest">
-                      {bookingData.mobNoOfGuest}
+                          {bookingData.mobNoOfGuest
+                      ? bookingData.mobNoOfGuest
+                      : "Not Provided"}
+                   
                     </p>
                   </div>
                 </div>
