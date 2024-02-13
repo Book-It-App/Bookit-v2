@@ -71,11 +71,11 @@ const BookingForm = () => {
       //consolelog(data);
 
       let status;
-      // if(data.userType === "admin"){
-      //   status = "Approved By Admin"
-      // }else if (data.userType === "hod"){
-      //   status = "Approved By HOD"
-      // }
+      if(data.userType === "admin"){
+        status = "Approved By Admin"
+      }else if (data.userType === "faculty"){
+        status = "Request Sent"
+      }
 
       if (data.emailVerified) {
         setEmailVerified(true);

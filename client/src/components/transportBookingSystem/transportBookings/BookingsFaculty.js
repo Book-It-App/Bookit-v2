@@ -296,12 +296,20 @@ const BookingFaculty = () => {
 
                         <td className="px-5 py-5 text-m bg-white  border-gray-200">
                       
-                        {booking.isApproved === "Request Sent" && (  <button
+                        {/* {booking.isApproved === "Request Sent" && ( 
+                          
+                          <button
                               onClick={() => handleEditClick(booking._id)}
                               className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300  focus:outline-none">
                               Edit
-                            </button> )}
-
+                            </button>
+                            
+                            )} */}
+ <button
+                              onClick={() => handleEditClick(booking._id)}
+                              className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-yellow-200 rounded hover:bg-yellow-300  focus:outline-none">
+                              Edit
+                            </button>
                           <button onClick={() => handleViewClick(booking._id)} className="text-m font-bold ml-5 leading-none text-gray-600 py-3 px-5 bg-gray-200 rounded hover:bg-gray-300 focus:outline-none">View</button>
                          
                         </td>
