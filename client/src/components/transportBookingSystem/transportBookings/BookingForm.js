@@ -647,6 +647,7 @@ const BookingForm = () => {
                       name="mobNoOfGuest"
                       onChange={handleInputs}
                       placeholder="Mob. No. Of Guest"
+                      
                     />
                   </div>
                 </div>

@@ -129,11 +129,13 @@ const createTransportBooking = async (req, res, next) => {
       // if (!naneOfGuest || !mobNoOfGuest) {
       //   return res.status(422).json({ error: "Please fill all details" });
       // } else 
-      
-      if (mobNoOfGuest.length !== 10) {
-        return res.status(422).json({
-          error: "Please enter a valid 10-digit phone number of Guest",
-        });
+      if (mobNoOfGuest){
+
+        if (mobNoOfGuest.length !== 10) {
+          return res.status(422).json({
+            error: "Please enter a valid 10-digit phone number of Guest",
+          });
+        }
       }
     }
     // Regular expression to validate full name with at least two words separated by a space
