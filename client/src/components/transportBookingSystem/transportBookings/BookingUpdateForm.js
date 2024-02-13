@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useContext} from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../LoadingSpinner";
 import axios from "axios";
 import { parseISO } from "date-fns";
-
+import { UserContext } from "../../../App";
 const BookingForm = () => {
   const navigate = useNavigate();
   const [authStatus, setAuthStatus] = useState("");
@@ -13,7 +13,7 @@ const BookingForm = () => {
   //consolelog(bookingId);
   const [isLoading, setIsLoading] = useState(true);
   // const { transportId, transportName } = props.location.state;
-
+  const { state } = useContext(UserContext);
   // const [vehicles, setVehicles] = useState([]);
 
   const [bookingData, setBookingData] = useState({
@@ -86,6 +86,16 @@ const BookingForm = () => {
       const data = response.data.booking;
       //consolelog(data);
 
+      let status;
+let vehicles;
+    if(state.userType === "admin"){
+        status = data.isApproved;
+        vehicles = data.bookedTransportId;
+      }else if (state.userType === "faculty"){
+        status = "Request Sent"
+        vehicles = []
+      }
+
       // setBookingData(data)
       setIsLoading(false);
       setBookingData({
@@ -108,7 +118,8 @@ const BookingForm = () => {
         endTime: data.endTime ? data.endTime.split("T")[1].slice(0, 5) : null,
         email: data.userId.email,
         userType: data.userId.userType,
-        bookedTransportId: data.bookedTransportId,
+        // bookedTransportId: data.bookedTransportId,
+        bookedTransportId: vehicles,
         bookedTransportName: data.bookedTransportName,
         vehicleType: data.vehicleType,
         selfOrGuest: data.selfOrGuest,
@@ -125,7 +136,8 @@ const BookingForm = () => {
         // organizingClub: data.organizingClub,
         phoneNumber: data.phoneNumber,
         hodEmail: data.hodEmail,
-        isApproved: data.isApproved,
+        // isApproved: data.isApproved,
+        isApproved: status,
       });
 
       setIsLoading(false);
@@ -142,7 +154,7 @@ const BookingForm = () => {
   useEffect(() => {
     getbookingById();
     // fetchVehicles();
-
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
