@@ -658,7 +658,7 @@ let vehicles;
                     onChange={handleInputs}>
                     <option value="">Select</option>
                     <option value="outstaion">Outstaion</option>
-                    <option value="oneway">Local</option>
+                    <option value="local">Local</option>
                   </select>
                 </div>
               </div>
