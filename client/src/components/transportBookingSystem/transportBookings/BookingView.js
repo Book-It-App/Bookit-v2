@@ -850,7 +850,7 @@ const BookingsView = () => {
                 {bookingData.isApproved === "Request Sent" && <RequestSent />}
               </div>
               <div className="px-5 py-5 text-l flex font-bold  bg-white justify-between border-gray-200">
-                {state.userType === "admin" && (
+                {(state.userType === "admin" && state.adminFor === "transport") && (
                   <>
                     <button
                       onClick={() => handleEditClick(bookingData._id)}

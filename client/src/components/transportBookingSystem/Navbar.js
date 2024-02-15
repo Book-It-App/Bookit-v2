@@ -6,7 +6,7 @@ import logo from '../../assets/logo.png'
 
 const Navbar = () => {
   const { state } = useContext(UserContext)
-
+console.log(state);
   // const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -23,7 +23,7 @@ const Navbar = () => {
 // "Admin"
 
 const RenderUser = () => {
-  if (state.userType === "admin") {
+  if (state.userType === "admin" && state.adminFor === "transport") {
     return (
       
       <>
@@ -40,17 +40,18 @@ const RenderUser = () => {
       </>
 
     );
-  } else if (state.userType === "faculty") {
-    return (
-         <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
-        <Link to="/transport-booking-system/bookings">Bookings</Link>
-              </li>
+  // } else if (state.userType === "faculty") {
+  //   return (
+  //        <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
+  //       <Link to="/transport-booking-system/bookings">Bookings</Link>
+  //             </li>
     
-    );
-  } else {
+  //   );
+  }
+   else {
     return (
       <li className="text-gray-700 hover:text-gray-900 cursor-pointer text-base lg:text-lg pt-10 md:pt-0 md:ml-5 lg:ml-10">
-        <Link to="/transport-booking-system/transports">Transports</Link>
+        <Link to="/transport-booking-system/bookings">Bookings</Link>
             </li>
      
     );

@@ -88,7 +88,7 @@ const BookingForm = () => {
 
       let status;
 let vehicles;
-    if(state.userType === "admin"){
+    if(state.userType === "admin" && state.adminFor === "transport"){
         status = data.isApproved;
         vehicles = data.bookedTransportId;
       }else if (state.userType === "faculty"){

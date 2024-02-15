@@ -228,7 +228,7 @@ const createTransportBooking = async (req, res, next) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       // to: transport.transportCreater, // Use the transport creator's email here
-      to: process.env.ADMIN_EMAIL, // Use the transport creator's email here
+      to: process.env.TRANSPORT_ADMIN_EMAIL, // Use the transport creator's email here
       subject: "New Booking Request",
       html: emailTemplates.generateBookingEmailTemplate(
         // eventName,
@@ -528,7 +528,7 @@ console.log(req.body);
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       // to: transport.transportCreater, // Use the transport creator's email here
-      to: process.env.ADMIN_EMAIL, // Use the transport creator's email here
+      to: booking.email, // Use the transport creator's email here
       subject: "Booking Request Updated",
       html: emailTemplates.generateBookingUpdatedEmailTemplate(
         // eventName,
@@ -675,7 +675,7 @@ const hodEmail = booking.hodEmail;
   
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
-      to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
+      to: booking.email, // Use the user's email associated with the booking
       subject: "Booking Request Approved",
       html: emailTemplates.sendApprovalEmailTemplate(
   
@@ -706,7 +706,7 @@ const sendRejectionEmail = async (booking, bookingId, rejectionReason) => {
   try {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
-      to: process.env.SENDER_EMAIL, // Use the user's email associated with the booking
+      to: booking.email, // Use the user's email associated with the booking
       subject: "Booking Request Rejected",
       html: emailTemplates.sendRejectionEmailTemplate(
         // booking.eventName,
