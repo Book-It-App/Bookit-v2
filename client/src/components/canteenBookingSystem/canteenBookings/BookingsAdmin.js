@@ -268,6 +268,8 @@ const BookingsAdmin = () => {
     }
   });
   
+
+  
   // const hallId =userData.hallId
   // const hallName = userData.hallName
 

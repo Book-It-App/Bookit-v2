@@ -4,6 +4,7 @@ import { useNavigate, Link ,useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../LoadingSpinner";
 import axios from "axios";
+import Cart from "../canteens/Cart";
 import { parseISO } from "date-fns";
 // import { DepartmentList, InstitutionList } from "../InstitutionDeptartmentList";
 import { institutions, InstitutionList, DepartmentList } from "../../Institutions"; // Update the path as needed
@@ -19,6 +20,8 @@ const BookingForm = () => {
   //consolelog(hallId);
   const [isLoading, setIsLoading] = useState(true);
   // const { hallId, hallName } = props.location.state;
+  const [selectedItems, setSelectedItems] = useState({});
+
   const [bookingData, setBookingData] = useState({
     userId: "",
     eventManager: "",
@@ -89,7 +92,7 @@ const BookingForm = () => {
       navigate("/login");
     }
   };
-  const data = location.state;
+  // const data = location.state;
   useEffect(() => {
 
     // const location = useLocation();
@@ -98,11 +101,16 @@ const BookingForm = () => {
     // const selectedItems = location.state.selectedItems;
 
     // Now 'selectedItems' contains the state passed from the previous component
-    console.log(data);
+    // console.log(data);
     
     userContact();
+
+    const storedSelectedItems = localStorage.getItem('selectedItems');
+    if (storedSelectedItems) {
+      setSelectedItems(JSON.parse(storedSelectedItems));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, data);
+  }, []);
 
   // handle change here
 
@@ -267,13 +275,14 @@ const BookingForm = () => {
               </h3>
             </div>
 
+            <Cart selectedItems={selectedItems} setSelectedItems={setSelectedItems} setShowSidebar={setShowSidebar} showSidebar={showSidebar} />
 
  <div className={`w-1/4  ${showSidebar ? 'block' : 'hidden'}`}>
               {/* Sidebar */}
-              <div className="fixed  right-0 bg-white w-64 p-4 shadow-lg">
+              <div className="fixed  left-0 bg-white w-64 p-4 shadow-lg">
                 <h2 className="text-lg font-semibold mb-4">Selected Items</h2>
 
-                {Object.entries(data).map(([itemId, { itemName,quantity}]) => (
+                {Object.entries(selectedItems).map(([itemId, { itemName,quantity}]) => (
                   <div key={itemId} className="mb-2">
                     <p>
                       {itemName} , Quantity: {quantity}
@@ -298,6 +307,9 @@ const BookingForm = () => {
                 </button> */}
               </div>
             </div>
+
+
+
             <form method="POST" className="w-full">
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -315,7 +327,6 @@ const BookingForm = () => {
                     onChange={handleInputs}
                     placeholder="Event Coordinator Name"
                   />
-                  {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                 </div>
 
                 <div className="w-full md:w-1/2 px-3">
@@ -352,7 +363,6 @@ const BookingForm = () => {
                     type="text"
                     placeholder="Organizing Club"
                   />
-                  {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                 </div>
 
                 <div className="w-full md:w-1/2 px-3">
@@ -374,74 +384,12 @@ const BookingForm = () => {
                     <option value="multiple">Multiple Days</option>
                   </select>
 
-                  {/* <input
-                value={bookingData.eventDate}
-                name="eventDate"
-                onChange={handleInputs}
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-event-date"
-                type="date"
-                placeholder="Event Date"
-                min={new Date().toISOString().split("T")[0]}
-
-              /> */}
+                
                 </div>
 
-                {/* <div className="w-full md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="grid-event-date"
-              >
-                Event Date
-              </label>
-              <input
-                value={bookingData.eventDate}
-                name="eventDate"
-                onChange={handleInputs}
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-event-date"
-                type="date"
-                placeholder="Event Date"
-                min={new Date().toISOString().split("T")[0]}
-
-              />
-            </div> */}
               </div>
 
-              {/* 
-{bookingData.eventDateType === "full" && (
-
-
-
-          <div className="flex flex-wrap -mx-3 mb-6">
-
-
-              <div className="w-full md:w-1/2 px-3">
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="grid-event-date"
-              >
-                Event Date
-              </label>
-              <input
-                value={bookingData.eventDate}
-                name="eventDate"
-                onChange={handleInputs}
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-event-date"
-                type="date"
-                placeholder="Event Date"
-                min={new Date().toISOString().split("T")[0]}
-
-              />
-            </div>
-  
-          </div>
-
-
-
-                )
-                } */}
+            
 
               {bookingData.eventDateType === "multiple" && (
                 <div className="flex flex-wrap -mx-3 mb-6">
@@ -559,211 +507,6 @@ const BookingForm = () => {
                   </div>
                 </div>
               )}
-{/* 
-              <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-institution">
-                    Institution
-                  </label>
-
-                  {bookingData.userType !== "admin" && (
-                    <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-institution"
-                      type="text"
-                      value={institutionName}
-                      name="institution"
-                      onChange={handleInputs}
-                      placeholder="Institution"
-                      disabled
-                    />
-                  )}
-
-                  {bookingData.userType === "admin" && (
-                    <select
-                      className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="institution"
-                      name="institution"
-                      value={bookingData.institution}
-                      onChange={handleInputs}>
-                      <option value="null">Select</option>
-                      <option value="AITR">
-                        Acropolis Institute of Technology and Research
-                      </option>
-                      <option value="AIMSR">
-                        Acropolis Institute of Management Studies & Research
-                      </option>
-                      <option value="AIPER">
-                        Acropolis Institute Of Pharmaceutical Education &
-                        Research
-                      </option>
-                      <option value="AMR">
-                        Acropolis Faculty of Management and Research
-                      </option>
-                      <option value="AILAW">Acropolis Institute of LAW</option>
-
-                      <option value="CDC">Career Development Cell</option>
-                      <option value="AC">Acro Care</option>
-                    </select>
-                  )}
-                </div>
-
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
-                    htmlFor="grid-department">
-                    Department
-                  </label>
-
-                  {bookingData.userType !== "admin" && (
-                    <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-department"
-                      type="text"
-                      value={departmentName}
-                      name="department"
-                      onChange={handleInputs}
-                      placeholder="Department"
-                      disabled
-                    />
-                  )}
-
-                  {bookingData.userType === "admin" && (
-                    <>
-                      {bookingData.institution === "null" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="">Select</option>
-                        </select>
-                      )}
-
-                      {bookingData.institution === "CDC" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="CDC">Career Development Cell</option>
-                          <option value="EDC">EDC</option>
-                          <option value="PLACEMENT">Placement</option>
-                          <option value="TRAINING">Training</option>
-                          <option value="IIPC">IIPC</option>
-                        </select>
-                      )}
-
-                      {bookingData.institution === "AC" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="AC">Acro Care</option>
-                        </select>
-                      )}
-                      {bookingData.institution === "AIPER" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="AIPER">
-                            Acropolis Institute Of Pharmaceutical Education &
-                            Research
-                          </option>
-                        </select>
-                      )}
-
-                      {bookingData.institution === "AILAW" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="AILAW">
-                            Acropolis Institute of LAW
-                          </option>
-                        </select>
-                      )}
-
-                      {bookingData.institution === "AMR" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="AMR">
-                            Acropolis Faculty of Management and Research
-                          </option>
-                        </select>
-                      )}
-
-                      {bookingData.institution === "AIMSR" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="">Select</option>
-                          <option value="BSC">Bio Science</option>
-                          <option value="BBA">
-                            Bachelor of Business Administration
-                          </option>
-                          <option value="AIMSR">
-                            Acropolis Institute of Management Studies & Research
-                          </option>
-                        </select>
-                      )}
-
-                      {bookingData.institution === "AITR" && (
-                        <select
-                          className="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="department"
-                          name="department"
-                          value={bookingData.department}
-                          onChange={handleInputs}>
-                          <option value="">Select</option>
-                          <option value="CE">Civil Engineering</option>
-                          <option value="ME">Mechanical Engineering</option>
-                          <option value="EC">
-                            Electronics & Communication
-                          </option>
-                          <option value="CSE">
-                            Computer Science & Engineering
-                          </option>
-                          <option value="AIML">
-                            Artificial Intelligence and Machine Learning
-                          </option>
-                          <option value="IT">Information Technology</option>
-                          <option value="CSIT">
-                            Computer Science and Information Technology
-                          </option>
-                          <option value="FCA">
-                            Faculty of Computer Applications
-                          </option>
-                          <option value="HUMI">Huminities</option>
-                          <option value="CHEM">Chemistry</option>
-                        </select>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-
-
-
- */}
 
 
 
