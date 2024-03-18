@@ -4,6 +4,7 @@ import axios from "axios";
 import LoadingSpinner from "../../LoadingSpinner";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import { PiArrowsDownUpBold } from "react-icons/pi";
 // import BookingForm from "./BookingForm";
 // eslint-disable-next-line no-unused-vars
 // import { ApprovedByAdmin, ApprovedByHod, RejectedByAdmin } from "../Steps"
@@ -18,6 +19,8 @@ const BookingsAdmin = () => {
   const [userData, setUserData] = useState({});
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
+  const [approvalRemark, setApprovalRemark] = useState("");
+
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const [selectedBookingData, setSelectedBookingData] = useState({});
   // const [driverDetails, setDriverDetails] = useState({nameOfDriver:"",
@@ -29,6 +32,8 @@ const BookingsAdmin = () => {
   };
 
   const [vehicles, setVehicles] = useState([]);
+
+  const [filterByDate,setFilterByDate]= useState(false);
 
   const openApprovalModal = (bookingId) => {
     // Capture the provided bookingId
@@ -448,7 +453,10 @@ console.log(bookingData);
           //   isApproved === "Rejected By Admin" ? null : mobNoOfDriver,
           rejectionReason:
             isApproved === "Approved By Admin" ? null : rejectionReason,
-       
+
+            approvalRemark:
+            isApproved === "Approved By Admin" ? approvalRemark  : null,
+          
         },
         {
           withCredentials: true,
@@ -506,7 +514,32 @@ console.log(bookingData);
   });
 
 
+  // if (filterByDate){
 
+  //   filteredBookings.sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+  // }else{
+  //   filteredBookings.sort((a, b) =>  new Date(a.eventDate) - new Date(b.eventDate) );
+  // }
+
+
+
+  if (filterByDate) {
+    if (bookingData.eventDateType === 'multiple') {
+      // Sorting based on eventStartDate when event type is not full
+      filteredBookings.sort((a, b) => new Date(b.eventStartDate) - new Date(a.eventStartDate));
+    } else {
+      filteredBookings.sort((a, b) => new Date(b.eventDate) - new Date(a.eventDate));
+    }
+  } else {
+    if (bookingData.eventDateType === 'multiple') {
+      // Sorting based on eventStartDate when event type is not full
+      filteredBookings.sort((a, b) => new Date(a.eventStartDate) - new Date(b.eventStartDate));
+    } else {
+      filteredBookings.sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+    }
+  }
+
+  
 
 // const handleVehicleSelect = (e) => {
 //   const selectedVehicleId = e.target.value;
@@ -658,6 +691,7 @@ console.log(bookingData);
                 disabled 
                 
               />
+             
             </div> 
     
             {Array.from({ length: Math.max(0, Math.floor(selectedBookingData.noOfVehicle))}).map((_, index) => (
@@ -769,6 +803,14 @@ console.log(bookingData);
              X Remove Vehicle</button>
                   
                 </div>
+                <div className="mt-7">
+                <label htmlFor="remark" className="ml-3">
+                Remark
+                <textarea name="" id="remark" cols="195" rows="3"  className="mt-2  ml-3 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Write Remark here..."                 
+                  value={approvalRemark} onChange={(e) => setApprovalRemark(e.target.value)}
+                ></textarea>
+                </label> 
+              </div>
               </div>
             ))}
 
@@ -872,8 +914,12 @@ console.log(bookingData);
                       </th>
                       <th
                         scope="col"
-                        className="px-4 py-3 text-l   text-gray-800 uppercase   border-gray-200">
-                        Booking Date
+                        className="px-4 py-3 text-l flex ml-4  text-gray-800 uppercase   border-gray-200">
+                        Booking Date 
+                        <button onClick={() => setFilterByDate(!filterByDate)}>
+                        <PiArrowsDownUpBold className="font-bold mx-2" />
+
+                        </button>
                       </th>
                       <th
                         scope="col"
