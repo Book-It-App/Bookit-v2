@@ -143,7 +143,7 @@ const MasterPage = () => {
           </div>
 
           {/* Canteen Booking System */}
-         <div className="bg-white p-4 rounded-lg shadow-md text-center">
+         {/* <div className="bg-white p-4 rounded-lg shadow-md text-center">
             <h2 className="text-xl font-semibold mb-4">
               Canteen Booking System
             </h2>
@@ -152,7 +152,7 @@ const MasterPage = () => {
               className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">
               Go to Canteen Booking
             </Link>
-          </div> 
+          </div>  */}
         </div>
       </div>
 
