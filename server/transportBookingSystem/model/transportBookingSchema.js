@@ -136,6 +136,9 @@ const transportBookingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    approvalRemark: {
+      type: String,
+    },
   },
   {
     timestamps: true,

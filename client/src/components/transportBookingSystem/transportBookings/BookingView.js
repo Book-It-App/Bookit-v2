@@ -29,6 +29,8 @@ const BookingsView = () => {
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
+  const [approvalRemark, setApprovalRemark] = useState("");
+
   // const [driverDetails, setDriverDetails] = useState({
   //   nameOfDriver: "",
   //   mobNoOfDriver: "",
@@ -183,6 +185,10 @@ const BookingsView = () => {
           //   isApproved === "Rejected By Admin" ? null : mobNoOfDriver,
           rejectionReason:
             isApproved === "Approved By Admin" ? null : rejectionReason,
+
+            approvalRemark:
+            isApproved === "Approved By Admin" ? approvalRemark  : null,
+          
         },
         {
           withCredentials: true,
@@ -652,19 +658,36 @@ const BookingsView = () => {
                   {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
                 </div>
 
-                <div className="w-full md:w-1/2 px-3">
+                <div className="w-full md:w-1/2 px-3 ">
                   <h1
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
                     htmlFor="grid-alt-number">
                     HOD/DIRECTOR EMAIL
                   </h1>
-                  <p
-                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+
+                  {bookingData.hodEmail ? (
+    bookingData.hodEmail.split(',').map((email, index) => (
+      <p key={index} className="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+        {email.trim()} {/* Trim to remove leading/trailing spaces */}
+      </p>
+    ))
+  ) : (
+    <p className="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+      Not Provided
+    </p>
+  )}
+
+
+
+
+
+                  {/* <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  wrap"
                     id="grid-alt-number">
                     {bookingData.hodEmail
                       ? bookingData.hodEmail
                       : "Not Provided"}
-                  </p>
+                  </p> */}
                 </div>
               </div>
 
@@ -745,6 +768,27 @@ const BookingsView = () => {
 
               {bookingData.isApproved === "Approved By Admin" && (
 <>
+<div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3 mb-6 md:mb-0">
+                  <h1
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 "
+                    htmlFor="grid-approvalRemark">
+                    Approval Remark
+                  </h1>
+                  <p
+                    className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-approvalRemark">
+                    {bookingData.approvalRemark ? bookingData.approvalRemark : "Not Remark"}
+                  </p>
+                  {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
+                </div>
+              </div>
+
+
+
+
+
+              
           {bookingData.bookedTransportId.map((transport, index) => (
 
                 <div key={index}>
@@ -1051,6 +1095,15 @@ const BookingsView = () => {
                     placeholder="Mob. No. Of Driver"
                   /> */}
                 </div>
+
+                <div className="mt-7">
+                <label htmlFor="remark" className="ml-3">
+                Remark
+                <textarea name="" id="remark" cols="195" rows="3"  className="mt-2  ml-3 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Write Remark here..."                 
+                  value={approvalRemark} onChange={(e) => setApprovalRemark(e.target.value)}
+                ></textarea>
+                </label> 
+              </div>
               </div>
             ))}
 

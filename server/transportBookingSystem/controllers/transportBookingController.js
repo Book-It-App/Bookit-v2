@@ -454,6 +454,7 @@ console.log(req.body)
       // transportId,
       rejectionReason,
       remark,
+      approvalRemark,
       isApproved,
     } = req.body;
 console.log("thois os bodyyyyyyyyyyyyy")
@@ -498,6 +499,7 @@ console.log(req.body);
         //  transportId: transport._id,email,
         isApproved,
         remark,
+        approvalRemark,
         rejectionReason,
       },
       { new: true }
@@ -575,6 +577,7 @@ console.log(req.body);
       from: process.env.SENDER_EMAIL,
       // to: transport.transportCreater, // Use the transport creator's email here
       to: hodEmail, // Use the transport creator's email here
+      // cc:"siddharthjain.ca21@acropolis.in",
       subject: "Booking Request Updated",
       html: emailTemplates.generateHodUpdatedEmailTemplate(
         // eventName,
