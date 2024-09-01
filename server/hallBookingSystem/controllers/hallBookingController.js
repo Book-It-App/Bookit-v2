@@ -351,7 +351,7 @@ const getHallBookingByUserId = async (req, res, next) => {
 
 const getHallBookingAdmin = async (req, res, next) => {
   try {
-    let statusArray = ["Approved By HOD", "Approved By Admin", "Rejected By Admin"];
+    let statusArray = ["Request Sent", "Approved By HOD", "Approved By Admin", "Rejected By Admin"];
     const adminEmail = req.rootUser.email;
     const userId = req.rootUser._id;
     // console.log("admin bookng");
