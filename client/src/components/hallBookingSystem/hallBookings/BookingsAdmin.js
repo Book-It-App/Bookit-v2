@@ -13,7 +13,7 @@ const BookingsAdmin = () => {
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [filterValue, setFilterValue] = useState("Approved By HOD");
+  const [filterValue, setFilterValue] = useState("Request Sent");
   const [emailVerified, setEmailVerified] = useState(false);
   const [userData, setUserData] = useState({});
   const [showModal, setShowModal] = useState(false);
